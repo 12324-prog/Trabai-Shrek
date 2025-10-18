@@ -23,7 +23,7 @@
         }
 
         public function atualizarProduto(){
-            //INCOMPLETO
+            //INCOMPLET
             $listaProdutosDoBanco = DB::update('update produtos set nome_produto=,descricao_produto, preco');
 
             return $listaProdutosDoBanco;
