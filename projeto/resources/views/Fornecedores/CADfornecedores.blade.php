@@ -25,7 +25,7 @@
         <section class="hero">
             <div>
                 <h1 class="title">Cadastrar Fornecedor</h1>
-                <p class="highlight">Preencha as informações abaixo para adicionar um novo fornecedor ao pântano do sabor.</p>
+                <p class="highlight">Registre os parceiros que abastecem o pântano! Ingredientes frescos e confiáveis fazem toda a diferença no sabor do podrão.</p>
             </div>
             <div class="card">
                 <form action="{{ route('fornecedores.store') }}" method="POST" class="form-qa">
@@ -64,11 +64,11 @@
                     </div>
                     <div class="question">
                         <div class="q-bubble">Celular</div>
-                        <div class="answer"><input type="text" id="Celular" name="Celular" required></div>
+                        <div class="answer"><input type="tel" id="Celular" name="Celular" required></div>
                     </div>
                     <div class="question">
                         <div class="q-bubble">Email</div>
-                        <div class="answer"><input type="text" id="Email" name="Email" required></div>
+                        <div class="answer"><input type="email" id="Email" name="Email" required></div>
                     </div>
 
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>

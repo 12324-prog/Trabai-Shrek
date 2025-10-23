@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Entregadores - Podrão do Shrek</title>
+    <title>Cadastrar Garçons - Podrão do Shrek</title>
     <link rel="stylesheet" href="PodraoPadrao.css">
 </head>
 <body>
@@ -21,22 +21,23 @@
         </nav>
     </header>
 
+
     <main class="container">
             <section class="hero">
                 <div>
-                    <h1 class="title">Cadastrar Entregadores</h1>
-                    <p class="highlight">Cadastre os heróis que levam o podrão até o povo! Sem eles, o pântano não chega a Tão Tão Distante.</p>
+                    <h1 class="title">Cadastrar Garçons</h1>
+                    <p class="highlight">Adicione os atendentes que dão vida ao salão! Eles são o rosto do Podrão do Shrek e merecem estar bem listados.</p>
                 </div>
                 <div class="card">
-                    <form action="{{ route('entregadores.store') }}" method="POST" class="form-qa">
+                    <form action="{{ route('garcons.store') }}" method="POST" class="form-qa">
                         @csrf
                         <div class="question">
                             <div class="q-bubble">Nome</div>
-                            <div class="answer"><input type="text" id="nomeENTREGADOR" name="nomeENTREGADOR" required></div>
+                            <div class="answer"><input type="text" id="nomeGARCOM" name="nomeGARCOM" required></div>
                         </div>              
                         <div class="question">
                             <div class="q-bubble">Celular</div>
-                            <div class="answer"><input type="tel" id="celularENTREGADOR" name="celularENTREGADOR" required></div>
+                            <div class="answer"><input type="tel" id="celularGARCOM" name="celularGARCOM" required></div>
                         </div>    
 
                         <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
