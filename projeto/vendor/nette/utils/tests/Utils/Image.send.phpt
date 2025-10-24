@@ -16,9 +16,11 @@ require __DIR__ . '/../bootstrap.php';
 
 $main = Image::fromFile(__DIR__ . '/fixtures.images/alpha1.png');
 
+ob_start(); // test descriptions
 
-test('', function () use ($main) {
+test('sending image as JPEG by default', function () use ($main) {
 	ob_start();
+	header_remove();
 	$main->send();
 	$data = ob_get_clean();
 
@@ -29,8 +31,9 @@ test('', function () use ($main) {
 });
 
 
-test('', function () use ($main) {
+test('sending image as PNG', function () use ($main) {
 	ob_start();
+	header_remove();
 	$main->send(Image::PNG);
 	$data = ob_get_clean();
 
@@ -41,12 +44,13 @@ test('', function () use ($main) {
 });
 
 
-test('', function () use ($main) {
-	if (!function_exists('imagewebp')) {
+test('sending WEBP image if supported', function () use ($main) {
+	if (!Image::isTypeSupported(Image::WEBP)) {
 		return;
 	}
 
 	ob_start();
+	header_remove();
 	$main->send(Image::WEBP);
 	$data = ob_get_clean();
 
@@ -57,6 +61,8 @@ test('', function () use ($main) {
 });
 
 
-Assert::exception(function () use ($main) { // invalid image type
-	$main->send(IMG_WBMP);
-}, Nette\InvalidArgumentException::class, sprintf('Unsupported image type \'%d\'.', IMG_WBMP));
+Assert::exception(
+	fn() => $main->send(IMG_WBMP),
+	Nette\InvalidArgumentException::class,
+	sprintf('Unsupported image type \'%d\'.', IMG_WBMP),
+);

@@ -31,7 +31,7 @@ class Person
 }
 
 
-test('', function () {
+test('store and retrieve values via array and property notation', function () {
 	$list = new ArrayHash;
 	$jack = new Person('Jack');
 	$mary = new Person('Mary');
@@ -79,7 +79,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('creation with non‐recursive conversion leaves nested arrays unchanged', function () {
 	$mary = new Person('Mary');
 	$list = ArrayHash::from([
 		'm' => $mary,
@@ -87,13 +87,13 @@ test('', function () {
 		'children' => [
 			'c' => 'John',
 		],
-	], false);
+	], recursive: false);
 	Assert::type(Nette\Utils\ArrayHash::class, $list);
 	Assert::type('array', $list['children']);
 });
 
 
-test('', function () {
+test('recursive conversion transforms nested arrays into ArrayHash', function () {
 	$mary = new Person('Mary');
 	$list = ArrayHash::from([
 		'm' => $mary,
@@ -117,11 +117,11 @@ test('', function () {
 		'j' => 'Jack',
 		'children' => $list['children'],
 		'c' => 'Jim',
-	], iterator_to_array(new RecursiveIteratorIterator($list, RecursiveIteratorIterator::SELF_FIRST)));
+	], iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($list), RecursiveIteratorIterator::SELF_FIRST)));
 });
 
 
-test('numeric fields', function () {
+test('numeric key handling supports both integer and string offsets', function () {
 	$row = ArrayHash::from([1, 2]);
 
 	foreach ($row as $key => $value) {
@@ -171,7 +171,7 @@ test('numeric fields', function () {
 });
 
 
-test('null fields', function () {
+test('null values are stored but not regarded as set', function () {
 	$row = ArrayHash::from(['null' => null]);
 	Assert::null($row->null);
 	Assert::null($row['null']);
@@ -180,23 +180,37 @@ test('null fields', function () {
 });
 
 
-test('undeclared fields', function () {
+test('accessing undefined keys triggers a notice or warning', function () {
 	$row = new ArrayHash;
-	Assert::error(function () use ($row) {
-		$row->undef;
-	}, PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING, 'Undefined property: Nette\Utils\ArrayHash::$undef');
+	Assert::error(
+		fn() => $row->undef,
+		PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING,
+		'Undefined property: Nette\Utils\ArrayHash::$undef',
+	);
 
-	Assert::error(function () use ($row) {
-		$row['undef'];
-	}, PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING, 'Undefined property: Nette\Utils\ArrayHash::$undef');
+	Assert::error(
+		fn() => $row['undef'],
+		PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING,
+		'Undefined property: Nette\Utils\ArrayHash::$undef',
+	);
 });
 
 
-test('PHP 7 changed behavior https://3v4l.org/2A1pf', function () {
+test('unsetting entries during iteration removes them', function () {
 	$hash = ArrayHash::from([1, 2, 3]);
 	foreach ($hash as $key => $value) {
 		unset($hash->$key);
 	}
 
 	Assert::count(0, $hash);
+});
+
+
+test('reference iteration allows modification of all elements', function () {
+	$hash = ArrayHash::from([1, 2, 3]);
+	foreach ($hash as $key => &$value) {
+		$value = 'new';
+	}
+
+	Assert::same(['new', 'new', 'new'], (array) $hash);
 });

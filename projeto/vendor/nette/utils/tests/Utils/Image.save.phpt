@@ -17,22 +17,22 @@ require __DIR__ . '/../bootstrap.php';
 $main = Image::fromFile(__DIR__ . '/fixtures.images/alpha1.png');
 
 
-test('', function () use ($main) {
+test('saving image as PNG with inferred extension', function () use ($main) {
 	$main->save(getTempDir() . '/foo.png');
 	Assert::true(is_file(getTempDir() . '/foo.png'));
 	Assert::same(IMAGETYPE_PNG, getimagesize(getTempDir() . '/foo.png')[2]);
 });
 
 
-test('', function () use ($main) {
+test('saving image with custom extension parameter', function () use ($main) {
 	$main->save(getTempDir() . '/foo.x', null, Image::PNG);
 	Assert::true(is_file(getTempDir() . '/foo.x'));
 	Assert::same(IMAGETYPE_PNG, getimagesize(getTempDir() . '/foo.x')[2]);
 });
 
 
-test('', function () use ($main) {
-	if (!function_exists('imagewebp')) {
+test('saving WEBP image if supported', function () use ($main) {
+	if (!Image::isTypeSupported(Image::WEBP)) {
 		return;
 	}
 
@@ -46,8 +46,8 @@ test('', function () use ($main) {
 });
 
 
-test('', function () use ($main) {
-	if (!function_exists('imageavif')) {
+test('saving AVIF image if supported', function () use ($main) {
+	if (!Image::isTypeSupported(Image::AVIF)) {
 		return;
 	}
 
@@ -61,7 +61,7 @@ test('', function () use ($main) {
 });
 
 
-test('', function () use ($main) {
+test('saving BMP image if supported', function () use ($main) {
 	if (!function_exists('imagebmp')) {
 		return;
 	}
@@ -76,11 +76,33 @@ test('', function () use ($main) {
 });
 
 
-Assert::exception(function () use ($main) { // invalid image type
-	$main->save('foo', null, IMG_WBMP);
-}, Nette\InvalidArgumentException::class, sprintf('Unsupported image type \'%d\'.', IMG_WBMP));
+Assert::exception(
+	fn() => $main->save('foo', null, IMG_WBMP),
+	Nette\InvalidArgumentException::class,
+	sprintf('Unsupported image type \'%d\'.', IMG_WBMP),
+);
 
 
-Assert::exception(function () use ($main) { // invalid file extension
-	$main->save('foo.psd');
-}, Nette\InvalidArgumentException::class, 'Unsupported file extension \'psd\'.');
+Assert::exception(
+	fn() => $main->save('foo.psd'),
+	Nette\InvalidArgumentException::class,
+	'Unsupported file extension \'psd\'.',
+);
+
+
+test('saving palette-based as WEBP should fail without creating file', function () {
+	if (!Image::isTypeSupported(Image::WEBP) || PHP_VERSION_ID < 80200) {
+		return;
+	}
+
+	$paletteImage = Image::fromFile(__DIR__ . '/fixtures.images/logo.gif');
+	$filename = getTempDir() . '/palette-test.webp';
+
+	Assert::exception(
+		fn() => $paletteImage->save($filename),
+		Nette\Utils\ImageException::class,
+		'Palette %a%',
+	);
+
+	Assert::false(is_file($filename));
+});

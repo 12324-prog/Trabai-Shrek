@@ -25,10 +25,8 @@ class TypedMapTest extends TestCase
         $this->assertSame('int', $typed->getKeyType());
         $this->assertSame('string', $typed->getValueType());
 
-        /** @psalm-suppress TypeDoesNotContainType */
         $this->assertEmpty($typed);
 
-        /** @psalm-suppress NoValue */
         $this->assertCount(0, $typed);
     }
 
@@ -55,7 +53,7 @@ class TypedMapTest extends TestCase
         $this->expectExceptionMessage('Key must be of type string; key is');
 
         /**
-         * @psalm-suppress InvalidArgument
+         * @phpstan-ignore-next-line
          */
         $map[9] = 'foo';
     }
@@ -78,8 +76,21 @@ class TypedMapTest extends TestCase
 
         /**
          * @phpstan-ignore-next-line
-         * @psalm-suppress InvalidArgument
          */
         $map['foo'] = 9;
+    }
+
+    public function testNullKeyRaisesException(): void
+    {
+        /** @var TypedMap<string, mixed> $map */
+        $map = new TypedMap('string', 'mixed');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Key must be of type string; key is NULL');
+
+        /**
+         * @phpstan-ignore-next-line
+         */
+        $map[] = 'foo';
     }
 }

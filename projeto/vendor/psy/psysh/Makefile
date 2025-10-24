@@ -13,12 +13,12 @@ endif
 
 # Commands
 
-.PHONY: help build clean dist test phpstan
+.PHONY: help build clean dist test smoketest phpstan
 .DEFAULT_GOAL := help
 
 help:
 	@echo "\033[33mUsage:\033[0m\n  make TARGET\n\n\033[33mTargets:\033[0m"
-	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[32m%-7s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[32m%-9s\033[0m %s\n", $$1, $$2}'
 
 build: ## Compile psysh PHAR
 build: build/psysh/psysh
@@ -34,6 +34,10 @@ dist: dist/psysh-$(VERSION).tar.gz
 test: ## Run unit tests
 test: vendor/bin/phpunit
 	$< $(PHPUNIT_OPTS)
+
+smoketest: ## Run smoke tests on existing binaries
+smoketest: build/psysh/psysh
+	test/smoketest.sh
 
 phpstan: ## Run static analysis
 phpstan: vendor/bin/phpstan vendor/bin/phpunit
@@ -79,7 +83,7 @@ build/psysh: $(PSYSH_SRC) $(PSYSH_SRC_FILES)
 	sed -i -e "/^ *const VERSION =/ s/'.*'/'$(VERSION)'/" $@/src/Shell.php
 	composer config --working-dir $@ platform.php 7.4
 	composer require --working-dir $@ $(COMPOSER_REQUIRE_OPTS) php:'>=7.4'
-	composer require --working-dir $@ $(COMPOSER_REQUIRE_OPTS) symfony/polyfill-iconv symfony/polyfill-mbstring
+	composer require --working-dir $@ $(COMPOSER_REQUIRE_OPTS) symfony/polyfill-iconv symfony/polyfill-mbstring composer/class-map-generator
 	composer require --working-dir $@ $(COMPOSER_REQUIRE_OPTS) --dev roave/security-advisories:dev-latest
 	composer update --working-dir $@ $(COMPOSER_UPDATE_OPTS)
 

@@ -99,8 +99,8 @@ test('listOf() & scalar', function () {
 });
 
 
-test('listOf() & error', function () {
-	Assert::exception(function () {
-		Expect::listOf(['a' => Expect::string()]);
-	}, TypeError::class);
-});
+testException(
+	'listOf() & error',
+	fn() => Expect::listOf(['a' => Expect::string()]),
+	TypeError::class,
+);

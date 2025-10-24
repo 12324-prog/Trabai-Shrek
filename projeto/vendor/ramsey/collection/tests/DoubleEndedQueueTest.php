@@ -51,7 +51,6 @@ class DoubleEndedQueueTest extends TestCase
 
         /**
          * @phpstan-ignore-next-line
-         * @psalm-suppress InvalidArgument
          */
         $queue[] = 42;
     }
@@ -267,12 +266,14 @@ class DoubleEndedQueueTest extends TestCase
     public function testValuesCanBeAddedToTheHead(): void
     {
         /** @var DoubleEndedQueue<string> $queue */
-        $queue = new DoubleEndedQueue('string', ['Bar']);
+        $queue = new DoubleEndedQueue('string', ['Baz']);
 
+        $this->assertTrue($queue->addFirst('Bar'));
         $this->assertTrue($queue->addFirst('Foo'));
-        $this->assertCount(2, $queue);
+        $this->assertCount(3, $queue);
         $this->assertSame('Foo', $queue->firstElement());
-        $this->assertSame('Bar', $queue->lastElement());
+        $this->assertSame('Baz', $queue->lastElement());
+        $this->assertSame(['Foo', 'Bar', 'Baz'], $queue->toArray());
     }
 
     public function testAddFirstThrowsExceptionForIncorrectTypes(): void
@@ -283,7 +284,9 @@ class DoubleEndedQueueTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value must be of type string; value is 42');
 
-        // @phpstan-ignore-next-line
+        /**
+         * @phpstan-ignore-next-line
+         */
         $queue->addFirst(42);
     }
 

@@ -21,18 +21,20 @@ $arr = [
 	],
 ];
 
-test('Single item', function () use ($arr) {
-	Assert::same('first', Arrays::get($arr, null));
+test('basic retrieval with default and exception for missing keys', function () use ($arr) {
+	Assert::same('first', Arrays::get($arr, ''));
 	Assert::same('second', Arrays::get($arr, 1));
 	Assert::same('second', Arrays::get($arr, 1, 'x'));
 	Assert::same('x', Arrays::get($arr, 'undefined', 'x'));
-	Assert::exception(function () use ($arr) {
-		Arrays::get($arr, 'undefined');
-	}, Nette\InvalidArgumentException::class, "Missing item 'undefined'.");
+	Assert::exception(
+		fn() => Arrays::get($arr, 'undefined'),
+		Nette\InvalidArgumentException::class,
+		"Missing item 'undefined'.",
+	);
 });
 
 
-test('Traversing', function () use ($arr) {
+test('nested access using key path', function () use ($arr) {
 	Assert::same([
 		'' => 'first',
 		1 => 'second',

@@ -31,10 +31,12 @@ class Person
 }
 
 
-test('ArrayList::from', function () {
-	Assert::exception(function () {
-		ArrayList::from(['a' => 1, 'b' => 2]);
-	}, Nette\InvalidArgumentException::class, 'Array is not valid list.');
+test('creation from valid list and error on associative arrays', function () {
+	Assert::exception(
+		fn() => ArrayList::from(['a' => 1, 'b' => 2]),
+		Nette\InvalidArgumentException::class,
+		'Array is not valid list.',
+	);
 
 	$mary = new Person('Mary');
 	$list = ArrayList::from([$mary, 'Jack']);
@@ -44,7 +46,7 @@ test('ArrayList::from', function () {
 });
 
 
-test('', function () {
+test('supports push, access, iteration, unset, and prepend operations', function () {
 	$list = new ArrayList;
 	$jack = new Person('Jack');
 	$mary = new Person('Mary');
@@ -88,45 +90,57 @@ test('', function () {
 });
 
 
-test('', function () {
+test('setting invalid offsets throws OutOfRangeException', function () {
 	$list = new ArrayList;
 	$list[] = 'a';
 	$list[] = 'b';
 
-	Assert::exception(function () use ($list) {
-		$list[-1] = true;
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list[-1] = true,
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 
-	Assert::exception(function () use ($list) {
-		$list[2] = true;
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list[2] = true,
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 
-	Assert::exception(function () use ($list) {
-		$list['key'] = true;
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list['key'] = true,
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 });
 
 
-test('', function () {
+test('accessing invalid offsets throws OutOfRangeException', function () {
 	$list = new ArrayList;
 	$list[] = 'a';
 	$list[] = 'b';
 
-	Assert::exception(function () use ($list) {
-		$tmp = $list[-1];
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list[-1],
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 
-	Assert::exception(function () use ($list) {
-		$tmp = $list[2];
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list[2],
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 
-	Assert::exception(function () use ($list) {
-		$tmp = $list['key'];
-	}, OutOfRangeException::class, 'Offset invalid or out of range');
+	Assert::exception(
+		fn() => $list['key'],
+		OutOfRangeException::class,
+		'Offset invalid or out of range',
+	);
 });
 
 
-test('', function () {
+test('unsetting invalid offsets throws OutOfRangeException', function () {
 	$list = new ArrayList;
 	$list[] = 'a';
 	$list[] = 'b';
@@ -142,4 +156,14 @@ test('', function () {
 	Assert::exception(function () use ($list) {
 		unset($list['key']);
 	}, OutOfRangeException::class, 'Offset invalid or out of range');
+});
+
+
+test('reference iteration modifies all list elements', function () {
+	$list = ArrayList::from([1, 2, 3]);
+	foreach ($list as $key => &$value) {
+		$value = 'new';
+	}
+
+	Assert::same(['new', 'new', 'new'], iterator_to_array($list));
 });

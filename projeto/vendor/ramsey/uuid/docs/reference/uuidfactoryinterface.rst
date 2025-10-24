@@ -16,7 +16,7 @@ UuidFactoryInterface
 
     .. php:method:: uuid1([$node[, $clockSeq]])
 
-        Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
+        Generates a version 1, Gregorian time UUID. See :ref:`rfc4122.version1`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
@@ -61,17 +61,16 @@ UuidFactoryInterface
 
     .. php:method:: uuid6([$node[, $clockSeq]])
 
-        Generates a version 6, ordered-time UUID. See :ref:`nonstandard.version6`.
+        Generates a version 6, reordered Gregorian time UUID. See :ref:`rfc4122.version6`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 6 UUID
-        :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV6
 
     .. php:method:: fromString($uuid)
 
-        Creates an instance of UuidInterface from the string standard
-        representation.
+        Creates an instance of UuidInterface from the string standard representation.
 
         :param string $uuid: The string standard representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
@@ -92,8 +91,7 @@ UuidFactoryInterface
 
     .. php:method:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
-        Creates a version 1 UUID instance from a `DateTimeInterface
-        <https://www.php.net/datetimeinterface>`_ instance.
+        Creates a version 1 UUID instance from a `DateTimeInterface <https://www.php.net/datetimeinterface>`_ instance.
 
         :param DateTimeInterface $dateTime: The date from which to create the UUID instance
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use

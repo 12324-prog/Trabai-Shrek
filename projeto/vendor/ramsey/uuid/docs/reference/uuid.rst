@@ -4,9 +4,8 @@
 Uuid
 ====
 
-Ramsey\Uuid\Uuid provides static methods for the most common functionality for
-generating and working with UUIDs. It also provides constants used throughout
-the ramsey/uuid library.
+Ramsey\\Uuid\\Uuid provides static methods for the most common functionality for generating and working with UUIDs. It
+also provides constants used throughout the ramsey/uuid library.
 
 .. php:namespace:: Ramsey\Uuid
 
@@ -32,9 +31,21 @@ the ramsey/uuid library.
 
         :ref:`rfc4122.version5` UUID.
 
+    .. php:const:: UUID_TYPE_REORDERED_TIME
+
+        :ref:`rfc4122.version6` UUID.
+
     .. php:const:: UUID_TYPE_PEABODY
 
-        :ref:`nonstandard.version6` UUID.
+        *Deprecated.* Use :php:const:`Uuid::UUID_TYPE_REORDERED_TIME` instead.
+
+    .. php:const:: UUID_TYPE_UNIX_TIME
+
+        :ref:`rfc4122.version7` UUID.
+
+    .. php:const:: UUID_TYPE_CUSTOM
+
+        :ref:`rfc4122.version8` UUID.
 
     .. php:const:: NAMESPACE_DNS
 
@@ -54,8 +65,7 @@ the ramsey/uuid library.
 
     .. php:const:: NIL
 
-        The nil UUID is a special form of UUID that is specified to have all 128
-        bits set to zero.
+        The nil UUID is a special form of UUID that is specified to have all 128 bits set to zero.
 
     .. php:const:: DCE_DOMAIN_PERSON
 
@@ -75,7 +85,11 @@ the ramsey/uuid library.
 
     .. php:const:: RFC_4122
 
-        Variant identifier: the UUID layout specified in RFC 4122.
+        An alias for :php:const:`Uuid::RFC_9562`.
+
+    .. php:const:: RFC_9562
+
+        Variant identifier: the UUID layout specified in `RFC 9562`_ (formerly `RFC 4122`_).
 
     .. php:const:: RESERVED_MICROSOFT
 
@@ -87,7 +101,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid1([$node[, $clockSeq]])
 
-        Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
+        Generates a version 1, Gregorian time UUID. See :ref:`rfc4122.version1`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
@@ -132,17 +146,35 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid6([$node[, $clockSeq]])
 
-        Generates a version 6, ordered-time UUID. See :ref:`nonstandard.version6`.
+        Generates a version 6, reordered Gregorian time UUID. See :ref:`rfc4122.version6`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 6 UUID
-        :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV6
+
+    .. php:staticmethod:: uuid7([$dateTime])
+
+        Generates a version 7, Unix Epoch time UUID. See :ref:`rfc4122.version7`.
+
+        :param DateTimeInterface|null $dateTime: The date from which to create the UUID instance
+        :returns: A version 7 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV7
+
+    .. php:staticmethod:: uuid8($bytes)
+
+        Generates a version 8, implementation-specific, custom format UUID. See :ref:`rfc4122.version8`.
+
+        :param string $bytes: A 16-byte octet string. This is an open blob of data that you may fill with 128 bits of
+                              information. Be aware, however, bits 48 through 51 will be replaced with the UUID version
+                              field, and bits 64 and 65 will be replaced with the UUID variant. You MUST NOT rely on
+                              these bits for your application needs.
+        :returns: A version 8 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV8
 
     .. php:staticmethod:: fromString($uuid)
 
-        Creates an instance of UuidInterface from the string standard
-        representation.
+        Creates an instance of UuidInterface from the string standard representation.
 
         :param string $uuid: The string standard representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
@@ -163,8 +195,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
-        Creates a version 1 UUID instance from a `DateTimeInterface
-        <https://www.php.net/datetimeinterface>`_ instance.
+        Creates a version 1 UUID instance from a `DateTimeInterface <https://www.php.net/datetimeinterface>`_ instance.
 
         :param DateTimeInterface $dateTime: The date from which to create the UUID instance
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
@@ -186,7 +217,8 @@ the ramsey/uuid library.
         :param Ramsey\\Uuid\\UuidFactoryInterface $factory: A UUID factory to use for all UUID generation
         :returntype: void
 
-
+.. _RFC 4122: https://www.rfc-editor.org/rfc/rfc4122
+.. _RFC 9562: https://www.rfc-editor.org/rfc/rfc9562
 .. _ISO object identifier (OID): http://www.oid-info.com
 .. _X.500: https://en.wikipedia.org/wiki/X.500
 .. _DN: https://en.wikipedia.org/wiki/Distinguished_Name

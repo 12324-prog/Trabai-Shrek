@@ -21,7 +21,7 @@ use Symfony\Component\Translation\Translator;
 
 class TranslatorCacheTest extends TestCase
 {
-    protected $tmpDir;
+    protected string $tmpDir;
 
     protected function setUp(): void
     {
@@ -46,9 +46,9 @@ class TranslatorCacheTest extends TestCase
                 continue;
             }
             if ($path->isDir()) {
-                rmdir($path->__toString());
+                @rmdir($path->__toString());
             } else {
-                unlink($path->__toString());
+                @unlink($path->__toString());
             }
         }
         rmdir($this->tmpDir);
@@ -60,7 +60,7 @@ class TranslatorCacheTest extends TestCase
     public function testThatACacheIsUsed($debug)
     {
         if (!class_exists(\MessageFormatter::class)) {
-            $this->markTestSkipped(sprintf('Skipping test as the required "%s" class does not exist. Consider installing the "intl" PHP extension or the "symfony/polyfill-intl-messageformatter" package.', \MessageFormatter::class));
+            $this->markTestSkipped(\sprintf('Skipping test as the required "%s" class does not exist. Consider installing the "intl" PHP extension or the "symfony/polyfill-intl-messageformatter" package.', \MessageFormatter::class));
         }
 
         $locale = 'any_locale';

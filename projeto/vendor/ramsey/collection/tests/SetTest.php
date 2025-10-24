@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Collection\Test;
 
-use Ramsey\Collection\AbstractSet;
-use Ramsey\Collection\CollectionInterface;
 use Ramsey\Collection\Set;
 use Ramsey\Collection\Test\Mock\Foo;
 
@@ -25,12 +23,6 @@ class SetTest extends TestCase
         parent::setUp();
 
         $this->set = new Set('int');
-    }
-
-    public function testConstructorInheritance(): void
-    {
-        $this->assertInstanceOf(CollectionInterface::class, $this->set);
-        $this->assertInstanceOf(AbstractSet::class, $this->set);
     }
 
     public function testConstructGetType(): void
@@ -82,8 +74,13 @@ class SetTest extends TestCase
 
     public function testMergingSets(): void
     {
+        /** @var Set<string> $set1 */
         $set1 = new Set('string', ['X', 'Y']);
+
+        /** @var Set<string> $set2 */
         $set2 = new Set('string', ['Y', 'Z']);
+
+        /** @var Set<string> $set3 */
         $set3 = $set1->merge($set2);
 
         $this->assertSame(['X', 'Y', 'Z'], $set3->toArray());

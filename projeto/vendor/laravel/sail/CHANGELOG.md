@@ -1,6 +1,101 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/sail/compare/v1.18.1...1.x)
+## [Unreleased](https://github.com/laravel/sail/compare/v1.24.1...1.x)
+
+## [v1.24.1](https://github.com/laravel/sail/compare/v1.24.0...v1.24.1) - 2023-09-01
+
+- Change node source repository by [@alexpado](https://github.com/alexpado) in https://github.com/laravel/sail/pull/613
+- Add PHP 8.3 Runtime (missing extensions excluded) by [@Jubeki](https://github.com/Jubeki) in https://github.com/laravel/sail/pull/614
+
+## [v1.24.0](https://github.com/laravel/sail/compare/v1.23.4...v1.24.0) - 2023-08-27
+
+- Make MEILISEARCH_NO_ANALYTICS environment variable available by [@mawnicat](https://github.com/mawnicat) in https://github.com/laravel/sail/pull/611
+- Use Laravel Prompts when available by [@jessarcher](https://github.com/jessarcher) in https://github.com/laravel/sail/pull/612
+
+## [v1.23.4](https://github.com/laravel/sail/compare/v1.23.3...v1.23.4) - 2023-08-17
+
+- Adjust pnpm  to support Sail alias by [@SamuelMTeixeira](https://github.com/SamuelMTeixeira) in https://github.com/laravel/sail/pull/607
+
+## [v1.23.3](https://github.com/laravel/sail/compare/v1.23.2...v1.23.3) - 2023-08-14
+
+- Upgrade the Compose file format version to Compose specification by [@goodjack](https://github.com/goodjack) in https://github.com/laravel/sail/pull/601
+- Add PNPM support to enhance dependency management efficiency by [@SamuelMTeixeira](https://github.com/SamuelMTeixeira) in https://github.com/laravel/sail/pull/605
+
+## [v1.23.2](https://github.com/laravel/sail/compare/v1.23.1...v1.23.2) - 2023-08-07
+
+- add fswatch for pest support by [@Thinkro](https://github.com/Thinkro) in https://github.com/laravel/sail/pull/600
+
+## [v1.23.1](https://github.com/laravel/sail/compare/v1.23.0...v1.23.1) - 2023-06-28
+
+- Also publish database init scripts by [@spasstiger23](https://github.com/spasstiger23) in https://github.com/laravel/sail/pull/592
+
+## [v1.23.0](https://github.com/laravel/sail/compare/v1.22.0...v1.23.0) - 2023-06-16
+
+- Add `a` as alias for artisan command by @5thmv in https://github.com/laravel/sail/pull/588
+
+## [v1.22.0](https://github.com/laravel/sail/compare/v1.21.5...v1.22.0) - 2023-05-04
+
+- Remove PHP 7.4 Support by @Jubeki in https://github.com/laravel/sail/pull/580
+
+## [v1.21.5](https://github.com/laravel/sail/compare/v1.21.4...v1.21.5) - 2023-04-24
+
+- Fix opening files from Ignition error page by @NiclasvanEyk in https://github.com/laravel/sail/pull/576
+- Add librsvg2-bin package for SVG support by @Bottelet in https://github.com/laravel/sail/pull/575
+
+## [v1.21.4](https://github.com/laravel/sail/compare/v1.21.3...v1.21.4) - 2023-03-30
+
+- Speeds up CLI and tests by enabling OpCache by @lukeraymonddowning in https://github.com/laravel/sail/pull/569
+
+## [v1.21.3](https://github.com/laravel/sail/compare/v1.21.2...v1.21.3) - 2023-03-13
+
+- Enable Expose Global Server Infrastructure by @theutz in https://github.com/laravel/sail/pull/563
+- feat: upgrade postgresql-client to 15 by @fedorvladimirov in https://github.com/laravel/sail/pull/564
+
+## [v1.21.2](https://github.com/laravel/sail/compare/v1.21.1...v1.21.2) - 2023-03-06
+
+- Use curl to download composer by @larsnystrom in https://github.com/laravel/sail/pull/561
+
+## [v1.21.1](https://github.com/laravel/sail/compare/v1.21.0...v1.21.1) - 2023-03-01
+
+- Added Imagick to the php runtimes by @ams-ryanolson in https://github.com/laravel/sail/pull/559
+
+## [v1.21.0](https://github.com/laravel/sail/compare/v1.20.2...v1.21.0) - 2023-02-16
+
+- Add `sail open` command. by @xiCO2k in https://github.com/laravel/sail/pull/551
+- Update keyring path to new default recommendation by @binaryfire in https://github.com/laravel/sail/pull/552
+
+## [v1.20.2](https://github.com/laravel/sail/compare/v1.20.1...v1.20.2) - 2023-02-08
+
+### Fixed
+
+- Fix `SAIL_SHARE_DOMAIN` default value by @gonzalom in https://github.com/laravel/sail/pull/546
+
+## [v1.20.1](https://github.com/laravel/sail/compare/v1.20.0...v1.20.1) - 2023-02-07
+
+### Fixed
+
+- Fixed the path to devcontainer.stub by @gabrielgry in https://github.com/laravel/sail/pull/544
+
+## [v1.20.0](https://github.com/laravel/sail/compare/v1.19.0...v1.20.0) - 2023-02-05
+
+### Added
+
+- Use symfony/yaml, new Soketi service, and new sail:add command by @tonysm in https://github.com/laravel/sail/pull/532
+
+### Fixed
+
+- Move settings into customizations.vscode by @Kyzegs in https://github.com/laravel/sail/pull/542
+
+## [v1.19.0](https://github.com/laravel/sail/compare/v1.18.1...v1.19.0) - 2023-01-31
+
+### Added
+
+- Add custom domain config to sail share by @mojowill in https://github.com/laravel/sail/pull/531
+- Add pest command to sail bin by @MortenDHansen in https://github.com/laravel/sail/pull/534
+
+### Changed
+
+- Replace mailhog with mailpit by @ankurk91 in https://github.com/laravel/sail/pull/533
 
 ## [v1.18.1](https://github.com/laravel/sail/compare/v1.18.0...v1.18.1) - 2023-01-12
 

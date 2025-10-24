@@ -13,6 +13,7 @@ use ReflectionMethod;
 use RuntimeException;
 use Throwable;
 use Webmozart\Assert\Assert;
+use function rtrim;
 
 final class MixinGenerator
 {
@@ -104,7 +105,7 @@ PHP
         return \sprintf(
             <<<'PHP'
 /**
- * This trait provides nurllOr*, all* and allNullOr* variants of assertion base methods.
+ * This trait provides nullOr*, all* and allNullOr* variants of assertion base methods.
  * Do not use this trait directly: it will change, and is not designed for reuse.
  */
 trait Mixin
@@ -277,7 +278,7 @@ BODY;
                 $phpdocLines[] = trim($comment);
             }
 
-            if ('deprecated' === $key) {
+            if ('deprecated' === $key || 'psalm-pure' === $key) {
                 $phpdocLines[] = '';
             }
         }
@@ -428,14 +429,21 @@ BODY;
         $indentation = str_repeat(' ', $indent);
 
         $phpdoc = $indentation.'/**';
+        $throws = '';
 
         foreach ($lines as $line) {
-            $phpdoc .= "\n".$indentation.rtrim(' * '.$line);
+            if (strpos($line, '@throws') === 0) {
+                $throws .= "\n".$indentation.rtrim(' * '.$line);
+            } else {
+                $phpdoc .= "\n".$indentation.rtrim(' * '.$line);
+            }
         }
 
-        $phpdoc .= "\n".$indentation.' *'
-            . "\n".$indentation.' * @return void'
-            . "\n".$indentation.' */';
+        if (strlen($throws) > 0) {
+            $phpdoc .= $throws;
+        }
+
+        $phpdoc .= "\n".$indentation.' */';
 
         return $phpdoc;
     }

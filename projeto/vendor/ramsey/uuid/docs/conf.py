@@ -23,7 +23,7 @@ def get_version():
     if os.environ.get('READTHEDOCS') == 'True':
         return os.environ.get('READTHEDOCS_VERSION')
 
-    pipe = Popen('git branch | grep \*', stdout=PIPE, shell=True, universal_newlines=True)
+    pipe = Popen('git branch | grep \\*', stdout=PIPE, shell=True, universal_newlines=True)
     version = pipe.stdout.read()
 
     if version:
@@ -35,7 +35,7 @@ def get_version():
 # -- Project information -----------------------------------------------------
 
 project = 'ramsey/uuid'
-copyright = '2020, Ben Ramsey'
+copyright = '2012-{year}, Ben Ramsey'.format(year = datetime.date.today().strftime('%Y'))
 author = 'Ben Ramsey'
 
 version = get_version().strip()
@@ -101,3 +101,8 @@ html_context = {
     "github_version": version,
     "conf_py_path": "/docs/",
 }
+
+current_year = datetime.date.today().strftime('%Y')
+rst_prolog = """
+.. |current_year| replace:: {0}
+""".format(current_year)

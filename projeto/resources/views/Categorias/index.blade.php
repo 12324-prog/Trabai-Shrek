@@ -21,12 +21,56 @@
         </nav>
     </header>
 
-<footer class="footer">
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">📋 Relatório de Categorias</h1>
+                <p class="highlight">Aqui estão todas as categorias cadastradas.</p>
+            </div>
+
+            <div class="card">
+                @if(session('success'))
+                    <div class="alert success">{{ session('success') }}</div>
+                @endif
+
+                <table class="tabela-shrek">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descrição</th>           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($categorias as $categoria)
+                            <tr>
+                                <td>{{ $categoria->id }}</td>
+                                <td>{{ $categoria->descricaoCATEGORIA }}</td>
+                                <td>
+                                    <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn--ghost">Editar</a>
+                                    <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="empty">Nenhuma categoria encontrado.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <div class="btn-group" style="margin-top: 20px;">
+                    <a href="{{ route('categorias.create') }}" class="btn btn--shrek slime-drop">➕ Nova Categoria</a>
+                </div>
+            </div>
+        </section>
+    </main>    
+
+    <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
-        <div class="btn-group">
-            <button class="btn btn--ghost">Ajuda</button>
-            <button class="btn btn--slime">Ver Fornecedores</button>
-        </div>
     </footer>
 </body>
 </html>

@@ -48,7 +48,7 @@ test('not merging', function () {
 
 	Assert::same(
 		[1, 2, 3],
-		(new Processor)->process($schema, [1, 2, 3])
+		(new Processor)->process($schema, [1, 2, 3]),
 	);
 });
 
@@ -76,7 +76,7 @@ test('merging', function () {
 			'arr' => ['item'],
 			1, 2, 3,
 		],
-		(new Processor)->process($schema, [1, 2, 3])
+		(new Processor)->process($schema, [1, 2, 3]),
 	);
 
 	Assert::same(
@@ -93,7 +93,7 @@ test('merging', function () {
 			'key3' => 'newval',
 			'newval3',
 			'arr' => ['newitem'],
-		])
+		]),
 	);
 
 	Assert::same(
@@ -109,7 +109,7 @@ test('merging', function () {
 			'key3' => 'newval',
 			'newval3',
 			'arr' => ['newitem'],
-		])
+		]),
 	);
 
 	Assert::same(
@@ -126,7 +126,7 @@ test('merging', function () {
 			'key3' => 'newval',
 			'newval3',
 			'arr' => [Helpers::PreventMerging => true, 'newitem'],
-		])
+		]),
 	);
 });
 
@@ -164,7 +164,7 @@ test('merging & other items validation', function () {
 			'key1' => 'newval',
 			'key3' => 'newval',
 			'newval3',
-		])
+		]),
 	);
 });
 
@@ -198,7 +198,7 @@ test('merging & other items validation', function () {
 			'key1' => 'val1',
 			'key2' => 'val2',
 			'val3',
-		])
+		]),
 	);
 });
 
@@ -265,7 +265,7 @@ test('items() & structure', function () {
 
 	Assert::equal(
 		['a' => 'defval', 'b' => (object) ['k' => 'val']],
-		(new Processor)->process($schema, ['b' => ['k' => 'val']])
+		(new Processor)->process($schema, ['b' => ['k' => 'val']]),
 	);
 });
 
@@ -310,11 +310,11 @@ test('arrayOf() & keys II.', function () {
 });
 
 
-test('arrayOf() error', function () {
-	Assert::exception(function () {
-		Expect::arrayOf(['a' => Expect::string()]);
-	}, TypeError::class);
-});
+testException(
+	'arrayOf() error',
+	fn() => Expect::arrayOf(['a' => Expect::string()]),
+	TypeError::class,
+);
 
 
 test('type[]', function () {
@@ -331,4 +331,19 @@ test('type[]', function () {
 	}, ['The item expects to be int[], array given.']);
 
 	Assert::same(['key' => 1], (new Processor)->process($schema, ['key' => 1]));
+});
+
+
+test('array shape', function () {
+	$schema = Expect::array([
+		'a' => Expect::string(),
+		'b' => Expect::string('string'),
+		'c' => Expect::anyOf(1, 2),
+	]);
+
+	Assert::type(Nette\Schema\Elements\Structure::class, $schema);
+	Assert::equal(
+		['a' => null, 'b' => 'string', 'c' => null],
+		(new Processor)->process($schema, []),
+	);
 });

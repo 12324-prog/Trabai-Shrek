@@ -21,9 +21,9 @@ $arr = [
 	],
 ];
 
-test('Single item', function () use ($arr) {
+test('reference update and auto-add missing key', function () use ($arr) {
 	$dolly = $arr;
-	$item = &Arrays::getRef($dolly, null);
+	$item = &Arrays::getRef($dolly, '');
 	$item = 'changed';
 	Assert::same([
 		'' => 'changed',
@@ -48,7 +48,7 @@ test('Single item', function () use ($arr) {
 });
 
 
-test('Traversing', function () use ($arr) {
+test('nested reference assignment and full array override', function () use ($arr) {
 	$dolly = $arr;
 	$item = &Arrays::getRef($dolly, []);
 	$item = 'changed';
@@ -68,9 +68,11 @@ test('Traversing', function () use ($arr) {
 });
 
 
-test('Error', function () use ($arr) {
-	Assert::exception(function () use ($arr) {
-		$dolly = $arr;
-		$item = &Arrays::getRef($dolly, [7, 'item', 3]);
-	}, InvalidArgumentException::class, 'Traversed item is not an array.');
+test('exception on invalid nested reference', function () use ($arr) {
+	$dolly = $arr;
+	Assert::exception(
+		fn() => $item = &Arrays::getRef($dolly, [7, 'item', 3]),
+		InvalidArgumentException::class,
+		'Traversed item is not an array.',
+	);
 });

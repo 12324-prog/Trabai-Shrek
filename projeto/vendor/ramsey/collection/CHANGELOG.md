@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.1 - 2025-03-23
+
+### Fixed
+
+* Correct the type annotation on `CollectionInterface::column()` to indicate the array
+  it returns is `list<mixed>` ([#130](https://github.com/ramsey/collection/issues/130))
+
+## 2.1.0 - 2025-03-02
+
+### Added
+
+* Add support for retrieving properties on collection items that are accessible via
+  magic methods `__get` and `__isset` ([#126](https://github.com/ramsey/collection/pull/126))
+* Certify support for PHP 8.3 and 8.4 ([#127](https://github.com/ramsey/collection/pull/127))
+
+### Fixed
+
+* Use the correct return type annotation of `list<T>` instead of `array<int, mixed>`
+  for `CollectionInterface::column()` ([#124](https://github.com/ramsey/collection/issues/124))
+* If an element has a property and method of the same name, check the property visibility
+  on the element before attempting to access it; if it is private, attempt to call the
+  method instead ([#123](https://github.com/ramsey/collection/pull/123))
+* `ValueExtractorTrait` expects `getType(): string` to exist on the using class, but it did
+  not declare an abstract to force this requirement; now it does, and any classes using this
+  trait must implement `getType(): string`
+* Avoid calling `contains()` twice when using `AbstractSet::add()`, significantly improving
+  performance for very large collections ([#68](https://github.com/ramsey/collection/issues/68))
+
+## 2.0.0 - 2022-12-31
+
+### Added
+
+* Add support for `CollectionInterface::reduce()` ([#87](https://github.com/ramsey/collection/pull/87))
+* All exceptions now implement a base `CollectionException` interface
+* Introduce `Sort` enum
+* Support `column()`, `sort()`, and `where()` on non-object collection types
+
+### Changed
+
+* Minimum PHP version supported is 8.1
+* Every method now has parameter and return type hints; if extending classes or
+  implementing interfaces, you may need to change method signatures to upgrade
+* The second parameter of `CollectionInterface::sort()` now uses the new `Sort`
+  enum instead of a string
+* Audit all template annotations and clean up Psalm and PHPStan types for
+  correctness; if using static analysis in projects, this may require changes to
+  your type annotations
+* `ArrayInterface` no longer extends `\Serializable`, and the `serialize()` and
+  `unserialize()` methods have been removed from `AbstractArray`; however,
+  `AbstractArray` still supports serialization through implementing `__serialize()`
+  and `__unserialize()`
+
 ## 1.3.0 - 2022-12-27
 
 ### Fixed

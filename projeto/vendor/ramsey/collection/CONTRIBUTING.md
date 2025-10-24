@@ -89,7 +89,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Developing
 
-To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater
+To develop this project, you will need [PHP](https://www.php.net) 8.1 or greater
 and [Composer](https://getcomposer.org).
 
 After cloning this repository locally, execute the following commands:
@@ -133,9 +133,8 @@ composer dev:lint:fix
 
 ### Static Analysis
 
-This project uses a combination of [PHPStan](https://github.com/phpstan/phpstan)
-and [Psalm](https://github.com/vimeo/psalm) to provide static analysis of PHP
-code.
+This project uses [PHPStan](https://github.com/phpstan/phpstan) to provide
+static analysis of PHP code.
 
 CaptainHook will run static analysis checks before pushing to the remote
 repository.

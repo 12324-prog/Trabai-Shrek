@@ -68,7 +68,7 @@
                     </div>
                     <div class="question">
                         <div class="q-bubble">Email</div>
-                        <div class="answer"><input type="email" id="Email" name="Email" required></div>
+                        <div class="answer"><input type="email" id="EmailFORNECEDOR" name="EmailFORNECEDOR" required></div>
                     </div>
 
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>

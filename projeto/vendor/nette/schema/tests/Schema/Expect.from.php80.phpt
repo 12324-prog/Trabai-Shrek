@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @phpversion 8.0
- */
-
 declare(strict_types=1);
 
 use Nette\Schema\Elements\Structure;
@@ -37,4 +33,25 @@ Assert::with(Structure::class, function () {
 		'arr' => Expect::type('array')->default([1]),
 	], $schema->items);
 	Assert::type($obj, (new Processor)->process($schema, ['user' => '', 'mixed' => '']));
+});
+
+
+Assert::with(Structure::class, function () { // constructor injection
+	$schema = Expect::from($obj = new class ('') {
+		public function __construct(
+			public ?string $user,
+			public ?string $password = null,
+		) {
+		}
+	});
+
+	Assert::type(Structure::class, $schema);
+	Assert::equal([
+		'user' => Expect::type('?string')->required(),
+		'password' => Expect::type('?string'),
+	], $schema->items);
+	Assert::equal(
+		new $obj('foo', 'bar'),
+		(new Processor)->process($schema, ['user' => 'foo', 'password' => 'bar']),
+	);
 });

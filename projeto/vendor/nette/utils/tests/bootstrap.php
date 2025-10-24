@@ -13,16 +13,16 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 
 // configure environment
 Tester\Environment::setup();
-date_default_timezone_set('Europe/Prague');
+Tester\Environment::setupFunctions();
 
 
 function getTempDir(): string
 {
 	$dir = __DIR__ . '/tmp/' . getmypid();
 
-	if (empty($GLOBALS['\\lock'])) {
+	if (empty($GLOBALS['\lock'])) {
 		// garbage collector
-		$GLOBALS['\\lock'] = $lock = fopen(__DIR__ . '/lock', 'w');
+		$GLOBALS['\lock'] = $lock = fopen(__DIR__ . '/lock', 'w');
 		if (rand(0, 100)) {
 			flock($lock, LOCK_SH);
 			@mkdir(dirname($dir));
@@ -34,10 +34,4 @@ function getTempDir(): string
 	}
 
 	return $dir;
-}
-
-
-function test(string $title, Closure $function): void
-{
-	$function();
 }

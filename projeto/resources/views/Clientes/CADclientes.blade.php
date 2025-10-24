@@ -102,7 +102,7 @@
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <button class="btn btn--ghost">Ajuda</button>
-            <button class="btn btn--slime">Ver Fornecedores</button>
+            <button class="btn btn--slime">Ver Clientes</button>
         </div>
     </footer>
 </body>

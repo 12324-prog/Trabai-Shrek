@@ -55,7 +55,7 @@
                                 <td>{{ $fornecedor->CNPJ }}</td>
                                 <td>{{ $fornecedor->cidade }}</td>
                                 <td>{{ $fornecedor->Celular }}</td>
-                                <td>{{ $fornecedor->Email }}</td>
+                                <td>{{ $fornecedor->EmailFORNECEDOR }}</td>
                                 <td>
                                     <a href="{{ route('fornecedores.edit', $fornecedor->id) }}" class="btn btn--ghost">Editar</a>
                                     <form action="{{ route('fornecedores.destroy', $fornecedor->id) }}" method="POST" style="display:inline;">

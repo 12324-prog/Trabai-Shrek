@@ -13,11 +13,14 @@ namespace Webmozart\Assert\Tests;
 
 use ArrayIterator;
 use ArrayObject;
+use DateTime;
+use DateTimeImmutable;
 use Error;
 use Exception;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use SimpleXMLElement;
 use stdClass;
 use Webmozart\Assert\Assert;
 
@@ -142,7 +145,7 @@ class AssertTest extends TestCase
             array('isCountable', array(array(1, 2)), true),
             array('isCountable', array(new ArrayIterator(array())), true),
             array('isCountable', array(new stdClass()), false),
-            array('isCountable', array(new \SimpleXMLElement('<foo>bar</foo>')), true),
+            array('isCountable', array(new SimpleXMLElement('<foo>bar</foo>')), true),
             array('isCountable', array('abcd'), false),
             array('isCountable', array(123), false),
             array('isIterable', array(array()), true),
@@ -374,17 +377,21 @@ class AssertTest extends TestCase
             array('digits', array('1234'), true),
             array('digits', array('12a34'), false),
             array('digits', array(''), false),
+            array('digits', array(1234), false),
             array('alnum', array('ab12'), true),
             array('alnum', array('ab12$'), false),
             array('alnum', array(''), false),
+            array('alnum', array(1234), false),
             array('lower', array('abcd'), true),
             array('lower', array('abCd'), false),
             array('lower', array('ab_d'), false),
             array('lower', array(''), false),
+            array('lower', array(1234), false),
             array('upper', array('ABCD'), true),
             array('upper', array('ABcD'), false),
             array('upper', array('AB_D'), false),
             array('upper', array(''), false),
+            array('upper', array(1234), false),
             array('length', array('abcd', 4), true),
             array('length', array('abc', 4), false),
             array('length', array('abcde', 4), false),
@@ -445,6 +452,10 @@ class AssertTest extends TestCase
             array('interfaceExists', array(__CLASS__), false),
             array('implementsInterface', array('ArrayIterator', 'Traversable'), true),
             array('implementsInterface', array(__CLASS__, 'Traversable'), false),
+            array('implementsInterface', array(new DateTimeImmutable(), 'DateTimeInterface'), true),
+            array('implementsInterface', array(new DateTimeImmutable(), 'Traversable'), false),
+            array('implementsInterface', array(new ArrayIterator(array()), 'DateTimeInterface'), false),
+            array('implementsInterface', array(new ArrayIterator(array()), 'Traversable'), true),
             array('propertyExists', array((object) array('property' => 0), 'property'), true),
             array('propertyExists', array((object) array('property' => null), 'property'), true),
             array('propertyExists', array((object) array('property' => null), 'foo'), false),
@@ -530,6 +541,9 @@ class AssertTest extends TestCase
             array('uuid', array('ff6f8cb0-c57d-41e1-9b21-0800200c9a66'), true),
             array('uuid', array('ff6f8cb0-c57d-51e1-9b21-0800200c9a66'), true),
             array('uuid', array('FF6F8CB0-C57D-11E1-9B21-0800200C9A66'), true),
+            array('uuid', array("urn:ff6f8cb0-c57d-21e1-9b21-0800200c9a66\n"), false),
+            array('uuid', array("ff6f8cb0-c57d-21e1-9b21-0800200c9a66\n"), false),
+            array('uuid', array("FF6F8CB0-C57D-11E1-9B21-0800200C9A66\n"), false),
             array('uuid', array('zf6f8cb0-c57d-11e1-9b21-0800200c9a66'), false),
             array('uuid', array('af6f8cb0c57d11e19b210800200c9a66'), false),
             array('uuid', array('ff6f8cb0-c57da-51e1-9b21-0800200c9a66'), false),
@@ -758,7 +772,7 @@ class AssertTest extends TestCase
             array('eq', array(new ArrayIterator(array()), new stdClass()), 'Expected a value equal to stdClass. Got: ArrayIterator'),
             array('eq', array(1, self::getResource()), 'Expected a value equal to resource. Got: 1'),
 
-            array('lessThan', array(new \DateTime('2020-01-01 00:00:00+00:00'), new \DateTime('1999-01-01 00:00:00+00:00')), 'Expected a value less than DateTime: "1999-01-01T00:00:00+00:00". Got: DateTime: "2020-01-01T00:00:00+00:00"'),
+            array('lessThan', array(new DateTime('2020-01-01 00:00:00+00:00'), new DateTime('1999-01-01 00:00:00+00:00')), 'Expected a value less than DateTime: "1999-01-01T00:00:00+00:00". Got: DateTime: "2020-01-01T00:00:00+00:00"'),
         );
     }
 
@@ -803,7 +817,7 @@ class AssertTest extends TestCase
         );
 
         yield array(
-            array(new \stdClass(), 'Iterator'),
+            array(new stdClass(), 'Iterator'),
             'Expected an instance of this class or to this class among its parents "Iterator". Got: stdClass',
         );
     }
@@ -817,6 +831,30 @@ class AssertTest extends TestCase
         $this->expectExceptionMessage($exceptionMessage);
 
         call_user_func_array(array('Webmozart\Assert\Assert', 'isAOf'), $args);
+    }
+
+    public function testResourceOfTypeCustomMessage(): void
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessage('I want a resource of type curl. Got: NULL');
+
+        Assert::resource(null, 'curl', 'I want a resource of type %2$s. Got: %s');
+    }
+
+    public function testEnumAssertionErrorMessage(): void
+    {
+        $enumIntroductionVersion = 80100;
+
+        if (PHP_VERSION_ID < $enumIntroductionVersion) {
+            $this->markTestSkipped(sprintf('This test requires php %s or upper.', $enumIntroductionVersion));
+        }
+
+        require_once 'DummyEnum.php';
+
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessage('Expected null. Got: Webmozart\Assert\Tests\TestEnum::CaseName');
+
+        Assert::null(TestEnum::CaseName, 'Expected null. Got: %s');
     }
 }
 

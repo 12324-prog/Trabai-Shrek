@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('empty array returns false without iteration', function () {
 	$arr = [];
 	$log = [];
 	$res = Arrays::some(
@@ -21,13 +21,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return false;
-		}
+		},
 	);
 	Assert::false($res);
 	Assert::same([], $log);
 });
 
-test('', function () {
+test('empty array always fails some condition', function () {
 	$arr = [];
 	$log = [];
 	$res = Arrays::some(
@@ -35,13 +35,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return true;
-		}
+		},
 	);
 	Assert::false($res);
 	Assert::same([], $log);
 });
 
-test('', function () {
+test('all elements failing predicate result in false', function () {
 	$arr = ['a', 'b'];
 	$log = [];
 	$res = Arrays::some(
@@ -49,13 +49,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return false;
-		}
+		},
 	);
 	Assert::false($res);
 	Assert::same([['a', 0, $arr], ['b', 1, $arr]], $log);
 });
 
-test('', function () {
+test('iteration stops on first true predicate', function () {
 	$arr = ['a', 'b'];
 	$log = [];
 	$res = Arrays::some(
@@ -63,13 +63,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return true;
-		}
+		},
 	);
 	Assert::true($res);
 	Assert::same([['a', 0, $arr]], $log);
 });
 
-test('', function () {
+test('some element satisfying predicate returns true', function () {
 	$arr = ['a', 'b'];
 	$log = [];
 	$res = Arrays::some(
@@ -77,13 +77,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v === 'a';
-		}
+		},
 	);
 	Assert::true($res);
 	Assert::same([['a', 0, $arr]], $log);
 });
 
-test('', function () {
+test('works with associative arrays to identify a matching element', function () {
 	$arr = ['x' => 'a', 'y' => 'b'];
 	$log = [];
 	$res = Arrays::some(
@@ -91,13 +91,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v === 'a';
-		}
+		},
 	);
 	Assert::true($res);
 	Assert::same([['a', 'x', $arr]], $log);
 });
 
-test('', function () {
+test('works with Traversable objects in some method', function () {
 	$arr = new ArrayIterator(['x' => 'a', 'y' => 'b']);
 	$log = [];
 	$res = Arrays::some(
@@ -105,7 +105,7 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v === 'a';
-		}
+		},
 	);
 	Assert::true($res);
 	Assert::same([['a', 'x', $arr]], $log);

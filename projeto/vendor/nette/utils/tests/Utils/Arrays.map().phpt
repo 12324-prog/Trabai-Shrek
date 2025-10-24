@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('empty array', function () {
 	$arr = [];
 	$log = [];
 	$res = Arrays::map(
@@ -21,13 +21,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return true;
-		}
+		},
 	);
 	Assert::same([], $res);
 	Assert::same([], $log);
 });
 
-test('', function () {
+test('list', function () {
 	$arr = ['a', 'b'];
 	$log = [];
 	$res = Arrays::map(
@@ -35,13 +35,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v . $v;
-		}
+		},
 	);
 	Assert::same(['aa', 'bb'], $res);
 	Assert::same([['a', 0, $arr], ['b', 1, $arr]], $log);
 });
 
-test('', function () {
+test('array with keys', function () {
 	$arr = ['x' => 'a', 'y' => 'b'];
 	$log = [];
 	$res = Arrays::map(
@@ -49,13 +49,13 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v . $v;
-		}
+		},
 	);
 	Assert::same(['x' => 'aa', 'y' => 'bb'], $res);
 	Assert::same([['a', 'x', $arr], ['b', 'y', $arr]], $log);
 });
 
-test('', function () {
+test('iterator', function () {
 	$arr = new ArrayIterator(['x' => 'a', 'y' => 'b']);
 	$log = [];
 	$res = Arrays::map(
@@ -63,7 +63,7 @@ test('', function () {
 		function ($v, $k, $arr) use (&$log) {
 			$log[] = func_get_args();
 			return $v . $v;
-		}
+		},
 	);
 	Assert::same(['x' => 'aa', 'y' => 'bb'], $res);
 	Assert::same([['a', 'x', $arr], ['b', 'y', $arr]], $log);
