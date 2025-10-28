@@ -1,0 +1,391 @@
+:root {
+  --shrek-green-1: #abb96b;
+  --shrek-green-2: #919652;
+  --shrek-green-3: #37372a;
+  --slime-yellow: #eaff8f;
+  --mud-brown: #7c6a48;
+  --muted: #6c7a6c;
+  --btn-padding: 12px 20px;
+  --bg: #f5fff1;
+  --text: #2d3714;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Luckiest+Guy&family=Freckle+Face&display=swap');
+
+
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 3px;
+}
+
+body {
+  background-color: #d7c8b1c3;
+  color:  #2d3714;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Freckle Face', cursive;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('https://fbi.cults3d.com/uploaders/25129376/illustration-file/a1541353-d6db-4e73-a41b-d4b1aabf6f9b/7.jpg'); 
+  opacity: 0.40;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.swamp-anim {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(8px) saturate(1.1);
+  background-image: radial-gradient(circle at 30% 90%, #7f6039df 0px, transparent 40%);
+  animation: swamp-flow 18s linear infinite;
+}
+
+@keyframes swamp-flow {
+  0% { background-position: 0% 0%, 100% 100%; }
+  50% { background-position: 10% 20%, 90% 80%; }
+  100% { background-position: 0% 0%, 100% 100%; }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: 
+    linear-gradient(180deg, rgba(86, 55, 27, 0.85), rgba(64, 40, 18, 0.95)),
+    url('https://static.vecteezy.com/ti/fotos-gratis/p1/3498779-marrom-couro-textura-fundo-gratis-foto.jpg');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+
+  padding: 16px 28px;
+  border-bottom: 3px solid #3e2b16;
+  box-shadow: 0 4px 12px rgba(46, 35, 18, 0.35);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+
+.header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.8rem;
+  color: #f3e4c2;
+  text-shadow: 2px 2px 0px rgba(56, 35, 18, 0.5);
+}
+
+.header nav {
+  display: flex;
+  gap: 30px;
+  font-family: 'Freckle Face', cursive;
+}
+
+.header nav a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #f3e4c2;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.header nav a:hover {
+  color: #ffd77d;
+  transform: scale(1.06);
+}
+
+.container {
+  flex: 1;
+  padding: 40px 20px;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: start;
+}
+
+.hero .title {
+  font-family: 'Freckle Face', cursive;
+  font-size: 3.5rem;
+  color: var(--shrek-green-3);
+}
+
+.highlight {
+  background: linear-gradient(90deg, rgba(146, 172, 28, 0.511), rgba(245, 213, 71, 0.245));
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: filter 0.3s ease;
+}
+.highlight:hover {
+  animation: slime-glow 1.5s infinite alternate;
+}
+
+@keyframes slime-glow {
+  from { filter: drop-shadow(0 0 0px #b8f35a); }
+  to { filter: drop-shadow(0 0 8px #b2e46c); }
+}
+
+.form-qa .question { margin-bottom: 14px; }
+.q-bubble {
+  font-weight: 600;
+  color:  #2d3714;
+  margin-bottom: 4px;
+}
+
+.answer input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(68, 75, 34, 0.2);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.8);
+  transition: box-shadow 0.2s ease;
+}
+.answer input:focus {
+  box-shadow: 0 0 0 4px rgba(167, 183, 95, 0.14);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: var(--btn-padding);
+  border-radius: 999px;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--shrek {
+  background: linear-gradient(180deg, #758130 0%, #81962b 100%);
+  color: white;
+  font-family: 'Red Hat Display', cursive;
+  box-shadow: 0 6px 20px rgba(174, 218, 13, 0.4), inset 0 -4px 10px rgba(0,0,0,0.2);
+  border: 2px solid #57661c;
+}
+
+.btn--shrek:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.1);
+}
+
+.btn--shrek:active {
+  animation: jelly 0.6s ease;
+}
+
+@keyframes jelly {
+  0%, 100% { transform: scale(1,1); }
+  25% { transform: scale(1.1, 0.9); }
+  50% { transform: scale(0.9, 1.1); }
+  75% { transform: scale(1.05, 0.95); }
+}
+
+.btn--ghost {
+  background: 
+    linear-gradient(180deg, rgba(86, 55, 27, 0.85), rgba(64, 40, 18, 0.55)),
+    url('https://static.vecteezy.com/ti/fotos-gratis/p1/3498779-marrom-couro-textura-fundo-gratis-foto.jpg');
+  color: #d6bb82;
+  border: 2px solid rgba(144, 81, 29, 0.452);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-family: 'Red Hat Display', cursive;
+}
+
+.btn--slime {
+  background: linear-gradient(180deg,#ded35d,#a2b534);
+  color: #263000;
+  box-shadow: 0 0 10px rgba(198,214,42,0.28);
+  font-family: 'Red Hat Display', cursive;
+}
+
+.menu-card {
+  border-radius: 14px;
+  padding: 12px;
+  background: linear-gradient(180deg,#fafff5,#e5f7db);
+  border: 1px solid rgba(34,75,34,0.12);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transition: transform .2s ease, box-shadow .2s ease;
+  box-shadow: 0 4px 18px rgba(47,143,47,0.1);
+}
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(47,143,47,0.18);
+}
+.menu-card .thumb {
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  background: radial-gradient(circle at top left, #97bc79, #7abf4f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #263000;
+}
+.menu-card h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: green;
+}
+.menu-card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.footer {
+  margin-top: 26px;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(180deg,#f7f7f3,#f3fff0);
+  color: var(--shrek-green-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(47,143,47,0.1);
+  box-shadow: 0 -4px 12px rgba(34,75,34,0.05);
+}
+.footer small { color: #f5fff1; }
+
+:focus { outline: none; }
+a:focus, button:focus, input:focus, textarea:focus {
+  box-shadow: 0 0 0 4px rgba(95,183,95,0.14);
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .menu-card { flex-direction: column; text-align: center; }
+  .menu-card .thumb { width: 100%; height: 120px; }
+}
+
+table.shrek-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: linear-gradient(180deg, #f5fff1 0%, #e5f7db 100%);
+  border: 2px solid var(--mud-brown);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(47, 75, 34, 0.2);
+  font-family: 'Shrikhand', cursive;
+}
+
+table.shrek-table th,
+table.shrek-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(34,75,34,0.1);
+}
+
+table.shrek-table th {
+  background: linear-gradient(180deg, var(--shrek-green-2), var(--shrek-green-3));
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+table.shrek-table tr:hover td {
+  background: rgba(138, 193, 102, 0.2);
+  transition: background 0.3s ease;
+}
+
+table.shrek-table td:first-child {
+  font-weight: 500;
+}
+
+ul.shrek-list,
+ol.shrek-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 16px 0;
+}
+
+ul.shrek-list li,
+ol.shrek-list li {
+  position: relative;
+  background: linear-gradient(180deg, #f5fff1 0%, #eaff8f 30%);
+  border: 1px solid var(--mud-brown);
+  padding: 10px 14px 10px 40px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  color: var(--shrek-green-3);
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(47, 75, 34, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+ul.shrek-list li::before,
+ol.shrek-list li::before {
+  content: "🌿"; 
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+}
+
+ul.shrek-list li:hover,
+ol.shrek-list li:hover {
+  transform: translateX(6px);
+  box-shadow: 0 4px 12px rgba(47, 75, 34, 0.25);
+}
+
+.footer {
+  margin-top: 26px;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(180deg,#f7f7f361,#39533356);
+  color: rgba(95,183,95,0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(47,143,47,0.1);
+  box-shadow: 0 -4px 12px rgba(34,75,34,0.05);
+}
+.footer small { 
+    z-index: 10;
+    color: rgb(52, 68, 17); }
+
+:focus { outline: none; }
+a:focus, button:focus, input:focus, textarea:focus {
+  box-shadow: 0 0 0 4px rgba(95,183,95,0.14);
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .menu-card { flex-direction: column; text-align: center; }
+  .menu-card .thumb { width: 100%; height: 120px; }
+}
