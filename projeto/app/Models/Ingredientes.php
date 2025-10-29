@@ -6,47 +6,71 @@
 
     class Ingredientes extends Model {
 
-         public $nomeIngrediente;
+         public $cod_Ingrediente;                
 
-         public $codIngrediente;
+         public  $descricao;
 
-         public  $descricaoIngrediente;
+         public  $cod_unidade;
+         
+         public $controla_estoque;
 
-         public $precoIngredient;
+         public  $quantidade_estoque;
+
+         public $valor_unitario;
+
 
         public function listarIngredientes(){
 
-            $listaIngredienteDoBanco = DB::select('select * from ingrediente order by cod_ingrediente DESC');
-
-            return $listaIngredienteDoBanco;
-
-        }
-
-        public function atualizarIngrediente(){
-            //INCOMPLET
-            $listaIngredientesDoBanco = DB::update('update ingredientes set nome_ingrediente=,descricao_ingrediente, preco');
+            $listaIngredientesDoBanco = DB::select('select * from ingrediente order by cod_ingrediente DESC');
 
             return $listaIngredientesDoBanco;
 
-        } 
+        }
 
-        public function buscarIngrediente($cod_ingrediente){
+        public function atualizarIngredientes($id){
+         return DB::update('UPDATE ingredientes SET
+          descricao = ?, 
+          cod_unitade = ?, 
+          controla_estoque = ?, 
+          quantidade_estoque = ?,
+          valor_unitario = ? 
+          where cod_ingrediente = ?',          
 
-            $IngredienteDoBanco = DB::select('select * from ingrediente where cod_ingrediente = '.$cod_ingrediente);
+        
+        [
+            $this->descricao,
+            $this->cod_unidade,
+            $this->controla_estoque ?? 0,
+            $this->quantidade_estoque ?? 0,
+            $this->valor_unitario ?? 0,
+            $id
+        ]);
+} 
+        public function buscarIngredientes($cod_ingrediente){
 
-            return $IngredienteDoBanco;
+            $IngredientesDoBanco = DB::select('select * from ingredientes where cod_ingrediente = ?', [$cod_ingrediente]);
+
+            return $IngredientesDoBanco;
 
         }
 
-        public function gravar ($nmIngrediente,$descIngrediente, $precoIngrediente){
+        public function gravar ($descricao, $cod_unidade, $controla_estoque,  $quantidade_estoque, $valor_unitario ){
 
-            DB::insert('insert into Ingredientes (nome_ingrediente,descricao_ngrediente, preco) values (?,?,?)', [$nmIngrediente, $descIngrediente, $precoIngrediente]);
-            
+            DB::insert('INSERT INTO Ingredientes (descricao, cod_unidade, controla_estoque, quantidade_estoque, valor_unitario)
+             values (?,?,?,?,?)', [
+                $descricao, 
+                $cod_unidade,
+                $controla_estoque ?? 0,  
+                $quantidade_estoque ?? 0, 
+                $valor_unitario  ?? 0
+           
+          ]);        
+           
         }
 
         public function apagar ($codIngrediente)
         {
-            DB::delete('delete from ingrediente where cod_ingrediente = '.$codIngrediente);
+            DB::delete('delete from ingrediente where cod_ingrediente = ?', [$codIngrediente]);
         }
 
     }
