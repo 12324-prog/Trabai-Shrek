@@ -24,7 +24,55 @@
         </nav>
     </header>
 
-<footer class="footer">
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">Relatório de Garçons</h1>
+                <p class="highlight">Os atendentes que dão vida e alegria ao salão do podrão.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="shrek-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Celular</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($garcons as $garcom)
+                        <tr>
+                            <td>{{ $garcom->cod_garcom }}</td>
+                            <td>{{ $garcom->nome }}</td>
+                            <td>{{ $garcom->celular }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('garcons.edit', $garcom->cod_garcom) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('garcons.destroy', $garcom->cod_garcom) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este garçom?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="empty">Nenhum garçom encontrado.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('garcons.create') }}" class="btn btn--shrek slime-drop">+ Novo Garçom</a>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <button class="btn btn--ghost">Ajuda</button>

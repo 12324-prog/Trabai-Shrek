@@ -40,7 +40,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Descrição</th>           
+                            <th>Descrição</th>  
+                            <th>Ações</th>         
                         </tr>
                     </thead>
                     <tbody>

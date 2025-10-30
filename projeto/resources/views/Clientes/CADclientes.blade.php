@@ -55,7 +55,7 @@
 
                     <div class="question">
                         <div class="q-bubble">Endereço</div>
-                        <div class="answer"><input type="text" id="endereco" name="endereco" required></div>
+                        <div class="answer"><input type="text" id="enderecoCLIENTE" name="endereco" required></div>
                     </div> 
 
                     <div class="question">
@@ -65,7 +65,7 @@
 
                     <div class="question">
                         <div class="q-bubble">Bairro</div>
-                        <div class="answer"><input type="text" id="Bairro" name="Bairro" required></div>
+                        <div class="answer"><input type="text" id="bairro" name="bairro" required></div>
                     </div>
 
                     <div class="question">
@@ -74,7 +74,7 @@
                             <select id="cidade_id" name="cidade_id" required>
                                 <option value="">Selecione uma cidade</option>
                                 @foreach($cidades as $cidade)
-                                    <option value="{{ $cidade->nome }}">{{ $cidade->uf }}</option>
+                                    <option value="{{ $cidade->nomeCIDADE }}">{{ $cidade->uf }}</option>
                                 @endforeach
                             </select>
                         </div>

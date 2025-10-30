@@ -24,62 +24,57 @@
         </nav>
     </header>
 
-
     <main class="container">
         <section class="hero">
             <div>
-                <h1 class="title">📋 Relatório de Compras</h1>
-                <p class="highlight">Aqui estão todas as compras cadastradas.</p>
+                <h1 class="title">Relatório de Compras</h1>
+                <p class="highlight">Mantenha o controle das compras realizadas no pântano com detalhes como data, nota fiscal, valor e fornecedor.</p>
             </div>
 
-            <div class="card">
-                @if(session('success'))
-                    <div class="alert success">{{ session('success') }}</div>
-                @endif
-
-                <table class="tabela-shrek">
+            <div class="table-container">
+                <table class="shrek-table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Data da Compra</th>
-                            <th>RG</th>
-                            <th>CPF</th>
-                            <th>Data de Nascimento</th>
-                            
+                            <th>Data</th>
+                            <th>Nota Fiscal</th>
+                            <th>Valor Total (R$)</th>
+                            <th>Fornecedor</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($compras as $compra)
-                            <tr>
-                                <td>{{ $compra->id }}</td>
-                                <td>{{ $compra->dataCOMPRA }}</td>
-                                <td>{{ $compra->notafiscal }}</td>
-                                <td>{{ $compra->valorTotalCOMPRA }}</td>
-                                <td>{{ $compra->fornecedor_id }}</td>
-                                
-                                <td>
-                                    <a href="{{ route('compras.edit', $compra->id) }}" class="btn btn--ghost">Editar</a>
-                                    <form action="{{ route('compras.destroy', $compra->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este cliente?')">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $compra->cod_compra }}</td>
+                            <td>{{ \Carbon\Carbon::parse($compra->dataCOMPRA)->format('d/m/Y') }}</td>
+                            <td>{{ $compra->nota_fiscal }}</td>
+                            <td>{{ number_format($compra->valorTotalCOMPRA ?? $compra->valor_total, 2, ',', '.') }}</td>
+                            <td>{{ $compra->fornecedor->nomeF ?? 'N/A' }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('compras.edit', $compra->cod_compra) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('compras.destroy', $compra->cod_compra) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir esta compra?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="8" class="empty">Nenhuma compra encontrada.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="empty">Nenhuma compra encontrada.</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
+            </div>
 
-                <div class="btn-group" style="margin-top: 20px;">
-                    <a href="{{ route('compras.create') }}" class="btn btn--shrek slime-drop">➕ Nova Compra</a>
-                </div>
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('compras.create') }}" class="btn btn--shrek slime-drop"> + Nova Compra</a>
             </div>
         </section>
     </main>
+
 
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>      

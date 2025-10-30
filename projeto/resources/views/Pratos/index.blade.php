@@ -24,7 +24,57 @@
         </nav>
     </header>
 
-<footer class="footer">
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">Relatório de Pratos</h1>
+                <p class="highlight">Veja os pratos incríveis preparados direto do pântano do Podrão do Shrek.</p>
+            </div>
+            <div class="table-container">
+                <table class="shrek-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Valor Unitário (R$)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($pratos as $prato)
+                        <tr>
+                            <td>{{ $prato->cod_prato }}</td>
+                            <td>{{ $prato->descricaoPRATO }}</td>
+                            <td>{{ $prato->descricaoCATEGORIA }}</td>
+                            <td>{{ number_format($prato->valorUnitarioPRATO, 2, ',', '.') }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('pratos.edit', $prato->cod_prato) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('pratos.destroy', $prato->cod_prato) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este prato?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="empty">Nenhum prato encontrado.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('pratos.create') }}" class="btn btn--shrek slime-drop"> + Novo Prato</a>
+            </div>
+        </section>
+    </main>
+
+    
+
+    <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <button class="btn btn--ghost">Ajuda</button>

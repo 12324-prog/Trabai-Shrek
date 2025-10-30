@@ -24,7 +24,53 @@
         </nav>
     </header>
 
-<footer class="footer">
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">Relatório de Mesas</h1>
+                <p class="highlight">Veja as mesas organizadas no salão do Podrão do Shrek.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="shrek-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descrição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($mesas as $mesa)
+                        <tr>
+                            <td>{{ $mesa->cod_mesa }}</td>
+                            <td>{{ $mesa->descricaoMESA }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('mesas.edit', $mesa->cod_mesa) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('mesas.destroy', $mesa->cod_mesa) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir esta mesa?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="empty">Nenhuma mesa encontrada.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('mesas.create') }}" class="btn btn--shrek slime-drop"> + Nova Mesa</a>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <button class="btn btn--ghost">Ajuda</button>

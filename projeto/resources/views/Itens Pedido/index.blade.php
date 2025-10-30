@@ -24,7 +24,60 @@
         </nav>
     </header>
 
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">Relatório de Itens do Pedido</h1>
+                <p class="highlight">Detalhes dos pratos que compõem cada pedido do pântano.</p>
+            </div>
 
+            <div class="table-container">
+                <table class="shrek-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Pedido</th>
+                            <th>Prato</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário (R$)</th>
+                            <th>Garçom</th>
+                            <th>Data e Hora</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($itenspedido as $item)
+                        <tr>
+                            <td>{{ $item->cod_item }}</td>
+                            <td>#{{ $item->cod_pedido }}</td>
+                            <td>{{ $item->cod_prato }}</td>
+                            <td>{{ $item->quantidade }}</td>
+                            <td>{{ number_format($item->valor_unitario, 2, ',', '.') }}</td>
+                            <td>{{ $item->cod_garcom }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->data_hora)->format('d/m/Y H:i') }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('itens_pedido.edit', $item->cod_item) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('itens_pedido.destroy', $item->cod_item) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este item?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="empty">Nenhum item de pedido encontrado.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('itens_pedido.create') }}" class="btn btn--shrek slime-drop"> + Novo Item do Pedido</a>
+            </div>
+        </section>
+    </main>
 
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>

@@ -27,7 +27,7 @@
     <main class="container">
         <section class="hero">
             <div>
-                <h1 class="title">📋 Relatório de Cidades</h1>
+                <h1 class="title">Relatório de Cidades</h1>
                 <p class="highlight">Aqui estão todos os cidades cadastrados.</p>
             </div>
 
@@ -41,7 +41,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
-                            <th>Uf</th>                           
+                            <th>Uf</th>               
+                            <th>Ações</th>            
                         </tr>
                     </thead>
                     <tbody>

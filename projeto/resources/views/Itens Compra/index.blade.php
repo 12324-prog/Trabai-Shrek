@@ -24,6 +24,56 @@
         </nav>
     </header>
 
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h1 class="title">Relatório de Itens de Compra</h1>
+                <p class="highlight">Confira os detalhes dos produtos adquiridos e controlados no estoque do pântano.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="shrek-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Compra (Nota Fiscal - Data)</th>
+                            <th>Ingrediente</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário (R$)</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($itenscompra as $item)
+                        <tr>
+                            <td>{{ $item->cod_item }}</td>
+                            <td>{{ $item->compra->nota_fiscal }} — {{ \Carbon\Carbon::parse($item->compra->dataCOMPRA)->format('d/m/Y') }}</td>
+                            <td>{{ $item->ingrediente->descricaoINGREDIENTE }}</td>
+                            <td>{{ $item->quantidadeITEMCOMPRA }}</td>
+                            <td>{{ number_format($item->valorUnitarioITEMCOMPRA, 2, ',', '.') }}</td>
+                            <td class="acoes">
+                                <a href="{{ route('itenscompra.edit', $item->cod_item) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('itenscompra.destroy', $item->cod_item) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este item?')">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="empty">Nenhum item de compra encontrado.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn-group" style="margin-top: 20px;">
+                <a href="{{ route('itenscompra.create') }}" class="btn btn--shrek slime-drop"> + Novo Item de Compra</a>
+            </div>
+        </section>
+    </main>    
 
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>

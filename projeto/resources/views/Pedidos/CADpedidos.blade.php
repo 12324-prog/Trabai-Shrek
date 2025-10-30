@@ -43,7 +43,7 @@
                             <select id="cod_cliente" name="cod_cliente" required>
                                 <option value="">Selecione o cliente</option>
                                 @foreach($clientes as $cliente)
-                                    <option value="{{ $cliente->cod_cliente }}">{{ $cliente->nome }}</option>
+                                    <option value="{{ $cliente->cod_cliente }}">{{ $cliente->nomeCLIENTE }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -66,7 +66,7 @@
                             <select id="cod_entregador" name="cod_entregador">
                                 <option value="">Selecione o entregador</option>
                                 @foreach($entregadores as $entregador)
-                                    <option value="{{ $entregador->cod_entregador }}">{{ $entregador->nome }}</option>
+                                    <option value="{{ $entregador->cod_entregador }}">{{ $entregador->nomeENTREGADOR }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -85,7 +85,7 @@
                             <select id="cod_mesa" name="cod_mesa">
                                 <option value="">Selecione a mesa</option>
                                 @foreach($mesas as $mesa)
-                                    <option value="{{ $mesa->cod_mesa }}">{{ $mesa->descricao }}</option>
+                                    <option value="{{ $mesa->cod_mesa }}">{{ $mesa->descricaoMESA }}</option>
                                 @endforeach
                             </select>
                         </div>
