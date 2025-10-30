@@ -1,0 +1,178 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+
+class SetBD extends Model
+{
+    public function criarBD()
+    {
+        config(['database.connections.mysql.database' => 'information_schema']);
+        DB::purge('mysql');
+        DB::reconnect('mysql');
+
+        DB::statement("CREATE DATABASE IF NOT EXISTS PodraoShrek CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+
+        config(['database.connections.mysql.database' => 'PodraoShrek']);
+        DB::purge('mysql');
+        DB::reconnect('mysql');
+
+        // Seleciona o banco
+        DB::statement("USE PodraoShrek");
+
+        // Cria as tabelas
+        $tabelas = [
+
+            "CREATE TABLE IF NOT EXISTS cidades (
+                cod_cidade INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                uf CHAR(2) NOT NULL
+            )",
+
+            "CREATE TABLE IF NOT EXISTS clientes (
+                cod_cliente INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                rg VARCHAR(15),
+                cpf VARCHAR(14),
+                data_nasc DATE,
+                endereco VARCHAR(100),
+                numero VARCHAR(10),
+                bairro VARCHAR(50),
+                cod_cidade INT,
+                cep VARCHAR(10),
+                celular VARCHAR(15),
+                email VARCHAR(100),
+                FOREIGN KEY (cod_cidade) REFERENCES cidades(cod_cidade)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS fornecedores (
+                cod_fornecedor INT AUTO_INCREMENT PRIMARY KEY,
+                nome_social VARCHAR(100) NOT NULL,
+                nome_fantasia VARCHAR(100),
+                cnpj VARCHAR(18),
+                endereco VARCHAR(100),
+                numero VARCHAR(10),
+                bairro VARCHAR(50),
+                cod_cidade INT,
+                cep VARCHAR(10),
+                celular VARCHAR(15),
+                email VARCHAR(100),
+                FOREIGN KEY (cod_cidade) REFERENCES cidades(cod_cidade)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS entregadores (
+                cod_entregador INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                celular VARCHAR(15)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS mesas (
+                cod_mesa INT AUTO_INCREMENT PRIMARY KEY,
+                descricao VARCHAR(100)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS garcoes (
+                cod_garcom INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                celular VARCHAR(15)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS categorias (
+                cod_cat INT AUTO_INCREMENT PRIMARY KEY,
+                descricao VARCHAR(100)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS unidades (
+                cod_unidade INT AUTO_INCREMENT PRIMARY KEY,
+                descricao VARCHAR(50),
+                sigla VARCHAR(10)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS ingredientes (
+                cod_ingrediente INT AUTO_INCREMENT PRIMARY KEY,
+                descricao VARCHAR(100),
+                cod_unidade INT,
+                controla_estoque BOOLEAN DEFAULT FALSE,
+                quantidade_estoque DECIMAL(10,2) DEFAULT 0,
+                valor_unitario DECIMAL(10,2),
+                FOREIGN KEY (cod_unidade) REFERENCES unidades(cod_unidade)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS compras (
+                cod_compra INT AUTO_INCREMENT PRIMARY KEY,
+                data DATE,
+                nota_fiscal VARCHAR(20),
+                valor_total DECIMAL(10,2) DEFAULT 0,
+                cod_fornecedor INT,
+                FOREIGN KEY (cod_fornecedor) REFERENCES fornecedores(cod_fornecedor)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS itens_compra (
+                cod_item INT AUTO_INCREMENT PRIMARY KEY,
+                cod_ingrediente INT,
+                cod_compra INT,
+                quantidade DECIMAL(10,2),
+                valor_unitario DECIMAL(10,2),
+                FOREIGN KEY (cod_ingrediente) REFERENCES ingredientes(cod_ingrediente),
+                FOREIGN KEY (cod_compra) REFERENCES compras(cod_compra)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS pratos (
+                cod_prato INT AUTO_INCREMENT PRIMARY KEY,
+                descricao VARCHAR(100),
+                cod_cat INT,
+                valor_unitario DECIMAL(10,2) DEFAULT 0,
+                FOREIGN KEY (cod_cat) REFERENCES categorias(cod_cat)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS composicao (
+                cod_prato INT,
+                cod_ingrediente INT,
+                quantidade DECIMAL(10,2),
+                PRIMARY KEY (cod_prato, cod_ingrediente),
+                FOREIGN KEY (cod_prato) REFERENCES pratos(cod_prato),
+                FOREIGN KEY (cod_ingrediente) REFERENCES ingredientes(cod_ingrediente)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS pedidos (
+                cod_pedido INT AUTO_INCREMENT PRIMARY KEY,
+                datahora DATETIME,
+                cod_cliente INT,
+                tipo_pedido SMALLINT NOT NULL,
+                cod_entregador INT,
+                valor_entrega DECIMAL(10,2),
+                cod_mesa INT,
+                encerrado BOOLEAN DEFAULT FALSE,
+                datahora_encerramento DATETIME,
+                desconto DECIMAL(10,2) DEFAULT 0,
+                pago BOOLEAN DEFAULT FALSE,
+                data_pago DATE,
+                valor_pago DECIMAL(10,2) DEFAULT 0,
+                taxa_servico DECIMAL(10,2) DEFAULT 0,
+                FOREIGN KEY (cod_cliente) REFERENCES clientes(cod_cliente),
+                FOREIGN KEY (cod_entregador) REFERENCES entregadores(cod_entregador),
+                FOREIGN KEY (cod_mesa) REFERENCES mesas(cod_mesa)
+            )",
+
+            "CREATE TABLE IF NOT EXISTS itens_pedido (
+                cod_item INT AUTO_INCREMENT PRIMARY KEY,
+                cod_pedido INT,
+                cod_prato INT,
+                quantidade DECIMAL(10,2),
+                valor_unitario DECIMAL(10,2),
+                cod_garcom INT,
+                data_hora DATETIME,
+                FOREIGN KEY (cod_pedido) REFERENCES pedidos(cod_pedido),
+                FOREIGN KEY (cod_prato) REFERENCES pratos(cod_prato),
+                FOREIGN KEY (cod_garcom) REFERENCES garcoes(cod_garcom)
+            )"
+        ];
+
+        // Executa todas as queries
+        foreach ($tabelas as $sql) {
+            DB::statement($sql);
+        }
+    }
+}
