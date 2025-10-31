@@ -6,11 +6,10 @@
 
     class Composicao extends Model {
 
-         public $cod_prato;                
+         public $cod_prato;   
 
          public  $cod_ingrediente;
-
-         public  $quantidade;        
+          
         
 
         public function listarComposicao(){
@@ -33,7 +32,7 @@
         public function gravar ($cod_prato,$cod_ingrediente){
 
             DB::insert('insert into Composicao (cod_prato, cod_ingrediente)
-             values (?,?,?)', [
+             values (?,?)', [
                 $cod_prato,
                 $cod_ingrediente                
              ]);

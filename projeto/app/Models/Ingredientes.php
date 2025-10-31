@@ -8,11 +8,7 @@
 
          public $cod_Ingrediente;                
 
-         public  $descricao;
-
-         public  $cod_unidade;
-         
-         public $controla_estoque;
+         public  $descricao;         
 
          public  $quantidade_estoque;
 
@@ -29,18 +25,14 @@
 
         public function atualizarIngredientes($id){
          return DB::update('UPDATE ingredientes SET
-          descricao = ?, 
-          cod_unidade = ?, 
-          controla_estoque = ?, 
+          descricao = ?,           
           quantidade_estoque = ?,
           valor_unitario = ? 
           where cod_ingrediente = ?',          
 
         
         [
-            $this->descricao,
-            $this->cod_unidade,
-            $this->controla_estoque ?? 0,
+            $this->descricao,          
             $this->quantidade_estoque ?? 0,
             $this->valor_unitario ?? 0,
             $id
@@ -54,13 +46,11 @@
 
         }
 
-        public function gravar ($descricao, $cod_unidade, $controla_estoque,  $quantidade_estoque, $valor_unitario ){
+        public function gravar ($descricao, $quantidade_estoque, $valor_unitario ){
 
-            DB::insert('INSERT INTO ingredientes (descricao, cod_unidade, controla_estoque, quantidade_estoque, valor_unitario)
+            DB::insert('INSERT INTO ingredientes (descricao, quantidade_estoque, valor_unitario)
              values (?,?,?,?,?)', [
-                $descricao, 
-                $cod_unidade,
-                $controla_estoque ?? 0,  
+                $descricao,                
                 $quantidade_estoque ?? 0, 
                 $valor_unitario  ?? 0
            
