@@ -57,17 +57,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome</th>
-                            <th>RG</th>
-                            <th>CPF</th>
-                            <th>Data de Nascimento</th>
+                            <th>Nome</th>                        
                             <th>Endereço</th>
                             <th>Número</th>
                             <th>Bairro</th>
                             <th>Cidade</th>
-                            <th>CEP</th>
                             <th>Celular</th>
-                            <th>Email</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -75,17 +70,12 @@
                         @forelse($clientes as $cliente)
                         <tr>
                             <td>{{ $cliente->cod_cliente }}</td>
-                            <td>{{ $cliente->nomeCLIENTE }}</td>
-                            <td>{{ $cliente->rg }}</td>
-                            <td>{{ $cliente->cpf }}</td>
-                            <td>{{ \Carbon\Carbon::parse($cliente->dataNASC)->format('d/m/Y') }}</td>
+                            <td>{{ $cliente->nomeCLIENTE }}</td>                          
                             <td>{{ $cliente->enderecoCLIENTE }}</td>
                             <td>{{ $cliente->numeroCLIENTE }}</td>
                             <td>{{ $cliente->bairro }}</td>
-                            <td>{{ $cliente->cidade->nomeCIDADE ?? 'N/A' }}</td>
-                            <td>{{ $cliente->cepCLIENTE }}</td>
+                            <td>{{ $cliente->cidadeCLIENTE}}</td>
                             <td>{{ $cliente->celularCLIENTE }}</td>
-                            <td>{{ $cliente->EmailCLIENTE }}</td>
                             <td class="acoes">
                                 <a href="{{ route('clientes.edit', $cliente->cod_cliente) }}" class="btn btn--ghost">Editar</a>
                                 <form action="{{ route('clientes.destroy', $cliente->cod_cliente) }}" method="POST" style="display:inline;">

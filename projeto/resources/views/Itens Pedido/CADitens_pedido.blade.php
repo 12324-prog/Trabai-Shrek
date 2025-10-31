@@ -99,21 +99,9 @@
                     </div>
 
                     <div class="question">
-                        <div class="q-bubble">Garçom</div>
-                        <div class="answer">
-                            <select id="cod_garcom" name="cod_garcom" required>
-                                <option value="">Selecione um garçom</option>
-                                @foreach($garcons as $garcom)
-                                    <option value="{{ $garcom->cod_garcom }}">{{ $garcom->nome }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="question">
                         <div class="q-bubble">Data e Hora</div>
                         <div class="answer">
-                            <input type="datetime-local" id="data_hora" name="data_hora" required>
+                            <input type="datetime-local" id="data_horaITEMPEDIDO" name="data_horaITEMPEDIDO" required>
                         </div>
                     </div>
                     

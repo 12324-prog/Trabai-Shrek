@@ -69,7 +69,6 @@
                         <tr>
                             <td>{{ $compra->cod_compra }}</td>
                             <td>{{ \Carbon\Carbon::parse($compra->dataCOMPRA)->format('d/m/Y') }}</td>
-                            <td>{{ $compra->nota_fiscal }}</td>
                             <td>{{ number_format($compra->valorTotalCOMPRA ?? $compra->valor_total, 2, ',', '.') }}</td>
                             <td>{{ $compra->fornecedor->nomeF ?? 'N/A' }}</td>
                             <td class="acoes">

@@ -56,8 +56,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Descrição</th>
-                            <th>Categoria</th>
+                            <th>Descrição</th>                       
                             <th>Valor Unitário (R$)</th>
                             <th>Ações</th>
                         </tr>
@@ -67,7 +66,6 @@
                         <tr>
                             <td>{{ $prato->cod_prato }}</td>
                             <td>{{ $prato->descricaoPRATO }}</td>
-                            <td>{{ $prato->descricaoCATEGORIA }}</td>
                             <td>{{ number_format($prato->valorUnitarioPRATO, 2, ',', '.') }}</td>
                             <td class="acoes">
                                 <a href="{{ route('pratos.edit', $prato->cod_prato) }}" class="btn btn--ghost">Editar</a>

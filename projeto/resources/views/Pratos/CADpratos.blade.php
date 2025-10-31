@@ -66,20 +66,6 @@
                         <div class="answer"><input type="number" step="0.01" id="valorUnitarioPRATO" name="valorUnitarioPRATO" required>
                     </div>   
 
-                    <div class="question">
-                        <div class="q-bubble">Categoria</div>
-                        <div class="answer">
-                            <select id="categoria_id" name="categoria_id" required>
-                                <option value="">Selecione uma categoria</option>
-                                @foreach($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">
-                                        {{ $categoria->descricaoCATEGORIA }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                 
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
                 </form>
             </div>

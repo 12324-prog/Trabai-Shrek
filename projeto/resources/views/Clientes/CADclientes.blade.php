@@ -60,21 +60,6 @@
                     </div>     
 
                     <div class="question">
-                        <div class="q-bubble">RG</div>
-                        <div class="answer"><input type="text" id="rg" name="rg" required></div>
-                    </div>    
-
-                    <div class="question">
-                        <div class="q-bubble">CPF</div>
-                        <div class="answer"><input type="text" id="cpf" name="cpf" required></div>
-                    </div>  
-
-                    <div class="question">
-                        <div class="q-bubble">Data de Nascimento</div>
-                        <div class="answer"><input type="date" id="dataNASC" name="dataNASC" required></div>
-                    </div>
-
-                    <div class="question">
                         <div class="q-bubble">Endereço</div>
                         <div class="answer"><input type="text" id="enderecoCLIENTE" name="endereco" required></div>
                     </div> 
@@ -91,29 +76,12 @@
 
                     <div class="question">
                         <div class="q-bubble">Cidade</div>
-                        <div class="answer">
-                            <select id="cidade_id" name="cidade_id" required>
-                                <option value="">Selecione uma cidade</option>
-                                @foreach($cidades as $cidade)
-                                    <option value="{{ $cidade->nomeCIDADE }}">{{ $cidade->uf }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <div class="answer"><input type="text" id="cidadeCLIENTE" name="cidadeCLIENTE" required></div>
                     </div>
-
-                    <div class="question">
-                        <div class="q-bubble">CEP</div>
-                        <div class="answer"><input type="text" id="cepCLIENTE" name="cepCLIENTE" required></div>
-                    </div> 
 
                     <div class="question">
                         <div class="q-bubble">Celular</div>
                         <div class="answer"><input type="tel" id="celularCLIENTE" name="celularCLIENTE" required></div>
-                    </div> 
-
-                    <div class="question">
-                        <div class="q-bubble">Email</div>
-                        <div class="answer"><input type="email" id="EmailCLIENTE" name="EmailCLIENTE" required></div>
                     </div> 
                     
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>

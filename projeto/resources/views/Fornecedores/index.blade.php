@@ -57,12 +57,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome Social</th>
-                            <th>Nome Fantasia</th>
-                            <th>CNPJ</th>
-                            <th>Cidade</th>
+                            <th>Nome Social</th>                        
                             <th>Celular</th>
-                            <th>Email</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -70,12 +66,8 @@
                         @forelse($fornecedores as $fornecedor)
                             <tr>
                                 <td>{{ $fornecedor->id }}</td>
-                                <td>{{ $fornecedor->nomeS }}</td>
-                                <td>{{ $fornecedor->nomeF }}</td>
-                                <td>{{ $fornecedor->CNPJ }}</td>
-                                <td>{{ $fornecedor->cidade }}</td>
+                                <td>{{ $fornecedor->nomeS }}</td>                              
                                 <td>{{ $fornecedor->Celular }}</td>
-                                <td>{{ $fornecedor->EmailFORNECEDOR }}</td>
                                 <td class="acoes">
                                     <a href="{{ route('fornecedores.edit', $fornecedor->id) }}" class="btn btn--ghost">Editar</a>
                                     <form action="{{ route('fornecedores.destroy', $fornecedor->id) }}" method="POST" style="display:inline;">

@@ -80,49 +80,11 @@
                             </select>
                         </div>
                     </div>
-
+                    
                     <div class="question">
-                        <div class="q-bubble">Entregador</div>
+                        <div class="q-bubble">Data e Hora</div>
                         <div class="answer">
-                            <select id="cod_entregador" name="cod_entregador">
-                                <option value="">Selecione o entregador</option>
-                                @foreach($entregadores as $entregador)
-                                    <option value="{{ $entregador->cod_entregador }}">{{ $entregador->nomeENTREGADOR }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Valor da Entrega</div>
-                        <div class="answer">
-                            <input type="number" step="0.01" name="valor_entrega" id="valor_entrega">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Mesa</div>
-                        <div class="answer">
-                            <select id="cod_mesa" name="cod_mesa">
-                                <option value="">Selecione a mesa</option>
-                                @foreach($mesas as $mesa)
-                                    <option value="{{ $mesa->cod_mesa }}">{{ $mesa->descricaoMESA }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Desconto (R$)</div>
-                        <div class="answer">
-                            <input type="number" step="0.01" name="desconto" id="desconto">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Taxa de Serviço (R$)</div>
-                        <div class="answer">
-                            <input type="number" step="0.01" name="taxa_servico" id="taxa_servico">
+                            <input type="datetime-local" id="data_horaPEDIDO" name="data_horaPEDIDO" required>
                         </div>
                     </div>
 

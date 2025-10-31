@@ -61,11 +61,6 @@
                     </div>              
 
                     <div class="question">
-                        <div class="q-bubble">Nota Fiscal</div>
-                        <div class="answer"><input type="text" id="notafiscal" name="notafiscal" required></div>
-                    </div>
-
-                    <div class="question">
                         <div class="q-bubble">Valor Total</div>
                         <div class="answer"><input type="number" step="0.01" id="valorTotalCOMPRA" name="valorTotalCOMPRA" required></div>
                     </div>

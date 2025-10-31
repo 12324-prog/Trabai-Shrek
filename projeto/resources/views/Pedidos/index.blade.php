@@ -81,13 +81,8 @@
                                 @else Atendimento Presencial
                                 @endif
                             </td>
-                            <td>{{ $pedido->nomeENTREGADOR }}</td>
-                            <td>{{ number_format($pedido->valor_entrega, 2, ',', '.') }}</td>
-                            <td>{{ $pedido->descricaoMESA }}</td>
-                            <td>{{ number_format($pedido->desconto, 2, ',', '.') }}</td>
-                            <td>{{ number_format($pedido->taxa_servico, 2, ',', '.') }}</td>
                             <td>{{ number_format($pedido->valor_total, 2, ',', '.') }}</td>
-                            <td>{{ $pedido->pago ? 'Sim' : 'Não' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->data_horaPEDIDO)->format('d/m/Y H:i') }}</td>
                             <td>{{ $pedido->encerrado ? 'Sim' : 'Não' }}</td>
                             <td class="acoes">
                                 <a href="{{ route('pedidos.edit', $pedido->cod_pedido) }}" class="btn btn--ghost">Editar</a>

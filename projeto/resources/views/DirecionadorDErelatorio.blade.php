@@ -57,10 +57,10 @@
                 <a href="{{ route('compras.index') }}" class="btn btn--shrek slime-drop">Relatório Compras</a>
                 <a href="{{ route('itenscompra.index') }}" class="btn btn--shrek slime-drop">Relatório Itens Compra</a>
                 <a href="{{ route('itens_pedido.index') }}" class="btn btn--shrek slime-drop">Relatório Itens Pedido</a>
-                <a href="{{ route('mesas.index') }}" class="btn btn--shrek slime-drop">Relatório Mesas</a>
                 <a href="{{ route('pedidos.index') }}" class="btn btn--shrek slime-drop">Relatório Pedidos</a>
+                <a href="{{ route('clientes.index') }}" class="btn btn--shrek slime-drop">Relatório Clientes</a>
+                <a href="{{ route('cidades.index') }}" class="btn btn--shrek slime-drop">Relatório Cidades</a>
                 <a href="{{ route('pratos.index') }}" class="btn btn--shrek slime-drop">Relatório Pratos</a>
-                <a href="{{ route('unidades.index') }}" class="btn btn--shrek slime-drop">Relatório Unidades</a>
             </div>
         </section>
     </main>

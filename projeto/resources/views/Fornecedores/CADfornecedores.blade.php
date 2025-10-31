@@ -23,7 +23,7 @@
                 <button class="dropbtn">Cadastros</button>
                 <div class="dropdown-content">
                 <a href="#">Cidades</a>
-                    <a href="#">Fornecedores</a>
+                    <a href="cadastra_fornecedor">Fornecedores</a>
                     <a href="#">Categorias</a>
                     <a href="#">Unidades</a>
                     <a href="#">Ingredientes</a>
@@ -58,41 +58,10 @@
                         <div class="q-bubble">Nome Social</div>
                         <div class="answer"><input type="text" id="nomeS" name="nomeS" required></div>
                     </div>
-                    <div class="question">
-                        <div class="q-bubble">Nome Fantasia</div>
-                        <div class="answer"><input type="text" id="nomeF" name="nomeF" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">CNPJ</div>
-                        <div class="answer"><input type="text" id="CNPJ" name="CNPJ" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">Endereço</div>
-                        <div class="answer"><input type="text" id="endereco" name="endereco" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">Número</div>
-                        <div class="answer"><input type="text" id="numero" name="numero" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">Bairro</div>
-                        <div class="answer"><input type="text" id="bairro" name="bairro" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">Cidade</div>
-                        <div class="answer"><input type="select" id="cidade" name="cidade" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">CEP</div>
-                        <div class="answer"><input type="text" id="CEP" name="CEP" required></div>
-                    </div>
+                   
                     <div class="question">
                         <div class="q-bubble">Celular</div>
                         <div class="answer"><input type="tel" id="Celular" name="Celular" required></div>
-                    </div>
-                    <div class="question">
-                        <div class="q-bubble">Email</div>
-                        <div class="answer"><input type="email" id="EmailFORNECEDOR" name="EmailFORNECEDOR" required></div>
                     </div>
 
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>

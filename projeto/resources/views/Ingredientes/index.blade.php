@@ -58,8 +58,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Descrição</th>
-                            <th>Unidade</th>
-                            <th>Controla Estoque</th>
                             <th>Quantidade em Estoque</th>
                             <th>Valor Unitário (R$)</th>
                             <th>Ações</th>
@@ -69,9 +67,7 @@
                         @forelse($ingredientes as $ingrediente)
                         <tr>
                             <td>{{ $ingrediente->cod_ingrediente }}</td>
-                            <td>{{ $ingrediente->descricao }}</td>
-                            <td>{{ $ingrediente->unidade->descricao ?? 'N/A' }} ({{ $ingrediente->unidade->sigla ?? '' }})</td>
-                            <td>{{ $ingrediente->controla_estoque ? 'Sim' : 'Não' }}</td>
+                            <td>{{ $ingrediente->descricao }}</td>                        
                             <td>{{ $ingrediente->quantidade_estoque }}</td>
                             <td>R$ {{ number_format($ingrediente->valor_unitario, 2, ',', '.') }}</td>
                             <td class="acoes">

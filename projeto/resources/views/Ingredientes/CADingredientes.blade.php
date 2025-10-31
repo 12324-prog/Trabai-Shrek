@@ -67,30 +67,6 @@
                     </div>           
 
                     <div class="question">
-                        <div class="q-bubble">Tipo de Unidade</div>
-                        <div class="answer">
-                            <select id="cod_unidade" name="cod_unidade" required>
-                                <option value="">Selecione uma unidade</option>
-                                @foreach($unidades as $unidade)
-                                    <option value="{{ $unidade->cod_unidade }}">
-                                        {{ $unidade->descricao }} ({{ $unidade->sigla }})
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>    
-
-                    <div class="question">
-                        <div class="q-bubble">Controla Estoque?</div>
-                        <div class="answer">
-                            <label>
-                                <input type="checkbox" id="controla_estoque" name="controla_estoque" value="1">
-                                Sim
-                            </label>
-                        </div>
-                    </div> 
-
-                    <div class="question">
                         <div class="q-bubble">Quantidade em Estoque</div>
                         <div class="answer">
                             <input type="number" step="0.01" id="quantidade_estoque" name="quantidade_estoque" value="0" required>
