@@ -21,7 +21,7 @@
 
         public function listarIngredientes(){
 
-            $listaIngredientesDoBanco = DB::select('select * from ingrediente order by cod_ingrediente DESC');
+            $listaIngredientesDoBanco = DB::select('select * from ingredientes order by cod_ingrediente DESC');
 
             return $listaIngredientesDoBanco;
 
@@ -30,7 +30,7 @@
         public function atualizarIngredientes($id){
          return DB::update('UPDATE ingredientes SET
           descricao = ?, 
-          cod_unitade = ?, 
+          cod_unidade = ?, 
           controla_estoque = ?, 
           quantidade_estoque = ?,
           valor_unitario = ? 
@@ -56,7 +56,7 @@
 
         public function gravar ($descricao, $cod_unidade, $controla_estoque,  $quantidade_estoque, $valor_unitario ){
 
-            DB::insert('INSERT INTO Ingredientes (descricao, cod_unidade, controla_estoque, quantidade_estoque, valor_unitario)
+            DB::insert('INSERT INTO ingredientes (descricao, cod_unidade, controla_estoque, quantidade_estoque, valor_unitario)
              values (?,?,?,?,?)', [
                 $descricao, 
                 $cod_unidade,
@@ -68,11 +68,22 @@
            
         }
 
-        public function apagar ($codIngrediente)
-        {
-            DB::delete('delete from ingrediente where cod_ingrediente = ?', [$codIngrediente]);
-        }
+            public function apagar ($cod_ingrediente){
+            DB::delete('DELETE FROM ingredientes WHERE cod_ingrediente = ?', [$cod_ingrediente]);
+           }
 
+        public function trigger_apagar(){
+            DB::unprepared ('DROP TRIGGER IF EXISTS ingrediente_delete');
+            DB::unprepared( '
+            CREATE TRIGGER ingrediente_delete
+            BEFORE DELETE ON ingredientes
+            FOR EACH ROW 
+            BEGIN
+                DELETE FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente;
+                DELETE FROM itens_compra WHERE cod_ingrediente = OLD.cod_ingrediente;
+                END
+                ');
+        }
     }
 
 ?>

@@ -13,7 +13,7 @@
 
         public function listarComposicao(){
 
-            $listaCategoriasDoBanco = DB::select('select * from categorias order by cod_cat DESC');
+            $listaCategoriasDoBanco = DB::select('SELECT * FROM categorias ORDER BY cod_cat DESC');
 
             return $listaCategoriasoDoBanco;
 
@@ -21,16 +21,21 @@
 
         public function atualizarCategorias($id){
             
-          return DB::update('update categorias set 
+          return DB::update('UPDATE categorias SET
           cod_cat = ?, 
           descricao = ?  
-          where cod_cat = ? ');
-
+          where cod_cat = ? ',
+          [
+            $this->cod_cat,
+            $this->descricao,
+            $id
+          ]
+            );
         } 
 
         public function buscarCategorias($cod_Categoria){
 
-            $ComposicaoDoBanco = DB::select('select * from Categoria where cod_cat = ? ', [$cod_categoria]);
+            $CategoriasDoBanco = DB::select('SELECT * FROM categorias WHERE cod_cat = ? ', [$cod_cat]);
 
             return $CategoriasDoBanco;
 
@@ -38,7 +43,7 @@
 
         public function gravar ($cod_cato, $descricao ){
 
-            DB::insert('INSERT INTO Categorias (cod_cat, descricao)
+            DB::insert('INSERT INTO categorias (cod_cat, descricao)
              values (?,?)', [
 
                $cod_cat,
@@ -48,10 +53,26 @@
             
         }
 
-        public function apagar ($categorias)
+        public function apagar ($cod_cat)
         {
-            DB::delete('DELETE FROM categorias where cod_cat = ? ', [$cod_cat]);
+            DB::delete('DELETE FROM categorias WHERE cod_cat = ? ', [$cod_cat]);
         }
+
+        public function trigger_apagar()
+        {
+            DB::unprepared('DROP TRIGGER IF EXISTS categoria_delete');
+
+            DB::unprepared('
+            CREATE TRIGGER categoria_delete
+            BEFORE DELETE ON categorias
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM categorias
+                WHERE cod_cat = OLD.cod_cat;
+            END'
+        );
+        }
+
 
     }
 

@@ -56,6 +56,21 @@
             DB::delete('delete from unidades where cod_unidade = ?', [$cod_unidade]);
         }
 
+        public function trigger_apagar()
+        {
+            DB::unprepared('DROP TRIGGER IF EXISTS unidade_delete');
+
+            DB::unprepared('
+            CREATE TRIGGER unidade_delete
+            BEFORE DELETE ON unidades
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM cunidades
+                WHERE cod_unidade = OLD.cod_unidade;
+            END'
+        );
+        }
+
     }
 
 ?>

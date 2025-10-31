@@ -15,7 +15,7 @@
 
         public function listarComposicao(){
 
-            $listaComposicaoDoBanco = DB::select('select * from ingredientes order by cod_ingrediente DESC');
+            $listaComposicaoDoBanco = DB::select('SELECT * FROM composicao ORDER BY cod_ingrediente DESC');
 
             return $listaComposicaoDoBanco;
 
@@ -25,36 +25,21 @@
             
           return DB::update('update composicao set 
           cod_prato = ?, 
-          cod_ingrediente = ?, 
-          quantidade = ?
-           where cod_ingrediente = ? ');
+          cod_ingrediente = ?         
+          where cod_ingrediente = ? ');
 
         } 
+        
+        public function gravar ($cod_prato,$cod_ingrediente){
 
-        public function buscarComposicao($cod_composicao){
-
-            $ComposicaoDoBanco = DB::select('select * from composicao where cod_ingrediente = '.$cod_ingrediente);
-
-            return $ComposicaoDoBanco;
-
-        }
-
-        public function gravar ($cod_prato,$cod_ingrediente,$quantidade){
-
-            DB::insert('insert into Composicao (cod_prato, cod_ingrediente, quantidade)
+            DB::insert('insert into Composicao (cod_prato, cod_ingrediente)
              values (?,?,?)', [
                 $cod_prato,
-                $cod_ingrediente,
-                $quantidade ?? 0
+                $cod_ingrediente                
              ]);
             
         }
-
-        public function apagar ($codComposicao)
-        {
-            DB::delete('delete from composicao where cod_composicao = '.$cod_prato);
-        }
-
+       
     }
 
 ?>
