@@ -6,7 +6,6 @@
     class Compras extends Model{
         public $cod_compra;
         public $data;
-        public $nota_fiscal;
         public $valor_total;
         public $cod_fornecedor;
 
@@ -15,19 +14,17 @@
             return $listarComprasDoBanco;
         }
         public function inserirCompra($dados){
-            DB::insert('INSERT INTO compras(data, nota_fiscal, valor_total, cod_fornecedor) VALUES (?, ?, ?, ?)', [
+            DB::insert('INSERT INTO compras(data, valor_total, cod_fornecedor) VALUES (?, ?, ?, ?)', [
                 $dados['data'],
-                $dados['nota_fiscal'],
                 $dados['valor_total'],
                 $dados['cod_fornecedor']
             ]);
         }
         public function atualizarCompra($cod_compra, $dados){
             DB::update('UPDATE compras
-            SET data = ?, nota_fiscal = ?, valor_total = ?, cod_fornecedor = ?
+            SET data = ?, valor_total = ?, cod_fornecedor = ?
             WHERE cod_compra = ?', [
                 $dados['data'],
-                $dados['nota_fiscal'],
                 $dados['valor_total'],
                 $dados['cod_fornecedor'],
                 $cod_compra
@@ -42,9 +39,10 @@
             DB::delete('DELETE FROM compras WHERE cod_compra = ?', [$cod_compra]);
         }
 
+
         //triggers
-        // valor_total atualizado com base nos itens_compra
-        public function trigger_gravarCom(){
+        //
+        public function trigger_gravarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS insert_compras');
 
             DB::unprepared('
@@ -57,10 +55,9 @@
                     WHERE cod_compra = NEW.cod_compra;
                 END
             ');
-        }
+        } 
 
-        //recalcula o valor_total se os itens forem alterados
-        public function trigger_atualizarCom(){
+        public function trigger_atualizarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS update_compras');
 
             DB::unprepared('
@@ -68,22 +65,18 @@
                 AFTER UPDATE ON compras
                 FOR EACH ROW
                 BEGIN
-                    DECLARE novo_total DECIMAL(10,2);
-
-                    SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
-                    INTO novo_total
-                    FROM itens_compra
-                    WHERE cod_compra = NEW.cod_compra;
-
                     UPDATE compras
-                    SET valor_total = novo_total
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = NEW.cod_compra
+                    )
                     WHERE cod_compra = NEW.cod_compra;
                 END
-        ');
+            ');
         }
 
-        //Impede a exclusão caso tenha itens_compra viculado com compra
-        public function trigger_apagarCom(){
+        public function trigger_apagarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS delete_compras');
 
             DB::unprepared('
@@ -91,15 +84,9 @@
                 BEFORE DELETE ON compras
                 FOR EACH ROW
                 BEGIN
-                    DECLARE itens INT;
-
-                    SELECT COUNT(*) INTO itens
-                    FROM itens_compra
-                    WHERE cod_compra = OLD.cod_compra;
-
-                    IF itens > 0 THEN
+                    IF (SELECT COUNT(*) FROM itens_compra WHERE cod_compra = OLD.cod_compra) > 0 THEN
                         SIGNAL SQLSTATE "45000"
-                        SET MESSAGE_TEXT = "Não é possível excluir: existem itens associados a esta compra.";
+                        SET MESSAGE_TEXT = "Não é possível excluir a compra: existem itens vinculados, logo compra não pode ser deletada.";
                     END IF;
                 END
             ');

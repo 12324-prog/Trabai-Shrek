@@ -6,15 +6,7 @@
     class Fornecedores extends Model{
         public $cod_fornecedor;
         public $nome_social;
-        public $nome_fantasia;
-        public $cnpj;
-        public $endereco;
-        public $numero;
-        public $bairro;
-        public $cod_cidade;
-        public $cep;
         public $celular;
-        public $email;
 
         public function listarFornecedores(){
             $fornecedores = DB::select('SELECT * FROM fornecedores ORDER BY cod_fornecedores DESC');
@@ -22,34 +14,18 @@
             return $fornecedores;
         }
         public function inserirFornecedores($dados){
-            DB::insert('INSERT INTO fornecedores(nome_social, nome_fantasia, cnpj, endereco, numero, bairro, cod_cidade, cep, celular, email)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            DB::insert('INSERT INTO fornecedores(nome_social, celular)
+            VALUES (?, ?)', [
                 $dados['nome_social'],
-                $dados['nome_fantasia'],
-                $dados['cnpj'],
-                $dados['endereco'],
-                $dados['numero'],
-                $dados['bairro'],
-                $dados['cod_cidade'],
-                $dados['cep'],
                 $dados['celular'],
-                $dados['email']
             ]);
         }
         public function atualizarFornecedores($dados, $cod_fornecedor){
             DB::update('UPDATE fornecedores
-            SET nome_social = ?, nome_fantasia = ?, cnpj = ?, endereco = ?, numero = ?, bairro = ?, cod_cidade = ?, cep = ?, celular = ?, email = ? WHERE cod_fornecedor = ?',
+            SET nome_social = ?, celular = ? WHERE cod_fornecedor = ?',
             [
                 $dados['nome_social'],
-                $dados['nome_fantasia'],
-                $dados['cnpj'],
-                $dados['endereco'],
-                $dados['numero'],
-                $dados['bairro'],
-                $dados['cod_cidade'],
-                $dados['cep'],
                 $dados['celular'],
-                $dados['email'],
                 $cod_fornecedor
             ]);
         }
@@ -62,6 +38,9 @@
             DB::delete('DELETE FROM fornecedores WHERE cod_fornecedor = ?', [$cod_fornecedor]);
         }
 
+
+        
+        /*
         //triggers
         //cnpj não nulo
         public function trigger_gravarForn(){
@@ -117,5 +96,6 @@
                 END
             ');
         }
+        */
     }
 ?>

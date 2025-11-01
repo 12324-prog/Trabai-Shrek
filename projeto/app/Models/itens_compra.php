@@ -43,6 +43,8 @@
             DB::delete('DELETE FROM itens_compra WHERE cod_item = ?', [$cod_item]);
         }
 
+
+        /*
         //triggers
         //soma valor ao total da compra
         public function trigger_gravarIten_com(){
@@ -95,5 +97,6 @@
                 END
             ');
         }
+        */
     }   
 ?>

@@ -39,6 +39,7 @@
             DB::delete('DELETE FROM cidades WHERE cod_cidade = ?', [$cod_cidade]);
         }
 
+        /*
         //triggers
         //não vai recalcular nada, apenas criar a cidade normalmente sem erros
         public function trigger_gravarCi(){
@@ -105,5 +106,6 @@
                 END
             ');
         }
+        */
     }
 ?>
