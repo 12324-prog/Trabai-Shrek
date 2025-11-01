@@ -6,7 +6,7 @@
 
     class Ingredientes extends Model {
 
-         public $cod_Ingrediente;                
+         public $cod_ingrediente;                
 
          public  $descricao;         
 
@@ -17,7 +17,7 @@
 
         public function listarIngredientes(){
 
-            $listaIngredientesDoBanco = DB::select('select * from ingredientes order by cod_ingrediente DESC');
+            $listaIngredientesDoBanco = DB::select('SELECT * FROM ingredientes ORDER BY cod_ingrediente DESC');
 
             return $listaIngredientesDoBanco;
 
@@ -40,7 +40,7 @@
 } 
         public function buscarIngredientes($cod_ingrediente){
 
-            $IngredientesDoBanco = DB::select('select * from ingredientes where cod_ingrediente = ?', [$cod_ingrediente]);
+            $IngredientesDoBanco = DB::select('SELECT * FROM ingredientes WHERE cod_ingrediente = ?', [$cod_ingrediente]);
 
             return $IngredientesDoBanco;
 
@@ -49,7 +49,7 @@
         public function gravar ($descricao, $quantidade_estoque, $valor_unitario ){
 
             DB::insert('INSERT INTO ingredientes (descricao, quantidade_estoque, valor_unitario)
-             values (?,?,?,?,?)', [
+             values (?,?,?)', [
                 $descricao,                
                 $quantidade_estoque ?? 0, 
                 $valor_unitario  ?? 0
@@ -60,7 +60,31 @@
 
             public function apagar ($cod_ingrediente){
             DB::delete('DELETE FROM ingredientes WHERE cod_ingrediente = ?', [$cod_ingrediente]);
-           }
+            DB::delete('DELETE FROM composicao WHERE cod_ingrediente = ?', [$cod_ingrediente]);
+        }
+
+        public function trigger_gravar()
+{
+    DB::unprepared('DROP TRIGGER IF EXISTS insert_ingredientes');
+
+    DB::unprepared('
+        CREATE TRIGGER insert_ingredientes
+        AFTER INSERT ON ingredientes
+        FOR EACH ROW
+        BEGIN
+            
+            UPDATE pratos 
+            SET valor_unitario = (
+                SELECT IFNULL(SUM(c.quantidade * i.valor_unitario), 0)
+                FROM composicao c
+                JOIN ingredientes i ON c.cod_ingrediente = i.cod_ingrediente
+                WHERE c.cod_prato = NEW.cod_prato
+            )
+            WHERE cod_prato = NEW.cod_prato;
+        END
+    '); 
+}
+        
 
         public function trigger_apagar(){
             DB::unprepared ('DROP TRIGGER IF EXISTS ingrediente_delete');
@@ -71,9 +95,19 @@
             BEGIN
                 DELETE FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente;
                 DELETE FROM itens_compra WHERE cod_ingrediente = OLD.cod_ingrediente;
-                END
+                
+                UPDATE pratos
+                SET valor_unitario = ( 
+                SELECT INFNULL(SUM(c.quantidade * i.valor_unitario), 0)
+                FROM composicao c
+                JOIN ingredientes i ON c.cod_ingrediente = i.cod_ingrediente
+                WHERE c.cod_prato = (SELECT cod_prato FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente LIMIT 1)
+                WHERE cod_prato = (SELECT cod_prato FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente LIMIT 1);
+                END        
                 ');
         }
+
+
     }
 
 ?>
