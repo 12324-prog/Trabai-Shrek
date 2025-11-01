@@ -43,60 +43,75 @@
             DB::delete('DELETE FROM itens_compra WHERE cod_item = ?', [$cod_item]);
         }
 
-
-        /*
         //triggers
-        //soma valor ao total da compra
-        public function trigger_gravarIten_com(){
-            DB::unprepared('DROP TRIGGER IF EXISTS insert_itens_compra');
+        //------------------------------------------------------------------------------
+        public function trigger_gravarItensCom(){
+            DB::unprepared('DROP TRIGGER IF EXISTS insert_itens_com');
 
             DB::unprepared('
-                CREATE TRIGGER insert_itens_compra
+                CREATE TRIGGER insert_itens_com
                 AFTER INSERT ON itens_compra
                 FOR EACH ROW
                 BEGIN
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque + NEW.quantidade
+                    WHERE cod_ingrediente = NEW.cod_ingrediente;
+
                     UPDATE compras
-                    SET valor_total = IFNULL(valor_total, 0) + (NEW.quantidade * NEW.valor_unitario)
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = NEW.cod_compra
+                    )
                     WHERE cod_compra = NEW.cod_compra;
                 END
             ');
         }
-
-        //calcula total da compra novamente
-        public function trigger_atualizarIten_com(){
-            DB::unprepared('DROP TRIGGER IF EXISTS update_itens_compra');
+        //------------------------------------------------------------------------------
+        public function trigger_atualizarItensCom() {
+            DB::unprepared('DROP TRIGGER IF EXISTS update_itens_com');
 
             DB::unprepared('
-                CREATE TRIGGER update_itens_compra
+                CREATE TRIGGER update_itens_com
                 AFTER UPDATE ON itens_compra
                 FOR EACH ROW
                 BEGIN
-                    UPDATE compras
-                    SET valor_total = IFNULL(valor_total, 0) - (OLD.quantidade * OLD.valor_unitario)
-                    WHERE cod_compra = OLD.cod_compra;
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque + (NEW.quantidade - OLD.quantidade)
+                    WHERE cod_ingrediente = NEW.cod_ingrediente;
 
                     UPDATE compras
-                    SET valor_total = IFNULL(valor_total, 0) + (NEW.quantidade * NEW.valor_unitario)
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = NEW.cod_compra
+                    )
                     WHERE cod_compra = NEW.cod_compra;
                 END
             ');
         }
-
-        //subtrai valor do total da compra
-        public function trigger_apagarIten_com(){
-            DB::unprepared('DROP TRIGGER IF EXISTS delete_itens_compra');
+        //------------------------------------------------------------------------------
+        public function trigger_apagarItensCom() {
+            DB::unprepared('DROP TRIGGER IF EXISTS delete_itens_com');
 
             DB::unprepared('
-                CREATE TRIGGER delete_itens_compra
+                CREATE TRIGGER delete_itens_com
                 AFTER DELETE ON itens_compra
                 FOR EACH ROW
                 BEGIN
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque - OLD.quantidade
+                    WHERE cod_ingrediente = OLD.cod_ingrediente;
+
                     UPDATE compras
-                    SET valor_total = IFNULL(valor_total, 0) - (OLD.quantidade * OLD.valor_unitario)
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = OLD.cod_compra
+                    )
                     WHERE cod_compra = OLD.cod_compra;
                 END
             ');
         }
-        */
     }   
 ?>

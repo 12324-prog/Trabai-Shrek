@@ -41,7 +41,7 @@
 
 
         //triggers
-        //
+        //-----------------------------------------------------------------
         public function trigger_gravarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS insert_compras');
 
@@ -56,7 +56,7 @@
                 END
             ');
         } 
-
+        //-----------------------------------------------------------------
         public function trigger_atualizarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS update_compras');
 
@@ -75,7 +75,7 @@
                 END
             ');
         }
-
+        //---------------------------------------------------------------------------
         public function trigger_apagarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS delete_compras');
 
