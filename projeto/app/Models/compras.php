@@ -13,20 +13,19 @@
             $listarComprasDoBanco = DB::select('SELECT * FROM compras ORDER BY cod_compra DESC');
             return $listarComprasDoBanco;
         }
-        public function inserirCompra($dados){
-            DB::insert('INSERT INTO compras(data, valor_total, cod_fornecedor) VALUES (?, ?, ?, ?)', [
-                $dados['data'],
-                $dados['valor_total'],
-                $dados['cod_fornecedor']
+        public function inserirCompra(){
+            DB::insert('INSERT INTO compras (data, cod_fornecedor) VALUES (?, ?)', [
+                $this->data,
+                $this->cod_fornecedor
             ]);
         }
-        public function atualizarCompra($cod_compra, $dados){
+        public function atualizarCompra($cod_compra){
             DB::update('UPDATE compras
-            SET data = ?, valor_total = ?, cod_fornecedor = ?
-            WHERE cod_compra = ?', [
-                $dados['data'],
-                $dados['valor_total'],
-                $dados['cod_fornecedor'],
+                SET data = ?, valor_total = ?, cod_fornecedor = ?
+                WHERE cod_compra = ?', [
+                $this->data,
+                $this->valor_total,
+                $this->cod_fornecedor,
                 $cod_compra
             ]);
         }
@@ -47,15 +46,13 @@
 
             DB::unprepared('
                 CREATE TRIGGER insert_compras
-                AFTER INSERT ON compras
+                BEFORE INSERT ON compras
                 FOR EACH ROW
                 BEGIN
-                    UPDATE compras
-                    SET valor_total = 0
-                    WHERE cod_compra = NEW.cod_compra;
+                    SET NEW.valor_total = 0;
                 END
             ');
-        } 
+        }
         //-----------------------------------------------------------------
         public function trigger_atualizarCom() {
             DB::unprepared('DROP TRIGGER IF EXISTS update_compras');

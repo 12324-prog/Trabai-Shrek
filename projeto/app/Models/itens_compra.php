@@ -13,14 +13,14 @@
         public function listarItensCompra(){
             return DB::select('SELECT * FROM itens_compra ORDER BY cod_item DESC');
         }
-        public function inserirItemCompra($dados){
+        public function inserirItemCompra(){
             DB::insert('INSERT INTO itens_compra
             (cod_ingrediente, cod_compra, quantidade, valor_unitario)
             VALUES (?, ?, ?, ?)', [
-                $dados['cod_ingrediente'],
-                $dados['cod_compra'],
-                $dados['quantidade'],
-                $dados['valor_unitario']
+                $this->cod_ingrediente,
+                $this->cod_compra,
+                $this->quantidade,
+                $this->valor_unitario
             ]);
         }
         public function buscarItemCompra($cod_item)
@@ -28,14 +28,14 @@
             $resultado = DB::select('SELECT * FROM itens_compra WHERE cod_item = ?', [$cod_item]);
             return $resultado ? $resultado[0] : null;
         }
-        public function atualizarItemCompra($cod_item, $dados){
+        public function atualizarItemCompra($cod_item){
             DB::update('UPDATE itens_compra
             SET cod_ingrediente = ?, cod_compra = ?, quantidade = ?, valor_unitario = ?
             WHERE cod_item = ?', [
-                $dados['cod_ingrediente'],
-                $dados['cod_compra'],
-                $dados['quantidade'],
-                $dados['valor_unitario'],
+                $this->cod_ingrediente,
+                $this->cod_compra,
+                $this->quantidade,
+                $this->valor_unitario,
                 $cod_item
             ]);
         }
