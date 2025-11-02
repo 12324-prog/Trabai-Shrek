@@ -14,8 +14,6 @@
 
         public $valor_unitario;
 
-        public $cod_garcom;
-
         public $datahora;
 
         public function listarItens_Pedido(){
@@ -31,16 +29,12 @@ public function atualizarItens_Pedido($id) {
         cod_pedido = ?,
         cod_prato = ?,
         quantidade = ?,
-        valor_unitario = ?,
-        cod_garcom = ?,
         datahora = ?
         WHERE cod_item = ?',
         [
             $this->cod_pedido,
             $this->cod_prato,
             $this->quantidade,
-            $this->valor_unitario,
-            $this->cod_garcom,
             $this->datahora,
             $id
         ]
@@ -62,15 +56,14 @@ public function atualizarItens_Pedido($id) {
                 cod_prato,
                 quantidade,
                 valor_unitario,
-                cod_garcom,
                 datahora)
-                VALUES (?,?,?,?,?,?)', 
+                VALUES (?,?,?,?,?)', 
                 [ 
                     $this->cod_pedido,
                     $this->cod_prato,
                     $this->quantidade,
-                    DB::select('SELECT valor_unitario FROM pratos AS p WHERE p.cod_prato = '.$this->cod_prato)[0]->valor_unitario,
-                    $this->cod_garcom,
+                    DB::select('SELECT valor_unitario 
+                    FROM pratos AS p WHERE p.cod_prato = '.$this->cod_prato)[0]->valor_unitario,
                     $this->datahora
                 ]
             );
@@ -106,13 +99,21 @@ public function atualizarItens_Pedido($id) {
                 AFTER UPDATE ON itens_pedido
                 FOR EACH ROW
                 BEGIN
-                    UPDATE pedidos 
-                    SET valor_pago = valor_pago - (OLD.valor_unitario * OLD.quantidade)
-                    WHERE cod_pedido = OLD.cod_pedido;
+                    IF (NEW.cod_pedido <> OLD.cod_pedido) 
+                    THEN
+                        UPDATE pedidos 
+                        SET valor_pago = valor_pago - (OLD.valor_unitario * OLD.quantidade)
+                        WHERE cod_pedido = OLD.cod_pedido;
 
-                    UPDATE pedidos 
-                    SET valor_pago = valor_pago + (NEW.valor_unitario * NEW.quantidade)
-                    WHERE cod_pedido = NEW.cod_pedido;
+                        UPDATE pedidos 
+                        SET valor_pago = valor_pago + (NEW.valor_unitario * NEW.quantidade)
+                        WHERE cod_pedido = NEW.cod_pedido;
+                    ELSE IF (OLD.quantidade <> NEW.quantidade) OR (OLD.valor_unitario <> NEW.valor_unitario)
+                    THEN
+                        UPDATE pedidos 
+                        SET valor_pago = valor_pago + (NEW.valor_unitario * NEW.quantidade) - (OLD.valor_unitario * OLD.quantidade)
+                        WHERE cod_pedido = NEW.cod_pedido;
+                    END IF
                 END
             ');
         }

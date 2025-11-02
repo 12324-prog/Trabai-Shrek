@@ -12,25 +12,7 @@
 
         public $tipo_pedido;
 
-        public $cod_entregador;
-
-        public $valor_entrega;
-
-        public $cod_mesa;
-
         public $encerrado;
-
-        public $datahora_encerramento;
-
-        public $desconto;
-
-        public $pago;
-
-        public $data_pago;
-
-        public $valor_pago;
-
-        public $taxa_servico;
 
         public function listarPedidos(){
 
@@ -45,29 +27,13 @@ public function atualizarPedidos($id) {
         datahora = ?,
         cod_cliente = ?,
         tipo_pedido = ?,
-        cod_entregador = ?,
-        valor_entrega = ?,
-        cod_mesa = ?,
-        encerrado = ?,
-        datahora_encerramento = ?,
-        desconto = ?,
-        pago = ?,
-        data_pago = ?,
-        taxa_servico = ?
+        encerrado = ?
         WHERE cod_pedido = ?',
         [
             $this->datahora,
             $this->cod_cliente,
             $this->tipo_pedido,
-            $this->cod_entregador,
-            $this->valor_entrega,
-            $this->cod_mesa,
             $this->encerrado ?? 0,
-            $this->datahora_encerramento,
-            $this->desconto ?? 0,
-            $this->pago ?? 0,
-            $this->data_pago,
-            $this->taxa_servico ?? 0,
             $id
         ]
     );
@@ -87,29 +53,13 @@ public function atualizarPedidos($id) {
                 (datahora,
                 cod_cliente,
                 tipo_pedido,
-                cod_entregador,
-                valor_entrega,
-                cod_mesa,
-                encerrado,
-                datahora_encerramento,
-                desconto,
-                pago,
-                data_pago,
-                taxa_servico)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', 
+                encerrado)
+                VALUES (?,?,?,?)', 
                 [ 
                     $this->datahora = now(),
                     $this->cod_cliente,
                     $this->tipo_pedido,
-                    $this->cod_entregador,
-                    $this->valor_entrega,
-                    $this->cod_mesa,
-                    $this->encerrado ?? 0,
-                    $this->datahora_encerramento,
-                    $this->desconto ?? 0,
-                    $this->pago,
-                    $this->data_pago,
-                    $this->taxa_servico ?? 0
+                    $this->encerrado ?? 0
                 ]
             );
         }

@@ -20,20 +20,20 @@
 
         }
 
-public function atualizarPrato($id) {
-    return DB::update('UPDATE pratos SET
-        descricao = ?,
-        cod_cat = ?,
-        valor_unitario = ?
-        WHERE cod_prato = ?',
-        [
-            $this->descricao,
-            $this->cod_cat,
-            $this->valor_unitario,
-            $id
-        ]
-    );
-}
+        public function atualizarPrato($id) {
+            return DB::update('UPDATE pratos SET
+                descricao = ?,
+                cod_cat = ?,
+                valor_unitario = ?
+                WHERE cod_prato = ?',
+                [
+                    $this->descricao,
+                    $this->cod_cat,
+                    $this->valor_unitario,
+                    $id
+                ]
+            );
+        }
 
 
         public function buscarPrato($cod_prato){
@@ -53,7 +53,7 @@ public function atualizarPrato($id) {
                 [ 
                     $this->descricao,
                     $this->cod_cat,
-                    $this->valor_unitario
+                    $this->valor_unitario ?? 10
                 ]
             );
         }
@@ -76,7 +76,7 @@ public function atualizarPrato($id) {
                     SET valor_unitario = NEW.valor_unitario
                     WHERE cod_prato = OLD.cod_prato;
                 END
-            ');
+           ');
         }
 
         public function trigger_apagar()
@@ -91,8 +91,10 @@ public function atualizarPrato($id) {
                     UPDATE pedidos AS p INNER JOIN itens_pedido AS ip ON (p.cod_pedido = ip.cod_pedido)
                     SET p.valor_pago = p.valor_pago - (ip.valor_unitario * ip.quantidade)
                     WHERE ip.cod_prato = OLD.cod_prato;
-
+                    
                     DELETE FROM itens_pedido WHERE cod_pedido = OLD.cod_pedido;
+
+                    DELETE FROM composicao WHERE cod_prato = OLD.cod_prato;
                 END
             ');
         }     
