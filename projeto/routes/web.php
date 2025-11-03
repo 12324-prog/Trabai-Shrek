@@ -63,3 +63,46 @@ Route::get('/excluir', function()
     $produtos = $produtos->listarProdutos();
     return view('shrek', ["produtos"=>$produtos]);
 });
+
+//Mecado
+Route::view('/', 'Mercado')->name('mercado');
+
+// Páginas simples
+Route::view('/contatos', 'Contatos')->name('contatos');
+Route::view('/relatorios', 'DirecionadorDErelatorio')->name('relatorios');
+
+// Cidades
+Route::view('/cidades', 'index')->name('cidades.index');
+Route::view('/cidades/cadastrar', 'CADcidades')->name('cidades.cadastrar');
+
+// Clientes
+Route::view('/clientes', 'index')->name('clientes.index');
+Route::view('/clientes/cadastrar', 'CADclientes')->name('clientes.cadastrar');
+
+// Compras
+Route::view('/compras', 'index')->name('compras.index');
+Route::view('/compras/cadastrar', 'CADcompras')->name('compras.cadastrar');
+
+// Fornecedores
+Route::view('/fornecedores', 'index')->name('fornecedores.index');
+Route::view('/fornecedores/cadastrar', 'CADfornecedores')->name('fornecedores.cadastrar');
+
+// Ingredientes (caso mantenha)
+Route::view('/ingredientes', 'index')->name('ingredientes.index');
+Route::view('/ingredientes/cadastrar', 'CADingredientes')->name('ingredientes.cadastrar');
+
+// Itens de Compra
+Route::view('/itens_compra', 'index')->name('itens_compra.index');
+Route::view('/itens_compra/cadastrar', 'CADitens_compra')->name('itens_compra.cadastrar');
+
+// Itens de Pedido
+Route::view('/itens_pedido', 'index')->name('itens_pedido.index');
+Route::view('/itens_pedido/cadastrar', 'CADitens_pedido')->name('itens_pedido.cadastrar');
+
+// Pedidos
+Route::view('/pedidos', 'index')->name('pedidos.index');
+Route::view('/pedidos/cadastrar', 'CADpedidos')->name('pedidos.cadastrar');
+
+// Pratos
+Route::view('/pratos', 'index')->name('pratos.index');
+Route::view('/pratos/cadastrar', 'CADpratos')->name('pratos.cadastrar');

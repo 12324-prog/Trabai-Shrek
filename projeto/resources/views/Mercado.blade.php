@@ -20,21 +20,21 @@
             <div class="dropdown">
                 <button class="dropbtn">Cadastros</button>
                 <div class="dropdown-content">
-                    <a href="#">Cidades</a>
-                    <a href="#">Fornecedores</a>                
-                    <a href="#">Ingredientes</a>
-                    <a href="#">Pratos</a>
-                    <a href="#">Compras</a>
-                    <a href="#">Itens das Compras</a>
-                    <a href="#">Pedidos</a>
-                    <a href="#">Itens dos Pedidos</a>
-                    <a href="#">Clientes</a>
+                    <a href="{{ route('cidades.cadastrar') }}">Cidades</a>
+                    <a href="{{ route('fornecedores.cadastrar') }}">Fornecedores</a>                
+                    <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
+                    <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
+                    <a href="{{ route('compras.cadastrar') }}">Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
+                    <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
+                    <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
                 </div>
             </div>
 
-            <a href="#">Área de Registros</a>
-            <a href="#">Mercado</a>
-            <a href="#">Contato</a>
+            <a href="{{ route('relatorios') }}">Área de Registros</a>
+            <a href="{{ route('mercado') }}">Mercado</a>
+            <a href="{{ route('contatos') }}">Contato</a>
             
         </nav>
     </header>
@@ -54,7 +54,7 @@
         <div class="thumb">🍅</div>
         <div class="info">
             <h4>Tomate</h4>
-            <p>Fresco e vermelho como o amor do Shrek.</p>
+            <p>Fresco e vermelho, a paixão do Burro.</p>
 
             <div class="dropdown">
             <button class="dropbtnM">Selecionar Fornecedor</button>
@@ -78,7 +78,7 @@
         <div class="thumb">🧀</div>
         <div class="info">
             <h4>Queijo</h4>
-            <p>Cremoso e irresistível, direto do reino do Burro.</p>
+            <p>Cremoso e irresistível, direto do reino de Tão Tão Distante.</p>
 
             <div class="dropdown">
             <button class="dropbtnM">Selecionar Fornecedor</button>
@@ -162,7 +162,7 @@
         <div class="thumb">🥚🫙</div>
         <div class="info">
             <h4>Maionese</h4>
-            <p>Maionese cremosa feita na mão, receita secreta do Burro.</p>
+            <p>Maionese cremosa feita na mão, receita secreta do Pinóquio.</p>
             <div class="dropdown">
             <button class="dropbtnM">Selecionar Fornecedor</button>
             <div class="dropdown-content">
@@ -182,7 +182,7 @@
         <div class="thumb">🍞</div>
         <div class="info">
             <h4>Pão</h4>
-            <p>Pão fofinho, recém saído do forno do ogro. Donkey já comeu três!</p>
+            <p>Pão fofinho, recém saído do forno do ogro. Gato de Botas já comeu três!</p>
             <div class="dropdown">
             <button class="dropbtnM">Selecionar Fornecedor</button>
             <div class="dropdown-content">
@@ -222,8 +222,8 @@
         <br>
 
         <div class="actions">
-            <button class="btn btn--ghost" id="cancelar-compra">Cancelar</button>
-            <button class="btn btn--shrek" id="finalizar-compra">Finalizar</button>
+            <button id="cancelar-compra" class="btn btn--ghost" >Cancelar</button>
+            <button id="finalizar-compra" class="btn btn--shrek">Finalizar</button>
         </div>
 
     </main>

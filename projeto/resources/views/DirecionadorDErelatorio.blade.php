@@ -17,24 +17,24 @@
             <span>Podrão do Shrek - Área de Registros</span>
         </div>
         <nav>
-             <div class="dropdown">
+            <div class="dropdown">
                 <button class="dropbtn">Cadastros</button>
                 <div class="dropdown-content">
-                    <a href="#">Cidades</a>
-                    <a href="#">Fornecedores</a>                
-                    <a href="#">Ingredientes</a>
-                    <a href="#">Pratos</a>
-                    <a href="#">Compras</a>
-                    <a href="#">Itens das Compras</a>
-                    <a href="#">Pedidos</a>
-                    <a href="#">Itens dos Pedidos</a>
-                    <a href="#">Clientes</a>
+                    <a href="{{ route('cidades.cadastrar') }}">Cidades</a>
+                    <a href="{{ route('fornecedores.cadastrar') }}">Fornecedores</a>                
+                    <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
+                    <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
+                    <a href="{{ route('compras.cadastrar') }}">Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
+                    <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
+                    <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
                 </div>
             </div>
 
-            <a href="#">Área de Registros</a>
-            <a href="#">Mercado</a>
-            <a href="#">Contato</a>
+            <a href="{{ route('relatorios') }}">Área de Registros</a>
+            <a href="{{ route('mercado') }}">Mercado</a>
+            <a href="{{ route('contatos') }}">Contato</a>
             
         </nav>
     </header>
@@ -49,13 +49,14 @@
             <div class="btn-group" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
                 <a href="{{ route('fornecedores.index') }}" class="btn btn--shrek slime-drop">Relatório Fornecedores</a>
                 <a href="{{ route('compras.index') }}" class="btn btn--shrek slime-drop">Relatório Compras</a>
-                <a href="{{ route('itenscompra.index') }}" class="btn btn--shrek slime-drop">Relatório Itens Compra</a>
+                <a href="{{ route('itens_compra.index') }}" class="btn btn--shrek slime-drop">Relatório Itens Compra</a>
                 <a href="{{ route('itens_pedido.index') }}" class="btn btn--shrek slime-drop">Relatório Itens Pedido</a>
                 <a href="{{ route('pedidos.index') }}" class="btn btn--shrek slime-drop">Relatório Pedidos</a>
                 <a href="{{ route('clientes.index') }}" class="btn btn--shrek slime-drop">Relatório Clientes</a>
                 <a href="{{ route('cidades.index') }}" class="btn btn--shrek slime-drop">Relatório Cidades</a>
                 <a href="{{ route('pratos.index') }}" class="btn btn--shrek slime-drop">Relatório Pratos</a>
             </div>
+
         </section>
     </main>
 
