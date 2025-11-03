@@ -182,9 +182,13 @@ body::before {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
 }
+
 
 .dropdown {
   position: relative;
@@ -207,6 +211,21 @@ body::before {
   transform: scale(1.06);
 }
 
+.dropbtnM {
+  background: none;
+  border: none;
+  font: inherit;
+  color: #2d4529;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
+  letter-spacing: 3px;
+}
+
+.dropbtnM:hover {
+  color: #70a74d;
+  transform: scale(1.06);
+}
 
 .dropdown-content {
   display: none;
@@ -241,6 +260,7 @@ body::before {
 }
 
 
+
 @keyframes dropdown-fade {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -250,7 +270,7 @@ body::before {
   flex: 1;
   padding: 40px 20px;
   max-width: 850px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .hero {
@@ -358,9 +378,15 @@ body::before {
   font-family: 'Red Hat Display', cursive;
 }
 
+.slogan {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+}
+
 .menu-card {
   border-radius: 14px;
-  padding: 12px;
+  padding: 30px;
   background: linear-gradient(180deg,#fafff5,#e5f7db);
   border: 1px solid rgba(34,75,34,0.12);
   display: flex;
@@ -368,11 +394,17 @@ body::before {
   align-items: center;
   transition: transform .2s ease, box-shadow .2s ease;
   box-shadow: 0 4px 18px rgba(47,143,47,0.1);
+  min-width: 300px; 
+  max-width: 400px; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
+
 .menu-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 22px rgba(47,143,47,0.18);
 }
+
 .menu-card .thumb {
   width: 84px;
   height: 84px;
@@ -384,15 +416,47 @@ body::before {
   font-weight: 700;
   color: #263000;
 }
+
 .menu-card h4 {
   margin: 0;
   font-size: 1.05rem;
   color: green;
 }
+
 .menu-card p {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.menu-card .qtd {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Shrikhand', cursive;
+  color: #2d3714;
+}
+
+.menu-card .qtd input {
+  width: 70px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(47,75,34,0.2);
+  text-align: center;
+  font-weight: 600;
+}
+
+.menu-card .actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.menu-card .info {
+  flex: 1; 
+  min-width: 0; 
 }
 
 .footer {

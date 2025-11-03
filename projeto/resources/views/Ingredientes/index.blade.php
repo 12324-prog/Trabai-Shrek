@@ -17,29 +17,23 @@
             <span>Podrão do Shrek</span>
         </div>
         <nav>
-            <a href="#">Início</a>
-
-              <div class="dropdown">
+            <div class="dropdown">
                 <button class="dropbtn">Cadastros</button>
                 <div class="dropdown-content">
-                <a href="#">Cidades</a>
-                    <a href="#">Fornecedores</a>
-                    <a href="#">Categorias</a>
-                    <a href="#">Unidades</a>
+                    <a href="#">Cidades</a>
+                    <a href="#">Fornecedores</a>                
                     <a href="#">Ingredientes</a>
                     <a href="#">Pratos</a>
                     <a href="#">Compras</a>
                     <a href="#">Itens das Compras</a>
-                    <a href="#">Garçons</a>
-                    <a href="#">Entregadores</a>
-                    <a href="#">Mesas</a>
                     <a href="#">Pedidos</a>
                     <a href="#">Itens dos Pedidos</a>
                     <a href="#">Clientes</a>
                 </div>
             </div>
 
-            <a href="#">Área de Registro</a>
+            <a href="#">Área de Registros</a>
+            <a href="#">Mercado</a>
             <a href="#">Contato</a>
             
         </nav>
@@ -97,10 +91,6 @@
     
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
-        <div class="btn-group">
-            <button class="btn btn--ghost">Ajuda</button>
-            <button class="btn btn--slime">Ver Fornecedores</button>
-        </div>
     </footer>
 </body>
 </html>
