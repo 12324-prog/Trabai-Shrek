@@ -25,7 +25,6 @@
 body {
   background-color: #d7c8b1c3;
   color:  #2d3714;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -42,6 +41,11 @@ body::before {
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: -2;
+}
+
+body, html {
+  overflow-x: auto;
+  height: 100%;
 }
 
 .swamp-anim {
@@ -68,6 +72,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 
   background: 
     linear-gradient(180deg, rgba(86, 55, 27, 0.85), rgba(64, 40, 18, 0.95)),
@@ -113,6 +118,7 @@ body::before {
   transform: scale(1.06);
 }
 
+/* --- Acordeão estilo Podrão do Shrek --- */
 
 .dropdown {
   position: relative;
@@ -135,7 +141,6 @@ body::before {
   transform: scale(1.06);
 }
 
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -147,7 +152,6 @@ body::before {
   z-index: 20;
   animation: dropdown-fade 0.3s ease;
 }
-
 
 .dropdown-content a {
   color: #f3e4c2;
@@ -163,27 +167,26 @@ body::before {
   color: #fff5d2;
 }
 
-
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
 
 @keyframes dropdown-fade {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+
 .container {
   flex: 1;
-  padding: 40px 20px;
+  padding: 10px 20px;
   max-width: 850px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 26px;
   align-items: start;
 }
@@ -351,6 +354,7 @@ a:focus, button:focus, input:focus, textarea:focus {
 }
 
 table.shrek-table {
+  min-width: auto;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -364,7 +368,8 @@ table.shrek-table {
 
 table.shrek-table th,
 table.shrek-table td {
-  padding: 12px 16px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
   text-align: left;
   border-bottom: 1px solid rgba(34,75,34,0.1);
 }
@@ -381,8 +386,19 @@ table.shrek-table tr:hover td {
   transition: background 0.3s ease;
 }
 
+
 table.shrek-table td:first-child {
   font-weight: 500;
+}
+
+.table-container {
+  overflow: visible; 
+  max-width: none;
+}
+
+table.shrek-table {
+  width: auto; 
+  min-width: 800px; 
 }
 
 ul.shrek-list,

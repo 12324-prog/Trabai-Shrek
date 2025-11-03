@@ -17,9 +17,8 @@ use Illuminate\Http\Request;
 
 // SELECT
 Route::get('/', function () {
-    $produtos = new Produtos();
-    $produtos = $produtos->listarProdutos();
-    return view('shrek', ["produtos"=>$produtos]);
+
+    return view('DirecionadorDErelatorio');
 });
 
 // INSERT
