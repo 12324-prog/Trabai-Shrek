@@ -44,7 +44,7 @@ public function atualizarPedidos($id) {
 
             $PedidosDoBanco = DB::select('SELECT * FROM pedidos WHERE cod_pedido = ?',[$cod_pedido]);
 
-            return $PedidosDoBanco;
+            return $PedidosDoBanco[0];
 
         }
 

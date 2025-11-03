@@ -8,7 +8,7 @@
 
         public $descricao;
 
-        public $cod_cat;
+        public $taxa_prato;
 
         public $valor_unitario;
 
@@ -23,13 +23,11 @@
         public function atualizarPrato($id) {
             return DB::update('UPDATE pratos SET
                 descricao = ?,
-                cod_cat = ?,
-                valor_unitario = ?
+                taxa_prato = ?
                 WHERE cod_prato = ?',
                 [
                     $this->descricao,
-                    $this->cod_cat,
-                    $this->valor_unitario,
+                    $this->taxa_prato,
                     $id
                 ]
             );
@@ -40,20 +38,18 @@
 
             $PratoDoBanco = DB::select('SELECT * FROM pratos WHERE cod_prato = ?',[$cod_prato]);
 
-            return $PratoDoBanco;
+            return $PratoDoBanco[0];
 
         }
 
         public function gravar (){
             DB::insert('INSERT INTO pratos 
                 (descricao,
-                cod_cat,
-                valor_unitario)
-                VALUES (?,?,?)', 
+                taxa_prato)
+                VALUES (?,?)', 
                 [ 
                     $this->descricao,
-                    $this->cod_cat,
-                    $this->valor_unitario ?? 10
+                    $this->taxa_prato
                 ]
             );
         }
@@ -72,6 +68,13 @@
                 AFTER UPDATE ON pratos
                 FOR EACH ROW
                 BEGIN
+                    IF (OLD.taxa_prato <> NEW.taxa_prato)
+                    THEN
+                        UPDATE pratos 
+                        SET valor_unitario = valor_unitario - OLD.taxa_prato + NEW.taxa_prato
+                        WHERE cod_prato = OLD.cod_prato;
+                    END IF
+
                     UPDATE itens_pedido 
                     SET valor_unitario = NEW.valor_unitario
                     WHERE cod_prato = OLD.cod_prato;

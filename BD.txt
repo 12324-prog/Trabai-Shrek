@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS itens_compra (
 
 CREATE TABLE IF NOT EXISTS pratos (
                 cod_prato INT AUTO_INCREMENT PRIMARY KEY,
+                taxa_prato DECIMAL(10,2) DEFAULT 0,
                 descricao VARCHAR(100),
                 valor_unitario DECIMAL(10,2) DEFAULT 0,
             );

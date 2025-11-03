@@ -1,0 +1,117 @@
+<?php
+    namespace App\Models;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Itens_Compra{
+        public $cod_item;
+        public $cod_ingrediente;
+        public $cod_compra;
+        public $quantidade;
+        public $valor_unitario;
+
+        public function listarItensCompra(){
+            return DB::select('SELECT * FROM itens_compra ORDER BY cod_item DESC');
+        }
+        public function inserirItemCompra(){
+            DB::insert('INSERT INTO itens_compra
+            (cod_ingrediente, cod_compra, quantidade, valor_unitario)
+            VALUES (?, ?, ?, ?)', [
+                $this->cod_ingrediente,
+                DB::select('SELECT MAX(cod_compra) as codmax FROM compras')[0]->codmax,
+                $this->quantidade,
+                $this->valor_unitario
+            ]);
+        }
+        public function buscarItemCompra($cod_item)
+        {
+            $resultado = DB::select('SELECT * FROM itens_compra WHERE cod_item = ?', [$cod_item]);
+            return $resultado ? $resultado[0] : null;
+        }
+        public function atualizarItemCompra($cod_item){
+            DB::update('UPDATE itens_compra
+            SET cod_ingrediente = ?, cod_compra = ?, quantidade = ?, valor_unitario = ?
+            WHERE cod_item = ?', [
+                $this->cod_ingrediente,
+                $this->cod_compra,
+                $this->quantidade,
+                $this->valor_unitario,
+                $cod_item
+            ]);
+        }
+        public function apagarItemCompra($cod_item){
+            DB::delete('DELETE FROM itens_compra WHERE cod_item = ?', [$cod_item]);
+        }
+
+        //triggers
+        //------------------------------------------------------------------------------
+        public function trigger_gravarItensCom(){
+            DB::unprepared('DROP TRIGGER IF EXISTS insert_itens_com');
+
+            DB::unprepared('
+                CREATE TRIGGER insert_itens_com
+                AFTER INSERT ON itens_compra
+                FOR EACH ROW
+                BEGIN
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque + NEW.quantidade
+                    WHERE cod_ingrediente = NEW.cod_ingrediente;
+
+                    UPDATE compras
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = NEW.cod_compra
+                    )
+                    WHERE cod_compra = NEW.cod_compra;
+                END
+            ');
+        }
+        //------------------------------------------------------------------------------
+        public function trigger_atualizarItensCom() {
+            DB::unprepared('DROP TRIGGER IF EXISTS update_itens_com');
+
+            DB::unprepared('
+                CREATE TRIGGER update_itens_com
+                AFTER UPDATE ON itens_compra
+                FOR EACH ROW
+                BEGIN
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque + (NEW.quantidade - OLD.quantidade)
+                    WHERE cod_ingrediente = NEW.cod_ingrediente;
+
+                    UPDATE compras
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = NEW.cod_compra
+                    )
+                    WHERE cod_compra = NEW.cod_compra;
+                END
+            ');
+        }
+        //------------------------------------------------------------------------------
+        public function trigger_apagarItensCom() {
+            DB::unprepared('DROP TRIGGER IF EXISTS delete_itens_com');
+
+            DB::unprepared('
+                CREATE TRIGGER delete_itens_com
+                AFTER DELETE ON itens_compra
+                FOR EACH ROW
+                BEGIN
+                    UPDATE ingredientes
+                    SET quantidade_estoque = quantidade_estoque - OLD.quantidade
+                    WHERE cod_ingrediente = OLD.cod_ingrediente;
+
+                    UPDATE compras
+                    SET valor_total = (
+                        SELECT IFNULL(SUM(quantidade * valor_unitario), 0)
+                        FROM itens_compra
+                        WHERE cod_compra = OLD.cod_compra
+                    )
+                    WHERE cod_compra = OLD.cod_compra;
+                END
+            ');
+        }
+    }   
+?>

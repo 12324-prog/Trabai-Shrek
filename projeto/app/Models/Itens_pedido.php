@@ -26,7 +26,6 @@
 
 public function atualizarItens_Pedido($id) {
     return DB::update('UPDATE itens_pedido SET
-        cod_pedido = ?,
         cod_prato = ?,
         quantidade = ?,
         datahora = ?
@@ -46,7 +45,7 @@ public function atualizarItens_Pedido($id) {
 
             $Itens_PedidoDoBanco = DB::select('SELECT * FROM itens_pedido WHERE cod_item = ?',[$cod_item]);
 
-            return $Itens_PedidoDoBanco;
+            return $Itens_PedidoDoBanco[0];
 
         }
 
@@ -59,7 +58,7 @@ public function atualizarItens_Pedido($id) {
                 datahora)
                 VALUES (?,?,?,?,?)', 
                 [ 
-                    $this->cod_pedido,
+                    DB::select('SELECT MAX(cod_pedido) as codmax FROM pedidos')[0]->codmax,
                     $this->cod_prato,
                     $this->quantidade,
                     DB::select('SELECT valor_unitario 
