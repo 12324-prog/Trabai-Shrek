@@ -87,7 +87,7 @@ Route::view('/compras/cadastrar', 'CADcompras')->name('compras.cadastrar');
 Route::view('/fornecedores', 'index')->name('fornecedores.index');
 Route::view('/fornecedores/cadastrar', 'CADfornecedores')->name('fornecedores.cadastrar');
 
-// Ingredientes (caso mantenha)
+// Ingredientes 
 Route::view('/ingredientes', 'index')->name('ingredientes.index');
 Route::view('/ingredientes/cadastrar', 'CADingredientes')->name('ingredientes.cadastrar');
 

@@ -86,7 +86,7 @@
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <btn id="btn-ajuda" class="btn btn--ghost">Ajuda</btn>
-            <button class="btn btn--slime">Ver Ingredientes</button>
+            <a href="{{ route('pratos.index') }}" class="btn btn--slime">Ver Ingredientes</a>
         </div>
     </footer>
     
