@@ -30,7 +30,7 @@
             ]);
         }
         public function buscarFornecedores($cod_fornecedor){
-            $resultado = DB::select('SELECT * FROM forncedores WHERE cod_fornecedor = ?',[$cod_fornecedor]);
+            $resultado = DB::select('SELECT * FROM fornecedores WHERE cod_fornecedor = ?',[$cod_fornecedor]);
 
             return $resultado ? $resultado[0] : null;
         }

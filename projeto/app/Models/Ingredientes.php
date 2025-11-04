@@ -72,7 +72,10 @@
         FOR EACH ROW
         BEGIN
             INSERT INTO composicao (cod_prato, cod_ingrediente)
-            VALUES (SELECT MAX(cod_prato) FROM pratos, SELECT MAX(cod_ingrediente) FROM ingredientes)
+            VALUES (
+                (SELECT MAX(cod_prato) FROM pratos),
+                NEW.cod_ingrediente
+            );
 
             UPDATE pratos p
             JOIN composicao c ON p.cod_prato = c.cod_prato
@@ -82,11 +85,8 @@
                 FROM composicao c2
                 JOIN ingredientes i2 ON c2.cod_ingrediente = i2.cod_ingrediente
                 WHERE c2.cod_prato = p.cod_prato
-                GROUP BY c2.cod_prato
             )
-            WHERE p.cod_prato IN (
-                SELECT cod_prato FROM composicao WHERE cod_ingrediente = NEW.cod_ingrediente
-            );
+            WHERE p.cod_prato IS NOT NULL;
         END
     '); 
 }
