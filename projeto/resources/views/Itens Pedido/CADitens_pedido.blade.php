@@ -94,7 +94,7 @@
                     <button type="submit" class="btn btn--shrek slime-drop">{{$item_pedido ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
                 <div class="btn-group">
-                    <a href="{{ route('itens_pedido.index') }}" class="btn btn--slime">Finalizar Pedido</a>
+                    <a href="{{ route('pedidos.index') }}" class="btn btn--slime">Finalizar Pedido</a>
                 </div>
             </div>
         </section>

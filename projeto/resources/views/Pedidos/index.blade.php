@@ -46,8 +46,13 @@
                 <p class="highlight">Confira todos os pedidos realizados no podrão, com status, cliente e detalhes.</p>
             </div>
 
+            <!-- Barra de pesquisa adicionada -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-box" placeholder="Pesquisar por cliente...">
+            </div>
+
             <div class="table-container">
-                <table class="shrek-table">
+                <table class="shrek-table" id="pedidosTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -59,12 +64,11 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!--FAZER APARECER O NOME DO CLIENTE-->
+                    <tbody id="tableBody">
                         @forelse($pedidos as $pedido)
-                        <tr>
+                        <tr class="pedido-row">
                             <td>{{ $pedido->cod_pedido }}</td>
-                            <td>{{ $pedido->nome }}</td>
+                            <td class="cliente-nome">{{ $pedido->nome }}</td>
                             <td>
                                 @if($pedido->tipo_pedido == 1) Delivery (Presencial)
                                 @elseif($pedido->tipo_pedido == 2) Delivery (Domiciliar)
@@ -88,8 +92,12 @@
                             <td colspan="12" class="empty">Nenhum pedido encontrado.</td>
                         </tr>
                         @endforelse
+                        <tr id="noResults" class="no-results">
+                            <td colspan="12">Nenhum pedido encontrado.</td>
+                        </tr>
                     </tbody>
                 </table>
+
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
@@ -98,9 +106,52 @@
         </section>
     </main>
 
-
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('.pedido-row');
+            const noResultsMessage = document.getElementById('noResults');
+            const emptyRow = document.querySelector('.empty');
+            
+            // Se houver uma linha vazia, vamos removê-la da filtragem
+            if (emptyRow) {
+                emptyRow.style.display = 'none';
+            }
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                let hasResults = false;
+                
+                // Percorre todas as linhas da tabela
+                tableRows.forEach(row => {
+                    const clienteNome = row.querySelector('.cliente-nome').textContent.toLowerCase();
+                    
+                    // Verifica se o nome do cliente contém o termo pesquisado
+                    if (clienteNome.includes(searchTerm)) {
+                        row.style.display = '';
+                        hasResults = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // Mostra ou esconde a mensagem de "nenhum resultado"
+                if (!hasResults && searchTerm !== '') {
+                    noResultsMessage.style.display = 'block';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                }
+                
+                // Se não houver pedidos no sistema
+                if (tableRows.length === 0) {
+                    noResultsMessage.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

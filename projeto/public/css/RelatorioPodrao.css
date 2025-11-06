@@ -13,7 +13,37 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Luckiest+Guy&family=Freckle+Face&display=swap');
 
-
+        /* Estilos adicionais para a barra de pesquisa */
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .search-box {
+            padding: 10px 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 16px;
+            background-color: #f1f8e9;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+            width: 350px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+            display: none;
+        }
+/*--------------------------------------------------*/
 
 *{
   box-sizing: border-box;

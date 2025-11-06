@@ -12,6 +12,11 @@
 <body>
     <div class="swamp-anim"></div>
     <header class="header">
+        @if(isset($erro))
+            <script>
+                alert('{{ $erro }}');
+            </script>
+        @endif
         <div class="brand">
             <div class="logo wobble"><img src="{{ asset('css/SPODRAO.png') }}" alt="Logo Shrek"  width="auto" height="80"></div>
             <span>Podrão do Shrek</span>
@@ -68,7 +73,7 @@
                     <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
                 </form>
                 <div class="btn-group">
-                    <a href="{{ route('ingredientes.index') }}" class="btn btn--slime">Finalizar Prato</a>
+                    <a href="{{ route('pratos.index') }}" class="btn btn--slime">Finalizar Prato</a>
                 </div>
             </div>
         </section>

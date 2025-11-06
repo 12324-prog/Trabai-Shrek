@@ -9,17 +9,32 @@
 
         public function inserirComposicao(){
             DB::insert('INSERT INTO composicao(cod_prato, cod_ingrediente) VALUES(?, ?)', [
-                $this->cod_prato = DB::select('SELECT MAX(cod_prato) as codmax FROM pratos')[0]->codmax,
+                $this->cod_prato ?? DB::select('SELECT MAX(cod_prato) as codmax FROM pratos')[0]->codmax,
                 $this->cod_ingrediente
             ]);
         }
 
-        public function apagarComposicaoPrato($cod_prato){
-            DB::delete('DELETE FROM composicao WHERE cod_prato = ?', [$cod_prato]);
+        //public function apagarComposicaoPrato($cod_prato){
+        //    DB::delete('DELETE FROM composicao WHERE cod_prato = ?', [$cod_prato]);
+        //}
+
+        //public function apagarComposicaoIngrediente($cod_ingrediente){
+        //    DB::delete('DELETE FROM composicao WHERE cod_ingrediente = ?', [$cod_ingrediente]);
+        //}
+
+        public function apagarComposicao(){
+            DB::delete('DELETE FROM composicao WHERE (cod_prato = ?) AND (cod_ingrediente = ?)',[
+                $this->cod_prato,
+                $this->cod_ingrediente
+            ]);
         }
 
-        public function apagarComposicaoIngrediente($cod_ingrediente){
-            DB::delete('DELETE FROM composicao WHERE cod_ingrediente = ?', [$cod_ingrediente]);
+        public function existeComposicao(){
+            $resultado = DB::select('SELECT cod_prato FROM composicao WHERE (cod_prato = ?) AND (cod_ingrediente = ?)',[
+                $this->cod_prato ?? DB::select('SELECT MAX(cod_prato) as codmax FROM pratos')[0]->codmax,
+                $this->cod_ingrediente
+            ]);
+            return isset($resultado[0]);
         }
     }
 ?>

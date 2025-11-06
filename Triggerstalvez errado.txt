@@ -30,6 +30,23 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS trg_delete_composicao;
+DELIMITER $$
+CREATE TRIGGER trg_delete_composicao
+BEFORE DELETE ON composicao
+FOR EACH ROW
+BEGIN
+	IF (@deletando_ingrediente IS NULL OR @deletando_ingrediente = FALSE) THEN
+        UPDATE pratos p
+        JOIN composicao c ON p.cod_prato = c.cod_prato
+        JOIN ingredientes i ON i.cod_ingrediente = c.cod_ingrediente
+        SET p.valor_unitario = calcular_valor_prato(p.cod_prato) - i.valor_unitario  + p.taxa_prato
+        WHERE (c.cod_ingrediente = OLD.cod_ingrediente) AND (c.cod_prato = OLD.cod_prato);
+    END IF;
+
+END$$
+DELIMITER ;
+
 -- TRIGGERS PARA INGREDIENTES
  DROP TRIGGER IF EXISTS trg_insert_ingredientes;
 -- DELIMITER $$
@@ -71,11 +88,11 @@ FOR EACH ROW
 BEGIN
     UPDATE pratos p
     JOIN composicao c ON p.cod_prato = c.cod_prato
-    SET p.valor_unitario = 0
+    SET p.valor_unitario = calcular_valor_prato(p.cod_prato) - OLD.valor_unitario  + p.taxa_prato
     WHERE c.cod_ingrediente = OLD.cod_ingrediente;
-
-    DELETE FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente;
+	
     SET @deletando_ingrediente = TRUE;
+    DELETE FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente;
     DELETE FROM itens_compra WHERE cod_ingrediente = OLD.cod_ingrediente;
     SET @deletando_ingrediente = FALSE;
 END$$

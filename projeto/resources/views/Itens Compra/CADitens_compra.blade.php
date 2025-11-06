@@ -91,7 +91,7 @@
                     <button type="submit" class="btn btn--shrek slime-drop">{{ $item_compra ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
                 <div class="btn-group">
-                    <a href="{{ route('itens_compra.index') }}" class="btn btn--slime">Finalizar Compra</a>
+                    <a href="{{ route('compras.index') }}" class="btn btn--slime">Finalizar Compra</a>
                 </div>
             </div>
         </section>

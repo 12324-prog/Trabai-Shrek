@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Pratos - Podrão do Shrek</title>
+    <title>Relatório Ingredientes - Podrão do Shrek</title>
     <link rel="stylesheet" href="{{ asset('css/RelatorioPodrao.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,40 +42,39 @@
     <main class="container">
         <section class="hero">
             <div>
-                <h1 class="title">Relatório de Pratos</h1>
-                <p class="highlight">Veja os pratos incríveis preparados direto do pântano do Podrão do Shrek.</p>
+                <h1 class="title">Composição do Prato: {{$prato->descricao}}</h1>
+                <p class="highlight">Veja todos os ingredientes que temperam o pântano do sabor.</p>
             </div>
+
             <div class="table-container">
                 <table class="shrek-table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Descrição</th> 
-                            <th>Taxa</th>        
+                            <th>Descrição</th>
+                            <th>Quantidade em Estoque</th>
                             <th>Valor Unitário (R$)</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($pratos as $prato)
+                        @forelse($ingredientes as $ingrediente)
                         <tr>
-                            <td>{{ $prato->cod_prato }}</td>
-                            <td>{{ $prato->descricao }}</td>
-                            <td>{{ $prato->taxa_prato }}</td>
-                            <td>{{ number_format($prato->valor_unitario, 2, ',', '.') }}</td>
+                            <td>{{ $ingrediente->cod_ingrediente }}</td>
+                            <td>{{ $ingrediente->descricao }}</td>                        
+                            <td>{{ $ingrediente->quantidade_estoque }}</td>
+                            <td>R$ {{ number_format($ingrediente->valor_unitario, 2, ',', '.') }}</td>
                             <td class="acoes">
-                                <a href="{{ route('composicao.index', ['id'=>$prato->cod_prato]) }}" class="btn btn--ghost">Composição</a>
-                                <a href="{{ route('pratos.edit', ['id'=>$prato->cod_prato]) }}" class="btn btn--ghost">Editar</a>
-                                <form action="{{ route('pratos.destroy', ['id'=>$prato->cod_prato]) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('composicao.destroy', ['id_ingrediente'=>$ingrediente->cod_ingrediente, 'id_prato'=>$prato->cod_prato]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este prato?')">Excluir</button>
+                                    <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este ingrediente?')">Excluir</button>
                                 </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="empty">Nenhum prato encontrado.</td>
+                            <td colspan="7" class="empty">Nenhum ingrediente encontrado.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -83,15 +82,18 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{{ route('pratos.cadastrar') }}" class="btn btn--shrek slime-drop"> + Novo Prato</a>
+                <a href="{{ route('composicao.cadastrar',['id'=>$prato->cod_prato]) }}" class="btn btn--shrek slime-drop">+ Adicionar Ingrediente</a>
             </div>
         </section>
     </main>
 
     
-
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
+        <div class="btn-group">
+            <btn id="btn-ajuda" class="btn btn--ghost">Ajuda</btn>
+            <a href="{{ route('pratos.index') }}" class="btn btn--slime">Ver Pratos</a>
+        </div>
     </footer>
 </body>
 </html>

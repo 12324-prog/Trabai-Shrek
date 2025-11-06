@@ -50,12 +50,9 @@
                 <p class="highlight">Aqui estão todos os cidades cadastrados.</p>
             </div>
 
-            <div class="card">
-                @if(session('success'))
-                    <div class="alert success">{{ session('success') }}</div>
-                @endif
+            <div class="table-container">
 
-                <table class="tabela-shrek">
+                <table class="shrek-table">
                     <thead>
                         <tr>
                             <th>ID</th>

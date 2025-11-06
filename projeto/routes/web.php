@@ -341,22 +341,66 @@ Route::delete('/fornecedores/deletar', function (Request $request) {
 })->name('fornecedores.destroy');
 
 // Composição------------------------------------------------------------------------------------------------------
+Route::get('/composicao', function () {
+    $id = request('id') ?? NULL;
+
+    $ingredientes = new Ingredientes;
+    $pratos = new Pratos;
+
+    $prato = $pratos->buscarPrato($id);
+    $ingredientes = $ingredientes->buscarIngredientes_cod_pedido($id);
+    return view('Composicao/index', ['ingredientes'=>$ingredientes, 'prato'=>$prato]);
+})->name('composicao.index');
+
 //CREATE
 Route::get('/composicao/cadastrar', function () {
-    
-    return view('Ingredientes/CADingrediente_existente');
+    $id = request('id') ?? NULL;
+    $erro = request('erro');
+
+    $ingredientes = new Ingredientes;
+
+    $ingredientes = $ingredientes->listarIngredientes();
+    return view('Ingredientes/CADingrediente_existente',['ingredientes'=>$ingredientes, 'id'=>$id, 'erro'=>$erro]);
 })->name('composicao.cadastrar');
 
 Route::post('/composicao/cadastrar/add', function (Request $request) {
+    $id = request('id') ?? NULL;
 
     $composicao = new Composicao;
+    if(isset($id))
+    {
+        $composicao->cod_prato = $id;
+    }
 
     $composicao->cod_ingrediente = $request->input('cod_ingrediente');
     
-    $composicao->inserirComposicao();
+    if (!$composicao->existeComposicao())
+    {
+        $erro = null;
+        $composicao->inserirComposicao();
+    }
+    else
+    {
+        $erro = "O ingrediente já está na composição";
+    }
     
-    return redirect()->route('composicao.cadastrar');
+    return redirect()->route('composicao.cadastrar', ['erro'=>$erro]);
 })->name('composicao.store');
+
+//DELETE
+Route::delete('/composicao/deletar', function (Request $request) {
+
+    $composicao = new Composicao;
+    $ingredientes = new Ingredientes;
+    
+    $composicao->cod_ingrediente = request('id_ingrediente');
+    $composicao->cod_prato = request('id_prato');
+
+    $composicao->apagarComposicao();
+    
+    $ingredientes = $ingredientes->buscarIngredientes_cod_pedido($composicao->cod_prato);
+    return redirect()->route('composicao.index', ['ingredientes'=>$ingredientes, 'id'=>$composicao->cod_prato]);
+})->name('composicao.destroy');
 
 // Ingredientes------------------------------------------------------------------------------------------------------
 Route::get('/ingredientes', function () {
