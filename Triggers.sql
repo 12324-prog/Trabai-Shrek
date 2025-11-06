@@ -1,3 +1,9 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "-03:00";
+
+USE PodraoShrek;
+
 -- ==============================================
 -- FUNÇÃO PARA RECALCULAR VALOR DO PRATO
 -- ==============================================
@@ -5,6 +11,8 @@ DROP FUNCTION IF EXISTS calcular_valor_prato;
 DELIMITER $$
 CREATE FUNCTION calcular_valor_prato(prato_id INT)
 RETURNS DECIMAL(10,2)
+READS SQL DATA
+DETERMINISTIC
 BEGIN
     RETURN (
         SELECT IFNULL(SUM(i.valor_unitario),0)
@@ -15,16 +23,13 @@ BEGIN
 END$$
 DELIMITER ;
 
--- TRIGGERS PARA INGREDIENTES
-DROP TRIGGER IF EXISTS trg_insert_ingredientes;
+-- TRIGGERS PARA COMPOSICAO
+DROP TRIGGER IF EXISTS trg_insert_composicao;
 DELIMITER $$
-CREATE TRIGGER trg_insert_ingredientes
-AFTER INSERT ON ingredientes
+CREATE TRIGGER trg_insert_composicao
+AFTER INSERT ON composicao
 FOR EACH ROW
 BEGIN
-    INSERT INTO composicao (cod_prato, cod_ingrediente)
-    SELECT MAX(cod_prato), NEW.cod_ingrediente FROM pratos;
-
     UPDATE pratos p
     JOIN composicao c ON p.cod_prato = c.cod_prato
     SET p.valor_unitario = calcular_valor_prato(p.cod_prato) + p.taxa_prato
@@ -32,6 +37,23 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS trg_delete_composicao;
+DELIMITER $$
+CREATE TRIGGER trg_delete_composicao
+BEFORE DELETE ON composicao
+FOR EACH ROW
+BEGIN
+	IF (@deletando_ingrediente IS NULL OR @deletando_ingrediente = FALSE) THEN
+        UPDATE pratos p
+        JOIN composicao c ON p.cod_prato = c.cod_prato
+        JOIN ingredientes i ON i.cod_ingrediente = c.cod_ingrediente
+        SET p.valor_unitario = calcular_valor_prato(p.cod_prato) - i.valor_unitario  + p.taxa_prato
+        WHERE (c.cod_ingrediente = OLD.cod_ingrediente) AND (c.cod_prato = OLD.cod_prato);
+    END IF;
+END$$
+DELIMITER ;
+
+-- TRIGGERS PARA INGREDIENTES
 DROP TRIGGER IF EXISTS trg_update_ingredientes;
 DELIMITER $$
 CREATE TRIGGER trg_update_ingredientes
@@ -56,14 +78,15 @@ FOR EACH ROW
 BEGIN
     UPDATE pratos p
     JOIN composicao c ON p.cod_prato = c.cod_prato
-    SET p.valor_unitario = 0
+    SET p.valor_unitario = calcular_valor_prato(p.cod_prato) - OLD.valor_unitario  + p.taxa_prato
     WHERE c.cod_ingrediente = OLD.cod_ingrediente;
-
+	
+    SET @deletando_ingrediente = TRUE;
     DELETE FROM composicao WHERE cod_ingrediente = OLD.cod_ingrediente;
     DELETE FROM itens_compra WHERE cod_ingrediente = OLD.cod_ingrediente;
+    SET @deletando_ingrediente = FALSE;
 END$$
 DELIMITER ;
--- calcular_valor_prato(p.cod_prato) + p.taxa_prato
 
 -- TRIGGERS PARA ITENS_COMPRA
 DROP TRIGGER IF EXISTS trg_insert_itens_compra;
@@ -112,9 +135,11 @@ CREATE TRIGGER trg_delete_itens_compra
 AFTER DELETE ON itens_compra
 FOR EACH ROW
 BEGIN
-    UPDATE ingredientes
-    SET quantidade_estoque = quantidade_estoque - OLD.quantidade
-    WHERE cod_ingrediente = OLD.cod_ingrediente;
+	IF (@deletando_ingrediente IS NULL OR @deletando_ingrediente = FALSE) THEN
+        UPDATE ingredientes
+        SET quantidade_estoque = quantidade_estoque - OLD.quantidade
+        WHERE cod_ingrediente = OLD.cod_ingrediente;
+    END IF;
 
     UPDATE compras
     SET valor_total = (
@@ -140,6 +165,11 @@ BEGIN
         WHERE cod_pedido = NEW.cod_pedido
     )
     WHERE cod_pedido = NEW.cod_pedido;
+    
+    UPDATE ingredientes as i JOIN composicao as c 
+    ON (i.cod_ingrediente = c.cod_ingrediente)
+    SET quantidade_estoque = (quantidade_estoque - NEW.quantidade)
+    WHERE cod_prato = NEW.cod_prato;
 END$$
 DELIMITER ;
 
@@ -166,6 +196,12 @@ BEGIN
         )
         WHERE cod_pedido = OLD.cod_pedido;
     END IF;
+    IF (NEW.quantidade <> OLD.quantidade) THEN
+        UPDATE ingredientes as i JOIN composicao as c 
+        ON (i.cod_ingrediente = c.cod_ingrediente)
+        SET quantidade_estoque = (quantidade_estoque - NEW.quantidade)
+        WHERE cod_prato = OLD.cod_prato;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -184,6 +220,11 @@ BEGIN
         )
         WHERE cod_pedido = OLD.cod_pedido;
     END IF;
+    
+    UPDATE ingredientes as i JOIN composicao as c 
+    ON (i.cod_ingrediente = c.cod_ingrediente)
+    SET quantidade_estoque = (quantidade_estoque + OLD.quantidade)
+    WHERE cod_prato = OLD.cod_prato;
 END$$
 DELIMITER ;
 
@@ -227,7 +268,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 DROP TRIGGER IF EXISTS trg_delete_pratos;
 DELIMITER $$
 CREATE TRIGGER trg_delete_pratos
@@ -245,6 +285,7 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- TRIGGER PARA CLIENTES
 DROP TRIGGER IF EXISTS cliente_delete;
 DELIMITER $$
 CREATE TRIGGER cliente_delete
@@ -258,3 +299,5 @@ BEGIN
     WHERE cod_cliente = OLD.cod_cliente;
 END$$
 DELIMITER ;
+
+COMMIT;
