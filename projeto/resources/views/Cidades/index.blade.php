@@ -12,6 +12,11 @@
 <body>
     <div class="swamp-anim"></div>
     <header class="header">
+        @if(isset($erro))
+            <script>
+                alert('{{ $erro }}');
+            </script>
+        @endif
         <div class="brand">
             <div class="logo wobble"><img src="{{ asset('css/SPODRAO.png') }}" alt="Logo Shrek"  width="auto" height="80"></div>
             <span>Podrão do Shrek</span>
@@ -25,7 +30,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -38,7 +43,6 @@
             
         </nav>
     </header>
-
     <main class="container">
         <section class="hero">
             <div>
@@ -63,13 +67,13 @@
                     <tbody>
                         @forelse($cidades as $cidade)
                             <tr>
-                                <td>{{ $cidade->id}}</td>
-                                <td>{{ $cidade->nomeCIDADE }}</td>
+                                <td>{{ $cidade->cod_cidade}}</td>
+                                <td>{{ $cidade->nome }}</td>
                                 <td>{{ $cidade->uf }}</td>
                                 <td>
 
-                                    <a href="{{ route('cidades.edit', $cidade->id) }}" class="btn btn--ghost">Editar</a>
-                                    <form action="{{ route('cidades.destroy', $cidade->id) }}" method="POST" style="display:inline;">
+                                    <a href="{{ route('cidades.edit', ['id' => $cidade->cod_cidade]) }}" class="btn btn--ghost">Editar</a>
+                                    <form action="{{ route('cidades.destroy', ['id' => $cidade->cod_cidade]) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir esta cidade?')">Excluir</button>
@@ -85,7 +89,7 @@
                 </table>
 
                 <div class="btn-group" style="margin-top: 20px;">
-                    <a href="{{ route('cidades.create') }}" class="btn btn--shrek slime-drop">➕ Nova Cidade</a>
+                    <a href="{{ route('cidades.cadastrar') }}" class="btn btn--shrek slime-drop">➕ Nova Cidade</a>
                 </div>
             </div>
         </section>

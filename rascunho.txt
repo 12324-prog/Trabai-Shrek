@@ -1,0 +1,36 @@
+Route::post('/itens_pedido/cadastrar/add', function (Request $request) {
+
+    $itens_pedido = new Itens_pedidos;
+    $ingredientes = new Ingredientes;
+    $pedidos = new Pedidos;
+    $pratos = new Pratos;
+
+    $item_pedido = null;
+
+    $pedidos = $pedidos->listarPedidos();
+    $pratos = $pratos->listarPratos();
+
+    $itens_pedido->cod_pedido = $request->input('cod_pedido');
+    $itens_pedido->cod_prato = $request->input('cod_prato');
+    $itens_pedido->quantidade = $request->input('quantidade');
+    $itens_pedido->datahora = $request->input('data_horaITEMPEDIDO');
+    
+    $erro = null;
+    $ingredientes = $ingredientes->buscarIngredientes_cod_pedido($itens_pedido->cod_prato);
+    foreach ($ingredientes as $ingrediente)
+    {
+        $nova_quantidade = ($ingrediente->quantidade_estoque - $itens_pedido->quantidade);
+        if ($nova_quantidade <= 0 || $ingrediente->quantidade_estoque == 0)
+        {
+            $erro = "Quantidade de ingredientes insuficiente";
+        }
+
+    }
+    if(!isset($erro))
+    {
+        $itens_pedido->gravar();
+    }
+    
+    return view('Itens Pedido/CADitens_pedido',
+    ['item_pedido'=>$item_pedido, 'pedidos'=>$pedidos, 'pratos'=>$pratos, 'erro'=>$erro]);
+})->name('itens_pedido.store');

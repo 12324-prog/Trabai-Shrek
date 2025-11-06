@@ -4,7 +4,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Database\Eloquent\Model;
 
-    class Pedidos extends Model {
+    class Pratos extends Model {
 
         public $descricao;
 
@@ -16,7 +16,7 @@
 
             $listaPratosDoBanco = DB::select('SELECT * FROM pratos ORDER BY cod_prato DESC');
 
-            return $listaPratosDoBanco;
+            return $listaPratosDoBanco ?? null;
 
         }
 
@@ -45,10 +45,12 @@
         public function gravar (){
             DB::insert('INSERT INTO pratos 
                 (descricao,
-                taxa_prato)
-                VALUES (?,?)', 
+                taxa_prato,
+                valor_unitario)
+                VALUES (?,?,?)', 
                 [ 
                     $this->descricao,
+                    $this->taxa_prato,
                     $this->taxa_prato
                 ]
             );
@@ -65,7 +67,7 @@
 
             DB::unprepared(
                 'CREATE TRIGGER update_pratos
-                AFTER UPDATE ON pratos
+                BEFORE UPDATE ON pratos
                 FOR EACH ROW
                 BEGIN
                     IF (OLD.taxa_prato <> NEW.taxa_prato)
@@ -88,7 +90,7 @@
 
             DB::unprepared(
                 'CREATE TRIGGER delete_pratos
-                AFTER DELETE ON pratos
+                BEFORE DELETE ON pratos
                 FOR EACH ROW
                 BEGIN
                     UPDATE pedidos AS p INNER JOIN itens_pedido AS ip ON (p.cod_pedido = ip.cod_pedido)

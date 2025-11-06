@@ -10,7 +10,9 @@
         public $cod_fornecedor;
 
         public function listarCompra(){
-            $listarComprasDoBanco = DB::select('SELECT * FROM compras ORDER BY cod_compra DESC');
+            $listarComprasDoBanco = DB::select('SELECT * FROM compras as c JOIN (SELECT cod_fornecedor, nome_social FROM fornecedores) as f 
+            ON (c.cod_fornecedor = f.cod_fornecedor)
+            ORDER BY cod_compra DESC');
             return $listarComprasDoBanco;
         }
         public function inserirCompra(){

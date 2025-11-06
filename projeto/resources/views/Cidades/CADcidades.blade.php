@@ -12,6 +12,11 @@
 <body>
     <div class="swamp-anim"></div>
     <header class="header">
+        @if(isset($erro))
+            <script>
+                alert('{{ $erro }}');
+            </script>
+        @endif
         <div class="brand">
             <div class="logo wobble"><img src="{{ asset('css/SPODRAO.png') }}" alt="Logo Shrek"  width="auto" height="80"></div>
             <span>Podrão do Shrek</span>
@@ -25,7 +30,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -46,17 +51,17 @@
                 <p class="highlight">Adicione novas cidades ao mapa do pântano! Assim o Podrão do Shrek chega mais longe (e ninguém fica sem lanche).</p>
             </div>
             <div class="card">
-                <form action="{{ route('cidades.store') }}" method="POST" class="form-qa">
+                <form action="{{ $cidade ? route('cidades.update', ['id'=>$cidade->cod_cidade]) : route('cidades.store') }}" method="POST" class="form-qa">
                     @csrf
                     <div class="question">
                         <div class="q-bubble">Nome</div>
-                        <div class="answer"><input type="text" id="nomeCIDADE" name="nomeCIDADE" required></div>
+                        <div class="answer"><input type="text" id="nomeCIDADE" name="nomeCIDADE" value="{{$cidade->nome ?? ''}}" required></div>
                     </div>              
                     <div class="question">
                         <div class="q-bubble">Uf</div>
-                        <div class="answer"><input type="text" id="uf" name="uf" required></div>
+                        <div class="answer"><input type="text" id="uf" name="uf" value="{{$cidade->uf ?? ''}}" required></div>
                     </div>     
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{$cidade ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
             </div>
         </section>

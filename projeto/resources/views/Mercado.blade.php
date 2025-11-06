@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -54,17 +54,15 @@
         <div class="thumb">🍅</div>
         <div class="info">
             <h4>Tomate</h4>
-            <p>Fresco e vermelho, a paixão do Burro.</p>
-
+            <p>Fresco e vermelho, a paixão do Burro.</p> 
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
+            </select>
             </div>
-            </div>
-
             <div class="qtd">
             <label for="tomate-qtd">Quantidade:</label>
             <input type="number" id="tomate-qtd" min="1" value="1">
@@ -81,12 +79,12 @@
             <p>Cremoso e irresistível, direto do reino de Tão Tão Distante.</p>
 
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
 
             <div class="qtd">
@@ -103,12 +101,12 @@
             <p>Alfaces Verdinhos e Crocantes, de confiança da Fiona.</p>
 
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
 
             <div class="qtd">
@@ -124,12 +122,12 @@
             <h4>Bacon</h4>
             <p>Bacon crocante digno de uma refeição no pântano. Shrek aprova!</p>
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
             <div class="qtd">
             <label for="bacon-qtd">Quantidade:</label>
@@ -144,12 +142,12 @@
             <h4>Ketchup</h4>
             <p>Ketchup vermelho do pântano, feito só com tomate topzera.</p>
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
             <div class="qtd">
             <label for="ketchup-qtd">Quantidade:</label>
@@ -164,12 +162,12 @@
             <h4>Maionese</h4>
             <p>Maionese cremosa feita na mão, receita secreta do Pinóquio.</p>
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
             <div class="qtd">
             <label for="maionese-qtd">Quantidade:</label>
@@ -184,12 +182,12 @@
             <h4>Pão</h4>
             <p>Pão fofinho, recém saído do forno do ogro. Gato de Botas já comeu três!</p>
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
             <div class="qtd">
             <label for="pao-qtd">Quantidade:</label>
@@ -204,12 +202,12 @@
             <h4>Carne</h4>
             <p>Carne suculenta, gigante, para burger que faz jus ao Shrek.</p>
             <div class="dropdown">
-            <button class="dropbtnM">Selecionar Fornecedor</button>
-            <div class="dropdown-content">
+            Fornecedor:
+            <select class="dropbtnM" name="cod_fornecedor">
                 @foreach($fornecedores as $fornecedor)
-                <a href="#" data-fornecedor-id="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</a>
+                <option value="{{ $fornecedor->cod_fornecedor }}">{{ $fornecedor->nome_social }}</option>
                 @endforeach
-            </div>
+            </select>
             </div>
             <div class="qtd">
             <label for="carne-qtd">Quantidade:</label>

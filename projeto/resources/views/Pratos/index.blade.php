@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -50,7 +50,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Descrição</th>                       
+                            <th>Descrição</th> 
+                            <th>Taxa</th>        
                             <th>Valor Unitário (R$)</th>
                             <th>Ações</th>
                         </tr>
@@ -59,11 +60,12 @@
                         @forelse($pratos as $prato)
                         <tr>
                             <td>{{ $prato->cod_prato }}</td>
-                            <td>{{ $prato->descricaoPRATO }}</td>
-                            <td>{{ number_format($prato->valorUnitarioPRATO, 2, ',', '.') }}</td>
+                            <td>{{ $prato->descricao }}</td>
+                            <td>{{ $prato->taxa_prato }}</td>
+                            <td>{{ number_format($prato->valor_unitario, 2, ',', '.') }}</td>
                             <td class="acoes">
-                                <a href="{{ route('pratos.edit', $prato->cod_prato) }}" class="btn btn--ghost">Editar</a>
-                                <form action="{{ route('pratos.destroy', $prato->cod_prato) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('pratos.edit', ['id'=>$prato->cod_prato]) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('pratos.destroy', ['id'=>$prato->cod_prato]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este prato?')">Excluir</button>
@@ -80,7 +82,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{{ route('pratos.create') }}" class="btn btn--shrek slime-drop"> + Novo Prato</a>
+                <a href="{{ route('pratos.cadastrar') }}" class="btn btn--shrek slime-drop"> + Novo Prato</a>
             </div>
         </section>
     </main>

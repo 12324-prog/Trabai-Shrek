@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -52,7 +52,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Data</th>
-                            <th>Nota Fiscal</th>
                             <th>Valor Total (R$)</th>
                             <th>Fornecedor</th>
                             <th>Ações</th>
@@ -62,12 +61,12 @@
                         @forelse($compras as $compra)
                         <tr>
                             <td>{{ $compra->cod_compra }}</td>
-                            <td>{{ \Carbon\Carbon::parse($compra->dataCOMPRA)->format('d/m/Y') }}</td>
-                            <td>{{ number_format($compra->valorTotalCOMPRA ?? $compra->valor_total, 2, ',', '.') }}</td>
-                            <td>{{ $compra->fornecedor->nomeF ?? 'N/A' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($compra->data)->format('d/m/Y') }}</td>
+                            <td>{{ number_format($compra->valor_total, 2, ',', '.') }}</td>
+                            <td>{{ $compra->nome_social ?? 'N/A' }}</td>
                             <td class="acoes">
-                                <a href="{{ route('compras.edit', $compra->cod_compra) }}" class="btn btn--ghost">Editar</a>
-                                <form action="{{ route('compras.destroy', $compra->cod_compra) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('compras.edit', ['id'=>$compra->cod_compra]) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('compras.destroy', ['id'=>$compra->cod_compra]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir esta compra?')">Excluir</button>
@@ -84,7 +83,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{{ route('compras.create') }}" class="btn btn--shrek slime-drop"> + Nova Compra</a>
+                <a href="{{ route('compras.cadastrar') }}" class="btn btn--shrek slime-drop"> + Nova Compra</a>
             </div>
         </section>
     </main>

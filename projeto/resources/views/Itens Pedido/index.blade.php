@@ -12,6 +12,11 @@
 <body>
     <div class="swamp-anim"></div>
     <header class="header">
+        @if(isset($erro))
+            <script>
+                alert('{{ $erro }}');
+            </script>
+        @endif
         <div class="brand">
             <div class="logo wobble"><img src="{{ asset('css/SPODRAO.png') }}" alt="Logo Shrek"  width="auto" height="80"></div>
             <span>Podrão do Shrek</span>
@@ -25,7 +30,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -60,17 +65,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($itenspedido as $item)
+                        @forelse($itens_pedido as $item)
                         <tr>
                             <td>{{ $item->cod_item }}</td>
                             <td>#{{ $item->cod_pedido }}</td>
-                            <td>{{ $item->cod_prato }}</td>
+                            <td>{{ $item->descricao }}</td>
                             <td>{{ $item->quantidade }}</td>
                             <td>{{ number_format($item->valor_unitario, 2, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->data_horaITEMPEDIDO)->format('d/m/Y H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->data_hora)->format('d/m/Y H:i') }}</td>
                             <td class="acoes">
-                                <a href="{{ route('itens_pedido.edit', $item->cod_item) }}" class="btn btn--ghost">Editar</a>
-                                <form action="{{ route('itens_pedido.destroy', $item->cod_item) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('itens_pedido.edit', ['id'=>$item->cod_item]) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('itens_pedido.destroy', ['id'=>$item->cod_item]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este item?')">Excluir</button>
@@ -87,7 +92,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{{ route('itens_pedido.create') }}" class="btn btn--shrek slime-drop"> + Novo Item do Pedido</a>
+                <a href="{{ route('itens_pedido.cadastrar') }}" class="btn btn--shrek slime-drop"> + Novo Item do Pedido</a>
             </div>
         </section>
     </main>

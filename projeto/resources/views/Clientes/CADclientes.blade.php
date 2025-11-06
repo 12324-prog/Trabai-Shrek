@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -46,39 +46,47 @@
                 <p class="highlight">Cadastre novos clientes famintos! Porque todo mundo merece experimentar o sabor lendário do Podrão do Shrek.</p>
             </div>
             <div class="card">
-                <form action="{{ route('clientes.store') }}" method="POST" class="form-qa">
+                <form action="{{ $cliente ? route('clientes.update',['id'=>$cliente->cod_cliente]) : route('clientes.store') }}" method="POST" class="form-qa">
                     @csrf
                     <div class="question">
                         <div class="q-bubble">Nome</div>
-                        <div class="answer"><input type="text" id="nomeCLIENTE" name="nomeCLIENTE" required></div>
+                        <div class="answer"><input type="text" id="nomeCLIENTE" name="nomeCLIENTE" value="{{$cliente->nome ?? ''}}" required></div>
                     </div>     
 
                     <div class="question">
                         <div class="q-bubble">Endereço</div>
-                        <div class="answer"><input type="text" id="enderecoCLIENTE" name="endereco" required></div>
+                        <div class="answer"><input type="text" id="enderecoCLIENTE" name="endereco" value="{{$cliente->endereco ?? ''}}" required></div>
                     </div> 
 
                     <div class="question">
                         <div class="q-bubble">Número</div>
-                        <div class="answer"><input type="text" id="numeroCLIENTE" name="numeroCLIENTE" required></div>
+                        <div class="answer"><input type="text" id="numeroCLIENTE" name="numeroCLIENTE" value="{{$cliente->numero ?? ''}}" required></div>
                     </div>   
 
                     <div class="question">
                         <div class="q-bubble">Bairro</div>
-                        <div class="answer"><input type="text" id="bairro" name="bairro" required></div>
+                        <div class="answer"><input type="text" id="bairro" name="bairro" value="{{$cliente->bairro ?? ''}}" required></div>
                     </div>
 
                     <div class="question">
                         <div class="q-bubble">Cidade</div>
-                        <div class="answer"><input type="text" id="cidadeCLIENTE" name="cidadeCLIENTE" required></div>
+                        <div class="answer">
+                            <select name="cidadeCLIENTE" required>
+                                <option value="">Selecione uma Cidade</option>
+                                @foreach($cidades as $cidade)
+                                <option value="{{ $cidade->cod_cidade }}" {{$cliente && $cliente->cod_cidade == $cidade->cod_cidade ? 'selected' : '' }} >{{ $cidade->nome }}</option>
+                                @endforeach
+                            </select>
+                            <!--{{$cliente && $cliente->cod_cidade == $cidade->cod_cidade ? 'selected' : '' }}-->
+                        </div>
                     </div>
 
                     <div class="question">
                         <div class="q-bubble">Celular</div>
-                        <div class="answer"><input type="tel" id="celularCLIENTE" name="celularCLIENTE" required></div>
+                        <div class="answer"><input type="tel" id="celularCLIENTE" name="celularCLIENTE" value="{{$cliente->celular ?? ''}}" required></div>
                     </div> 
                     
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{$cliente ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
             </div>
         </section>

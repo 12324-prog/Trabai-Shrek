@@ -4,7 +4,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Database\Eloquent\Model;
 
-    class Pedidos extends Model {
+    class Itens_pedidos extends Model {
 
         public $cod_pedido;
 
@@ -18,7 +18,9 @@
 
         public function listarItens_Pedido(){
 
-            $listaItem_PedidoDoBanco = DB::select('SELECT * FROM itens_pedido ORDER BY cod_item DESC');
+            $listaItem_PedidoDoBanco = DB::select(
+                'SELECT * FROM itens_pedido as ip JOIN (SELECT cod_prato, descricao FROM pratos) as p ON (ip.cod_prato = p.cod_prato)
+                ORDER BY cod_item DESC');
 
             return $listaItem_PedidoDoBanco;
 
@@ -26,15 +28,14 @@
 
 public function atualizarItens_Pedido($id) {
     return DB::update('UPDATE itens_pedido SET
+        cod_pedido = ?,
         cod_prato = ?,
-        quantidade = ?,
-        datahora = ?
+        quantidade = ?
         WHERE cod_item = ?',
         [
             $this->cod_pedido,
             $this->cod_prato,
             $this->quantidade,
-            $this->datahora,
             $id
         ]
     );
@@ -55,15 +56,15 @@ public function atualizarItens_Pedido($id) {
                 cod_prato,
                 quantidade,
                 valor_unitario,
-                datahora)
+                data_hora)
                 VALUES (?,?,?,?,?)', 
                 [ 
-                    DB::select('SELECT MAX(cod_pedido) as codmax FROM pedidos')[0]->codmax,
+                    $this->cod_pedido,
                     $this->cod_prato,
                     $this->quantidade,
                     DB::select('SELECT valor_unitario 
                     FROM pratos AS p WHERE p.cod_prato = '.$this->cod_prato)[0]->valor_unitario,
-                    $this->datahora
+                    now()
                 ]
             );
         }

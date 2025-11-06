@@ -46,6 +46,15 @@
 
         }
 
+        public function buscarIngredientes_cod_pedido($cod_prato){
+
+            $IngredientesDoBanco = DB::select('SELECT descricao, quantidade_estoque, cod_prato FROM ingredientes as i
+            JOIN composicao as c ON (i.cod_ingrediente = c.cod_ingrediente) 
+            WHERE cod_prato = ?', [$cod_prato]);
+
+            return $IngredientesDoBanco;
+        }
+
         public function gravar (){
 
             DB::insert('INSERT INTO ingredientes (descricao, quantidade_estoque, valor_unitario)

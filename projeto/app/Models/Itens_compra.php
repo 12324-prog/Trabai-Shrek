@@ -3,7 +3,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Database\Eloquent\Model;
 
-    class Itens_Compra{
+    class Itens_compra{
         public $cod_item;
         public $cod_ingrediente;
         public $cod_compra;
@@ -11,16 +11,18 @@
         public $valor_unitario;
 
         public function listarItensCompra(){
-            return DB::select('SELECT * FROM itens_compra ORDER BY cod_item DESC');
+            return DB::select('SELECT * FROM itens_compra as ic JOIN (SELECT cod_ingrediente, descricao FROM ingredientes) as i 
+            ON (ic.cod_ingrediente = i.cod_ingrediente) 
+            ORDER BY cod_item DESC');
         }
         public function inserirItemCompra(){
             DB::insert('INSERT INTO itens_compra
             (cod_ingrediente, cod_compra, quantidade, valor_unitario)
             VALUES (?, ?, ?, ?)', [
                 $this->cod_ingrediente,
-                DB::select('SELECT MAX(cod_compra) as codmax FROM compras')[0]->codmax,
+                $this->cod_compra,
                 $this->quantidade,
-                $this->valor_unitario
+                DB::select('SELECT valor_unitario FROM ingredientes WHERE (cod_ingrediente = '.$this->cod_ingrediente.')')[0]->valor_unitario
             ]);
         }
         public function buscarItemCompra($cod_item)
@@ -30,12 +32,11 @@
         }
         public function atualizarItemCompra($cod_item){
             DB::update('UPDATE itens_compra
-            SET cod_ingrediente = ?, cod_compra = ?, quantidade = ?, valor_unitario = ?
+            SET cod_ingrediente = ?, quantidade = ?, valor_unitario = ?
             WHERE cod_item = ?', [
                 $this->cod_ingrediente,
-                $this->cod_compra,
                 $this->quantidade,
-                $this->valor_unitario,
+                DB::select('SELECT valor_unitario FROM ingredientes WHERE (cod_ingrediente = '.$this->cod_ingrediente.')')[0]->valor_unitario,
                 $cod_item
             ]);
         }

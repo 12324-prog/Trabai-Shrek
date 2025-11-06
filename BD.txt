@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS fornecedores (
 CREATE TABLE IF NOT EXISTS ingredientes (
                 cod_ingrediente INT AUTO_INCREMENT PRIMARY KEY,
                 descricao VARCHAR(100),
-                quantidade_estoque DECIMAL(10,2) DEFAULT 0,
+                quantidade_estoque INT DEFAULT 0,
                 valor_unitario DECIMAL(10,2)
             );
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS itens_compra (
                 cod_item INT AUTO_INCREMENT PRIMARY KEY,
                 cod_ingrediente INT,
                 cod_compra INT,
-                quantidade DECIMAL(10,2),
+                quantidade INT,
                 valor_unitario DECIMAL(10,2),
                 FOREIGN KEY (cod_ingrediente) REFERENCES ingredientes(cod_ingrediente),
                 FOREIGN KEY (cod_compra) REFERENCES compras(cod_compra)
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS itens_pedido (
                 cod_item INT AUTO_INCREMENT PRIMARY KEY,
                 cod_pedido INT,
                 cod_prato INT,
-                quantidade DECIMAL(10,2),
+                quantidade INT,
                 valor_unitario DECIMAL(10,2),
                 data_hora DATETIME,
                 FOREIGN KEY (cod_pedido) REFERENCES pedidos(cod_pedido),

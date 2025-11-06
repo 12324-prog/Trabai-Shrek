@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -65,8 +65,8 @@
                             <td>{{ $ingrediente->quantidade_estoque }}</td>
                             <td>R$ {{ number_format($ingrediente->valor_unitario, 2, ',', '.') }}</td>
                             <td class="acoes">
-                                <a href="{{ route('ingredientes.edit', $ingrediente->cod_ingrediente) }}" class="btn btn--ghost">Editar</a>
-                                <form action="{{ route('ingredientes.destroy', $ingrediente->cod_ingrediente) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('ingredientes.edit', ['id'=>$ingrediente->cod_ingrediente]) }}" class="btn btn--ghost">Editar</a>
+                                <form action="{{ route('ingredientes.destroy', ['id'=>$ingrediente->cod_ingrediente]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn--slime" onclick="return confirm('Tem certeza que deseja excluir este ingrediente?')">Excluir</button>
@@ -83,7 +83,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: 20px;">
-                <a href="{{ route('ingredientes.create') }}" class="btn btn--shrek slime-drop">+ Novo Ingrediente</a>
+                <a href="{{ route('ingredientes.cadastrar') }}" class="btn btn--shrek slime-drop">+ Novo Ingrediente</a>
             </div>
         </section>
     </main>

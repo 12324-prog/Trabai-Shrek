@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -48,17 +48,18 @@
             </div>
 
             <div class="card">
-                <form action="{{ route('itenscompra.store') }}" method="POST" class="form-qa">
+                <form action="{{ $item_compra ? route('itens_compra.update', ['id'=>$item_compra->cod_item]) : route('itens_compra.store') }}" method="POST" class="form-qa">
                     @csrf
 
                     <div class="question">
                         <div class="q-bubble">Compra</div>
                         <div class="answer">
-                            <select id="compra_id" name="compra_id" required>
-                                <option value="">Selecione a compra</option>
+                            <select id="cod_compra" name="cod_compra" required>
+                                <option value="">Selecione uma compra</option>
                                 @foreach($compras as $compra)
-                                    <option value="{{ $compra->id }}">
-                                        {{ $compra->notafiscal }} — {{ \Carbon\Carbon::parse($compra->dataCOMPRA)->format('d/m/Y') }}
+                                    <option value="{{ $compra->cod_compra }}" 
+                                    {{$item_compra && $item_compra->cod_compra == $compra->cod_compra ? 'selected' : '' }} >
+                                        {{ $compra->cod_compra }}
                                     </option>
                                 @endforeach
                             </select>
@@ -69,10 +70,11 @@
                         <div class="q-bubble">Ingrediente</div>
                         <div class="answer">
                             <select id="ingrediente_id" name="ingrediente_id" required>
-                                <option value="">Selecione um ingrediente</option>
+                                <option value="">Selecione um Ingrediente</option>
                                 @foreach($ingredientes as $ingrediente)
-                                    <option value="{{ $ingrediente->id }}">
-                                        {{ $ingrediente->descricaoINGREDIENTE }}
+                                    <option value="{{ $ingrediente->cod_ingrediente }}" 
+                                    {{$item_compra && $item_compra->cod_ingrediente == $ingrediente->cod_ingrediente ? 'selected' : '' }} >
+                                        {{ $ingrediente->descricao }} - Valor: R${{ $ingrediente->valor_unitario }}
                                     </option>
                                 @endforeach
                             </select>
@@ -82,20 +84,15 @@
                     <div class="question">
                         <div class="q-bubble">Quantidade</div>
                         <div class="answer">
-                            <input type="number" step="0.01" id="quantidadeITEMCOMPRA" name="quantidadeITEMCOMPRA" required>
+                            <input type="number" step="0.01" id="quantidadeITEMCOMPRA" name="quantidadeITEMCOMPRA" value="{{$item_compra ?? ''}}" required>
                         </div>
                     </div>
 
-                    <div class="question">
-                        <div class="q-bubble">Valor Unitário</div>
-                        <div class="answer">
-                            <input type="number" step="0.01" id="valorUnitarioITEMCOMPRA" name="valorUnitarioITEMCOMPRA" required>
-                        </div>
-                    </div>
-
-
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{ $item_compra ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
+                <div class="btn-group">
+                    <a href="{{ route('itens_compra.index') }}" class="btn btn--slime">Finalizar Compra</a>
+                </div>
             </div>
         </section>
     </main>

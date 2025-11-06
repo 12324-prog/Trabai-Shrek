@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -46,18 +46,8 @@
                 <p class="highlight">Mantenha o controle das compras do reino! Registre o que foi adquirido para garantir que o estoque do pântano esteja sempre cheio.</p>
             </div>
             <div class="card">
-                <form action="{{ route('compras.store') }}" method="POST" class="form-qa">
-                    @csrf
-
-                    <div class="question">
-                        <div class="q-bubble">Data</div>
-                        <div class="answer"><input type="date" id="dataCOMPRA" name="dataCOMPRA" required></div>
-                    </div>              
-
-                    <div class="question">
-                        <div class="q-bubble">Valor Total</div>
-                        <div class="answer"><input type="number" step="0.01" id="valorTotalCOMPRA" name="valorTotalCOMPRA" required></div>
-                    </div>
+                <form action="{{ $compra ? route('compras.update', ['id'=>$compra->cod_compra]) : route('compras.store') }}" method="POST" class="form-qa">
+                    @csrf           
 
                     <div class="question">
                         <div class="q-bubble">Fornecedor</div>
@@ -65,15 +55,15 @@
                             <select id="fornecedor_id" name="fornecedor_id" required>
                                 <option value="">Selecione um Fornecedor</option>
                                 @foreach($fornecedores as $fornecedor)
-                                    <option value="{{ $fornecedor->id }}">
-                                        {{ $fornecedor->nomeF }} 
+                                    <option value="{{ $fornecedor->cod_fornecedor }}" {{$compra && $compra->cod_fornecedor == $fornecedor->cod_fornecedor ? 'selected' : '' }} >
+                                        {{ $fornecedor->nome_social }} 
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>     
 
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{$compra ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
             </div>
         </section>

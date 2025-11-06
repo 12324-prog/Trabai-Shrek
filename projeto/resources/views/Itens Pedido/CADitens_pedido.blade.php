@@ -12,6 +12,11 @@
 <body>
     <div class="swamp-anim"></div>
     <header class="header">
+        @if(isset($erro))
+            <script>
+                alert('{{ $erro }}');
+            </script>
+        @endif
         <div class="brand">
             <div class="logo wobble"><img src="{{ asset('css/SPODRAO.png') }}" alt="Logo Shrek"  width="auto" height="80"></div>
             <span>Podrão do Shrek</span>
@@ -25,7 +30,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -49,17 +54,18 @@
             </div>
 
             <div class="card">
-                <form action="{{ route('itens_pedido.store') }}" method="POST" class="form-qa">
+                <form action="{{ $item_pedido ? route('itens_pedido.update',['id'=>$item_pedido->cod_item]) : route('itens_pedido.store') }}" method="POST" class="form-qa">
                     @csrf
 
                     <div class="question">
                         <div class="q-bubble">Pedido</div>
                         <div class="answer">
                             <select id="cod_pedido" name="cod_pedido" required>
-                                <option value="">Selecione um pedido</option>
+                                <option value="">Selecione um Pedido</option>
                                 @foreach($pedidos as $pedido)
-                                    <option value="{{ $pedido->cod_pedido }}">
-                                        Pedido #{{ $pedido->cod_pedido }} - Cliente: {{ $pedido->cliente->nome ?? 'N/A' }}
+                                    <option value="{{ $pedido->cod_pedido }}" 
+                                    {{$item_pedido && $item_pedido->cod_pedido == $pedido->cod_pedido ? 'selected' : '' }}>
+                                    Pedido #{{ $pedido->cod_pedido }} - Cliente: {{ $pedido->nome ?? 'N/A' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -70,9 +76,9 @@
                         <div class="q-bubble">Prato</div>
                         <div class="answer">
                             <select id="cod_prato" name="cod_prato" required>
-                                <option value="">Selecione um prato</option>
+                                <option value="">Selecione um Pedido</option>
                                 @foreach($pratos as $prato)
-                                    <option value="{{ $prato->cod_prato }}">{{ $prato->descricao }}</option>
+                                    <option value="{{ $prato->cod_prato }}" {{$item_pedido && $item_pedido->cod_prato == $prato->cod_prato ? 'selected' : '' }}>{{ $prato->descricao }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -81,26 +87,15 @@
                     <div class="question">
                         <div class="q-bubble">Quantidade</div>
                         <div class="answer">
-                            <input type="number" step="0.01" id="quantidade" name="quantidade" required>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Valor Unitário (R$)</div>
-                        <div class="answer">
-                            <input type="number" step="0.01" id="valor_unitario" name="valor_unitario" required>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="q-bubble">Data e Hora</div>
-                        <div class="answer">
-                            <input type="datetime-local" id="data_horaITEMPEDIDO" name="data_horaITEMPEDIDO" required>
+                            <input type="number" step="0.01" id="quantidade" name="quantidade" value="{{$item_pedido->quantidade ?? ''}}" required>
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{$item_pedido ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
+                <div class="btn-group">
+                    <a href="{{ route('itens_pedido.index') }}" class="btn btn--slime">Finalizar Pedido</a>
+                </div>
             </div>
         </section>
     </main>
@@ -111,7 +106,7 @@
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <btn id="btn-ajuda" class="btn btn--ghost">Ajuda</btn>
-            <a href="{{ route('itens_pedido.index') }}" class="btn btn--slime">Ver Itens dos Pedidos</button>
+            <a href="{{ route('itens_pedido.index') }}" class="btn btn--slime">Ver Itens dos Pedidos</a>
         </div>
     </footer>
 

@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -47,20 +47,20 @@
             </div>
 
             <div class="card">
-                <form action="{{ route('pratos.store') }}" method="POST" class="form-qa">
+                <form action="{{$prato ? route('pratos.update', ['id'=>$prato->cod_prato]) : route('pratos.store') }}" method="POST" class="form-qa">
                     @csrf
 
                     <div class="question">
                         <div class="q-bubble">Descrição</div>
-                        <div class="answer"><input type="text" id="descricaoPRATO" name="descricaoPRATO" required></div>
+                        <div class="answer"><input type="text" id="descricaoPRATO" name="descricaoPRATO" value="{{$prato->descricao ?? ''}}" required></div>
                     </div> 
 
                     <div class="question">
-                        <div class="q-bubble">Valor Unitário</div>
-                        <div class="answer"><input type="number" step="0.01" id="valorUnitarioPRATO" name="valorUnitarioPRATO" required>
+                        <div class="q-bubble">Taxa</div>
+                        <div class="answer"><input type="number" step="0.01" id="taxaPRATO" name="taxaPRATO" value="{{$prato->taxa_prato ?? ''}}" required>
                     </div>   
 
-                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">{{$prato ? 'Atualizar' : 'Cadastrar'}}</button>
                 </form>
             </div>
         </section>

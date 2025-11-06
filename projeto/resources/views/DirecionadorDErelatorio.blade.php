@@ -25,7 +25,7 @@
                     <a href="{{ route('ingredientes.cadastrar') }}">Ingredientes</a>
                     <a href="{{ route('pratos.cadastrar') }}">Pratos</a>
                     <a href="{{ route('compras.cadastrar') }}">Compras</a>
-                    <a href="{{ route('itens_compra.cadastrar') }}">Itens das Compras</a>
+                    <a href="{{ route('itens_compra.cadastrar') }}">Itens de Compra</a>
                     <a href="{{ route('pedidos.cadastrar') }}">Pedidos</a>
                     <a href="{{ route('itens_pedido.cadastrar') }}">Itens dos Pedidos</a>
                     <a href="{{ route('clientes.cadastrar') }}">Clientes</a>
@@ -55,6 +55,7 @@
                 <a href="{{ route('clientes.index') }}" class="btn btn--shrek slime-drop">Relatório Clientes</a>
                 <a href="{{ route('cidades.index') }}" class="btn btn--shrek slime-drop">Relatório Cidades</a>
                 <a href="{{ route('pratos.index') }}" class="btn btn--shrek slime-drop">Relatório Pratos</a>
+                <a href="{{ route('ingredientes.index') }}" class="btn btn--shrek slime-drop">Relatório Ingredientes</a>
             </div>
 
         </section>

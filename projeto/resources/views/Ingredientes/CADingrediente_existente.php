@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Pedidos - Podrão do Shrek</title>
+    <title>Cadastrar Ingredientes - Podrão do Shrek</title>
     <link rel="stylesheet" href="{{ asset('css/PodraoPadrao.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,61 +42,45 @@
     <main class="container">
         <section class="hero">
             <div>
-                <h1 class="title">Cadastrar Pedido</h1>
+                <h1 class="title">Cadastrar Ingrediente</h1>
                 <p class="highlight">
-                    Registre um novo pedido para o Podrão do Shrek! Escolha o cliente, tipo e informações de entrega.
+                    Liste todos os ingredientes necessários para as delícias do pântano! 
+                    Sem eles, o podrão perde a graça (e o tempero).
                 </p>
             </div>
 
             <div class="card">
-                <form action="{{ $pedido ? route('pedidos.update', ['id'=>$pedido->cod_pedido]) : route('pedidos.store') }}" method="POST" class="form-qa">
+                <form action="{{ route('composicao.store') }}" method="POST" class="form-qa">
                     @csrf
 
                     <div class="question">
-                        <div class="q-bubble">Cliente</div>
+                        <div class="q-bubble">Ingrediente</div>
                         <div class="answer">
-                            <select id="cod_cliente" name="cod_cliente" required>
-                                <option value="">Selecione um Cliente</option>
-                                @foreach($clientes as $cliente)
-                                    <option value="{{ $cliente->cod_cliente }}" 
-                                    {{$pedido && $pedido->cod_cliente == $cliente->cod_cliente ? 'selected' : '' }} >{{ $cliente->nome }}</option>
+                            <select name="cod_ingrediente" required>
+                                <option value="">Selecione uma Ingrediente</option>
+                                @foreach($ingredientes as $ingrediente)
+                                <option value="{{ $ingrediente->cod_ingrediente }}">{{ $ingrediente->descricao }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="question">
-                        <div class="q-bubble">Tipo de Pedido</div>
-                        <div class="answer">
-                            <select id="tipo_pedido" name="tipo_pedido" required>
-                                <option value="1" {{$pedido && $pedido->tipo_pedido == 1 ? 'selected' : '' }} >Delivery (Presencial)</option>
-                                <option value="2" {{$pedido && $pedido->tipo_pedido == 2 ? 'selected' : '' }}>Delivery (Domiciliar)</option>
-                                <option value="3" {{$pedido && $pedido->tipo_pedido == 3 ? 'selected' : '' }}>Atendimento Presencial</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="question">
-                        <div class="q-bubble">Status</div>
-                        <div class="answer">
-                            <input type="radio" id="html" name="encerrado" value="0" {{$pedido && $pedido->encerrado == 0 ? 'checked' : '' }}>
-                            <label for="html">Aberto</label><br>
-                            <input type="radio" id="css" name="encerrado" value="1" {{$pedido && $pedido->encerrado == 1 ? 'checked' : '' }}>
-                            <label for="css">Encerrado</label><br>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn--shrek slime-drop">{{ $pedido ? 'Atualizar' : 'Cadastrar'}}</button>
+                    <button type="submit" class="btn btn--shrek slime-drop">Cadastrar</button>
                 </form>
+                <div class="btn-group">
+                    <a href="{{ route('ingredientes.index') }}" class="btn btn--slime">Finalizar Prato</a>
+                </div>
             </div>
         </section>
     </main>
+
+
 
     <footer class="footer">
         <small>© 2025 Podrão do Shrek — Feito com amor e cebolas 🧅</small>
         <div class="btn-group">
             <btn id="btn-ajuda" class="btn btn--ghost">Ajuda</btn>
-            <a href="{{ route('pedidos.index') }}" class="btn btn--slime">Ver Pedidos</a>
+            <a href="{{ route('ingredientes.index') }}" class="btn btn--slime">Ver Ingredientes</a>
         </div>
     </footer>
     

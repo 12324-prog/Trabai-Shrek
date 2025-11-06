@@ -16,7 +16,9 @@
 
         public function listarPedidos(){
 
-            $listaPedidosDoBanco = DB::select('SELECT * FROM pedidos ORDER BY cod_pedido DESC');
+            $listaPedidosDoBanco = DB::select(
+                'SELECT * FROM pedidos as p JOIN (SELECT cod_cliente, nome FROM clientes) as c ON (p.cod_cliente = c.cod_cliente) 
+                ORDER BY cod_pedido DESC');
 
             return $listaPedidosDoBanco;
 
@@ -24,13 +26,11 @@
 
 public function atualizarPedidos($id) {
     return DB::update('UPDATE pedidos SET
-        datahora = ?,
         cod_cliente = ?,
         tipo_pedido = ?,
         encerrado = ?
         WHERE cod_pedido = ?',
         [
-            $this->datahora,
             $this->cod_cliente,
             $this->tipo_pedido,
             $this->encerrado ?? 0,
@@ -56,7 +56,7 @@ public function atualizarPedidos($id) {
                 encerrado)
                 VALUES (?,?,?,?)', 
                 [ 
-                    $this->datahora = now(),
+                    now(),
                     $this->cod_cliente,
                     $this->tipo_pedido,
                     $this->encerrado ?? 0
@@ -68,6 +68,14 @@ public function atualizarPedidos($id) {
         {
             DB::delete('DELETE FROM pedidos WHERE cod_pedido = ?', [$cod_pedido]);
         }
+
+        //public function buscarUltimoPedido(){
+
+        //    $PedidoMax = DB::select('SELECT MAX(cod_pedido) as pedido_max FROM pedidos');
+
+        //    return $PedidoMax[0];
+
+        //}
 
         public function trigger_apagar()
         {
