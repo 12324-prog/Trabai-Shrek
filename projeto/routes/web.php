@@ -583,7 +583,7 @@ Route::post('/itens_pedido/cadastrar/add', function (Request $request) {
     foreach ($ingredientes as $ingrediente)
     {
         $nova_quantidade = ($ingrediente->quantidade_estoque - $itens_pedido->quantidade);
-        if ($nova_quantidade <= 0 || $ingrediente->quantidade_estoque == 0)
+        if ($nova_quantidade < 0 || $ingrediente->quantidade_estoque == 0)
         {
             $erro = "Quantidade de ingredientes insuficiente";
         }
@@ -628,9 +628,10 @@ Route::post('/itens_pedido/editar/edit', function (Request $request) {
     foreach ($ingredientes as $ingrediente)
     {
         $nova_quantidade = ($ingrediente->quantidade_estoque - $itens_pedido->quantidade);
-        if ($nova_quantidade <= 0 || $ingrediente->quantidade_estoque == 0)
+        if ($nova_quantidade < 0 || $ingrediente->quantidade_estoque == 0)
         {
             $erro = "Quantidade de ingredientes insuficiente";
+            break;
         }
     }
     if(!isset($erro))
