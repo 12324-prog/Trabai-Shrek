@@ -1,4 +1,4 @@
-O seguinte projeto foi fruto de um trabaho exigido pelo docente de Programação WEB. O mesmo tem o objetivo de simular um ambiente cujo desenvolvedores precisam trabalhar em equipe, a fim de produzir um site de cadastro para um restaurante e trabalhar os seguintes pontos:
+O seguinte projeto foi fruto de um trabalho exigido pelo docente de Programação WEB. O mesmo tem o objetivo de simular um ambiente cujo desenvolvedores precisam trabalhar em equipe, a fim de produzir um site de cadastro para um restaurante e trabalhar os seguintes pontos:
 - Versionamento de projetos (GitHub).
 - Organização e segurança em projetos complexos (Laravel).
 - Produção de um banco de dados e triggers (MySQL).
