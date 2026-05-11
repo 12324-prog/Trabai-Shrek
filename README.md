@@ -1,28 +1,36 @@
-O seguinte projeto foi fruto de um trabalho exigido pelo docente de Programação WEB. O mesmo tem o objetivo de simular um ambiente cujo desenvolvedores precisam trabalhar em equipe, a fim de produzir um site de cadastro para um restaurante e trabalhar os seguintes pontos:
-- Versionamento de projetos (GitHub).
-- Organização e segurança em projetos complexos (Laravel).
-- Produção de um banco de dados e triggers (MySQL).
-- Satisfação do usuário (UI/UX).
+# 🍔 Podrão Shrek - Sistema de Gestão de Restaurante
 
-Na produção deste projeto, foram priorizadas as seguintes variáveis:
-- Funcionalidades e automação do banco de dados.
-- Simplicidade e acessibilidade.
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![PHP](https://img.shields.io/badge/php-%23777BB1.svg?style=for-the-badge&logo=php&logoColor=white)
 
-Implementações a serem aplicadas na faze de manutenção:
-- Padronização e simplificação dos metodos de cadastro.
-- Paginação e adição de barras de pesquisa aos relatórios.
+Este projeto foi desenvolvido como requisito para a disciplina de Programação Web. O objetivo principal foi simular um ambiente real de desenvolvimento colaborativo, focando em automação de backend e experiência do usuário.
 
-## Como acessar localmente:
-Para inicializar, será necessário baixar e instalar o <a href="https://sourceforge.net/projects/xampp">XAMPP</a>, o <a href="https://getcomposer.org/download/">Composer</a> e o <a href="https://code.visualstudio.com/">VsCode</a>
+## 🎯 Objetivos do Projeto
+- **Versionamento:** Uso estratégico do GitHub para trabalho em equipe.
+- **Segurança e Organização:** Implementação de arquitetura MVC com framework Laravel.
+- **Banco de Dados Avançado:** Modelagem MySQL com uso de *Triggers* para automação de processos.
+- **UI/UX:** Interface focada na simplicidade e acessibilidade do usuário final.
 
-1. Mova o repositório, já extraido, para a pasta ```htdocs``` no disco onde baixou o XAMPP: <br>
-``` C:\xampp\htdocs ```
+---
 
-2. Abra o XAMPP e ative o ```Apache``` e o ```MySQL```:
-<p align= "center">
-  <img width="663" height="426" alt="image" src="https://github.com/user-attachments/assets/08959f9b-7fdc-454b-9e83-09abb19af2dc" />
-</p>
+## 🛠️ Tecnologias e Ferramentas
+* [XAMPP](https://sourceforge.net/projects/xampp) (Servidor Apache & MySQL)
+* [Composer](https://getcomposer.org/) (Gerenciador de dependências PHP)
+* [PHP 8.x](https://www.php.net/)
+* [Laravel Framework](https://laravel.com/)
 
+---
+
+## 🚀 Como Rodar o Projeto Localmente
+
+### 1. Preparação do Ambiente
+Mova a pasta do projeto para o diretório de arquivos do servidor:
+```bash
+C:\xampp\htdocs\nome-do-projeto
+```
+
+### 2. Configuração do Servidor
 > [!CAUTION]
 > **Observação:** Caso ocorra o erro ```Error: MySQL shutdown unexpectedly```. Siga os passos abaixo:
 > 1. Pare o XAMPP completamente.
@@ -34,20 +42,39 @@ Para inicializar, será necessário baixar e instalar o <a href="https://sourcef
 > 7. Copie o arquivo ```ibdata1``` da pasta ```data_old``` para a nova ```data```, substituindo o existente. <br>
 > **Importante:** Apagar este arquivo pode resultar na perda de seus dados.
 
-3. No MySQL, clique em ```Admin```.
+### 3. Configuração do Banco de Dados
+1. No painel do XAMPP, na linha do MySQL, clique em **Admin**.
+2. No phpMyAdmin, vá na aba **SQL** e execute:
+```bash
+CREATE DATABASE podraoshrek;
+```
+3. Importe os scripts seguindo esta ordem:
+   - Execute o conteúdo do arquivo `DB.sql`.
+   - Execute o conteúdo do arquivo `TriggersDEFINITIVO.txt`.
 
-5. Vá na aba ```SQL``` -> digite ```CREATE DATABASE podraoshrek;``` -> clique em ```Executar```.
-<p align= "center">
-  <img width="1671" height="634" alt="Cria BD" src="https://github.com/user-attachments/assets/b321d1ec-8e9b-4f9f-ad36-3007978a71c0" />
-</p>
+### 4. Inicialização da Aplicação (Laravel)
+Abra o terminal no VS Code dentro da pasta do projeto e execute:
 
-6. Faça o mesmo com o código no arquivo ```DB.sql```, depois com ```TriggersDEFINITIVO.txt```.
+```bash
+# Instalar as dependências do projeto
+composer install
 
-7. Abra o projeto no VsCode ```C:\xampp\htdocs\Trabai-Shrek-backendCauan\projeto```.
+# Criar o arquivo de configuração de ambiente
+cp .env.example .env
 
-8. Acesse o terminal com o atalho ```Ctrl+Shift+'``` e digite ```php artisan serve```.
+# Gerar a chave de segurança da aplicação
+php artisan key:generate
 
+# Iniciar o servidor de desenvolvimento
+php artisan serve
+```
+Acesse o sistema em seu navegador através do endereço: ```http://127.0.0.1:8000```
 
-<p align= "center">
-  <img width="1919" height="1079" alt="Captura de tela 2026-05-11 105040" src="https://github.com/user-attachments/assets/c16c055c-5ec2-4216-b5fe-497c67107ff9" />
-</p>
+---
+
+## 🛠️ Roadmap de Manutenção
+[ ] Refatoração: Padronização e simplificação dos métodos de cadastro.
+
+[ ] Melhorias de UI: Implementação de paginação dinâmica nos relatórios.
+
+[ ] Filtros: Adição de barras de pesquisa para otimização de consultas.
